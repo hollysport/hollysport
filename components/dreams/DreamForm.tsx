@@ -9,7 +9,7 @@ import {
     Send,
 } from "lucide-react";
 
-import { createClient } from "@/lib/supabase/client";
+import TurnstileWidget from "@/components/security/TurnstileWidget";
 
 type FieldName =
     | "fullName"
@@ -17,9 +17,16 @@ type FieldName =
     | "email"
     | "dreamTitle"
     | "dreamDescription"
-    | "kvkk";
+    | "kvkk"
+    | "turnstile";
 
 type FieldErrors = Partial<Record<FieldName, string>>;
+
+type ApiResponse = {
+    success?: boolean;
+    message?: string;
+    field?: string;
+};
 
 function isValidEmail(value: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value);
@@ -39,9 +46,26 @@ function isValidTurkishPhone(value: string) {
     return /^5\d{9}$/.test(digits);
 }
 
-export default function DreamForm() {
-    const supabase = createClient();
+function mapApiField(field?: string): FieldName | null {
+    if (
+        field === "fullName" ||
+        field === "phone" ||
+        field === "email" ||
+        field === "dreamTitle" ||
+        field === "dreamDescription" ||
+        field === "turnstile"
+    ) {
+        return field;
+    }
 
+    if (field === "kvkkAccepted") {
+        return "kvkk";
+    }
+
+    return null;
+}
+
+export default function DreamForm() {
     const [fullName, setFullName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
@@ -50,6 +74,12 @@ export default function DreamForm() {
         useState("");
     const [kvkkAccepted, setKvkkAccepted] =
         useState(false);
+
+    const [website, setWebsite] = useState("");
+    const [turnstileToken, setTurnstileToken] =
+        useState<string | null>(null);
+    const [turnstileResetKey, setTurnstileResetKey] =
+        useState(0);
 
     const [fieldErrors, setFieldErrors] =
         useState<FieldErrors>({});
@@ -72,6 +102,11 @@ export default function DreamForm() {
         });
     }
 
+    function resetTurnstile() {
+        setTurnstileToken(null);
+        setTurnstileResetKey((current) => current + 1);
+    }
+
     function validateForm() {
         const errors: FieldErrors = {};
 
@@ -85,9 +120,12 @@ export default function DreamForm() {
         if (!trimmedFullName) {
             errors.fullName =
                 "İsim soyisim alanı boş bırakılamaz.";
-        } else if (trimmedFullName.length < 3) {
+        } else if (trimmedFullName.length < 2) {
             errors.fullName =
-                "İsim soyisim en az 3 karakter olmalı.";
+                "İsim soyisim en az 2 karakter olmalı.";
+        } else if (trimmedFullName.length > 100) {
+            errors.fullName =
+                "İsim soyisim en fazla 100 karakter olabilir.";
         }
 
         if (!trimmedPhone) {
@@ -104,6 +142,9 @@ export default function DreamForm() {
         } else if (!isValidEmail(trimmedEmail)) {
             errors.email =
                 "Geçerli bir e-posta adresi gir. Örnek: adiniz@mail.com";
+        } else if (trimmedEmail.length > 160) {
+            errors.email =
+                "E-posta adresi en fazla 160 karakter olabilir.";
         }
 
         if (!trimmedDreamTitle) {
@@ -112,29 +153,34 @@ export default function DreamForm() {
         } else if (trimmedDreamTitle.length < 3) {
             errors.dreamTitle =
                 "Hayal başlığı en az 3 karakter olmalı.";
-        } else if (trimmedDreamTitle.length > 120) {
+        } else if (trimmedDreamTitle.length > 140) {
             errors.dreamTitle =
-                "Hayal başlığı en fazla 120 karakter olabilir.";
+                "Hayal başlığı en fazla 140 karakter olabilir.";
         }
 
         if (!trimmedDreamDescription) {
             errors.dreamDescription =
                 "Hayalini açıklamalısın.";
         } else if (
-            trimmedDreamDescription.length < 10
+            trimmedDreamDescription.length < 20
         ) {
             errors.dreamDescription =
-                "Hayalini en az 10 karakterle açıklamalısın.";
+                "Hayalini en az 20 karakterle açıklamalısın.";
         } else if (
-            trimmedDreamDescription.length > 2000
+            trimmedDreamDescription.length > 3000
         ) {
             errors.dreamDescription =
-                "Açıklama en fazla 2000 karakter olabilir.";
+                "Açıklama en fazla 3000 karakter olabilir.";
         }
 
         if (!kvkkAccepted) {
             errors.kvkk =
                 "KVKK bilgilendirmesini kabul etmelisin.";
+        }
+
+        if (!turnstileToken) {
+            errors.turnstile =
+                "Güvenlik doğrulamasını tamamlamalısın.";
         }
 
         return errors;
@@ -155,6 +201,7 @@ export default function DreamForm() {
             setErrorMessage(
                 "Formdaki hatalı alanları kontrol et.",
             );
+
             return;
         }
 
@@ -162,33 +209,66 @@ export default function DreamForm() {
         setIsSubmitting(true);
 
         try {
-            const { error } = await supabase
-                .from("dream_submissions")
-                .insert({
-                    full_name: fullName.trim(),
-                    phone: phone.trim(),
-                    email: email.trim().toLowerCase(),
-                    dream_title: dreamTitle.trim(),
-                    dream_description:
-                        dreamDescription.trim(),
-                    kvkk_accepted: kvkkAccepted,
-                });
+            const response = await fetch(
+                "/api/forms/dream",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        fullName: fullName.trim(),
+                        phone: phone.trim(),
+                        email: email.trim().toLowerCase(),
+                        dreamTitle: dreamTitle.trim(),
+                        dreamDescription:
+                            dreamDescription.trim(),
+                        kvkkAccepted,
+                        turnstileToken,
+                        website,
+                    }),
+                },
+            );
 
-            if (error) {
-                console.error(
-                    "Hayal başvurusu gönderim hatası:",
-                    error,
+            let result: ApiResponse;
+
+            try {
+                result =
+                    (await response.json()) as ApiResponse;
+            } catch {
+                result = {
+                    success: false,
+                    message:
+                        "Sunucudan geçerli bir yanıt alınamadı.",
+                };
+            }
+
+            if (!response.ok || !result.success) {
+                const apiField = mapApiField(
+                    result.field,
                 );
+
+                if (apiField) {
+                    setFieldErrors({
+                        [apiField]:
+                            result.message ??
+                            "Bu alanı kontrol et.",
+                    });
+                }
 
                 setErrorMessage(
-                    "Hayalin gönderilemedi. Bilgilerini kontrol edip tekrar dene.",
+                    result.message ??
+                        "Hayalin gönderilemedi. Bilgilerini kontrol edip tekrar dene.",
                 );
+
+                resetTurnstile();
 
                 return;
             }
 
             setSuccessMessage(
-                "Hayalin bize ulaştı. Holly Sport ekibi başvurunu inceleyecek ve uygun görülmesi hâlinde seninle iletişime geçecek.",
+                result.message ??
+                    "Hayalin bize ulaştı. Holly Sport ekibi başvurunu inceleyecek.",
             );
 
             setFullName("");
@@ -197,7 +277,10 @@ export default function DreamForm() {
             setDreamTitle("");
             setDreamDescription("");
             setKvkkAccepted(false);
+            setWebsite("");
             setFieldErrors({});
+
+            resetTurnstile();
         } catch (error) {
             console.error(
                 "Beklenmeyen hayal formu hatası:",
@@ -207,6 +290,8 @@ export default function DreamForm() {
             setErrorMessage(
                 "Beklenmeyen bir hata oluştu. İnternet bağlantını kontrol edip tekrar dene.",
             );
+
+            resetTurnstile();
         } finally {
             setIsSubmitting(false);
         }
@@ -222,7 +307,7 @@ export default function DreamForm() {
         <form
             noValidate
             onSubmit={handleSubmit}
-            className="rounded-[2rem] border border-white/10 bg-[#101010] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.4)] sm:p-8"
+            className="relative rounded-[2rem] border border-white/10 bg-[#101010] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.4)] sm:p-8"
         >
             <div className="mb-8">
                 <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#27D66B]">
@@ -232,6 +317,27 @@ export default function DreamForm() {
                 <h2 className="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-white">
                     Aklındaki hedefi bize anlat.
                 </h2>
+            </div>
+
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+            >
+                <label htmlFor="dream-website">
+                    İnternet sitesi
+                </label>
+
+                <input
+                    id="dream-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={(event) =>
+                        setWebsite(event.target.value)
+                    }
+                />
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2">
@@ -244,6 +350,7 @@ export default function DreamForm() {
                         id="dream-full-name"
                         type="text"
                         autoComplete="name"
+                        maxLength={100}
                         value={fullName}
                         aria-invalid={Boolean(
                             fieldErrors.fullName,
@@ -316,6 +423,7 @@ export default function DreamForm() {
                         type="email"
                         inputMode="email"
                         autoComplete="email"
+                        maxLength={160}
                         value={email}
                         aria-invalid={Boolean(
                             fieldErrors.email,
@@ -351,7 +459,7 @@ export default function DreamForm() {
                     <input
                         id="dream-title"
                         type="text"
-                        maxLength={120}
+                        maxLength={140}
                         value={dreamTitle}
                         aria-invalid={Boolean(
                             fieldErrors.dreamTitle,
@@ -381,7 +489,7 @@ export default function DreamForm() {
                         </div>
 
                         <span className="shrink-0 text-xs text-white/30">
-                            {dreamTitle.length}/120
+                            {dreamTitle.length}/140
                         </span>
                     </div>
                 </label>
@@ -397,7 +505,7 @@ export default function DreamForm() {
                     <textarea
                         id="dream-description"
                         rows={7}
-                        maxLength={2000}
+                        maxLength={3000}
                         value={dreamDescription}
                         aria-invalid={Boolean(
                             fieldErrors.dreamDescription,
@@ -412,10 +520,11 @@ export default function DreamForm() {
                             setErrorMessage("");
                         }}
                         placeholder="Bu hayalin senin için neden önemli olduğunu ve gerçekleştirmek için nasıl bir desteğe ihtiyaç duyduğunu anlatabilirsin."
-                        className={`resize-none ${fieldErrors.dreamDescription
+                        className={`resize-none ${
+                            fieldErrors.dreamDescription
                                 ? errorFieldClass
                                 : normalFieldClass
-                            }`}
+                        }`}
                     />
 
                     <div className="mt-2 flex items-start justify-between gap-4">
@@ -430,7 +539,7 @@ export default function DreamForm() {
                         </div>
 
                         <span className="shrink-0 text-xs text-white/30">
-                            {dreamDescription.length}/2000
+                            {dreamDescription.length}/3000
                         </span>
                     </div>
                 </label>
@@ -471,6 +580,28 @@ export default function DreamForm() {
                 {fieldErrors.kvkk && (
                     <FieldError
                         message={fieldErrors.kvkk}
+                    />
+                )}
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+                <TurnstileWidget
+                    action="dream_form"
+                    resetKey={turnstileResetKey}
+                    theme="dark"
+                    onTokenChange={(token) => {
+                        setTurnstileToken(token);
+
+                        if (token) {
+                            clearFieldError("turnstile");
+                            setErrorMessage("");
+                        }
+                    }}
+                />
+
+                {fieldErrors.turnstile && (
+                    <FieldError
+                        message={fieldErrors.turnstile}
                     />
                 )}
             </div>

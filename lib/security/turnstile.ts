@@ -74,8 +74,12 @@ export async function verifyTurnstileToken({
         };
     }
 
+    const shouldValidateAction =
+        process.env.NODE_ENV === "production" &&
+        Boolean(expectedAction);
+
     if (
-        expectedAction &&
+        shouldValidateAction &&
         result.action !== expectedAction
     ) {
         return {
