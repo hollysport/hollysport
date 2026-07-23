@@ -46,7 +46,10 @@ export default async function Supporters() {
                 "id, display_name, supporter_category, sort_order, created_at",
             )
             .eq("is_active", true)
-            .eq("supporter_category", "angel_investor")
+            .in("supporter_category", [
+                "angel_investor",
+                "individual",
+            ])
             .order("sort_order", {
                 ascending: true,
                 nullsFirst: false,
