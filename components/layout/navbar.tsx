@@ -25,6 +25,10 @@ const navigation = [
         href: "/events",
     },
     {
+        label: "Bir Hayalim Var",
+        href: "/bir-hayalim-var",
+    },
+    {
         label: "Galeri",
         href: "/gallery",
     },
@@ -61,17 +65,21 @@ export default function Navbar() {
                     HOLLY SPORT
                 </Link>
 
-                <div className="hidden items-center gap-6 lg:flex">
+                <div className="hidden items-center gap-5 lg:flex">
                     {navigation.map((item) => {
                         const active = isActive(item.href);
+                        const isDreamLink =
+                            item.href === "/bir-hayalim-var";
 
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`relative py-2 text-sm font-medium transition-colors ${active
+                                className={`relative whitespace-nowrap py-2 text-[13px] font-medium transition-colors ${active
                                         ? "text-[#27D66B]"
-                                        : "text-white/65 hover:text-white"
+                                        : isDreamLink
+                                            ? "text-[#27D66B]/80 hover:text-[#27D66B]"
+                                            : "text-white/65 hover:text-white"
                                     }`}
                             >
                                 {item.label}
@@ -104,13 +112,19 @@ export default function Navbar() {
 
                 <button
                     type="button"
-                    aria-label={isOpen ? "Menüyü kapat" : "Menüyü aç"}
+                    aria-label={
+                        isOpen ? "Menüyü kapat" : "Menüyü aç"
+                    }
                     aria-expanded={isOpen}
-                    onClick={() => setIsOpen((current) => !current)}
+                    onClick={() =>
+                        setIsOpen((current) => !current)
+                    }
                     className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/5 transition hover:bg-white/10 lg:hidden"
                 >
                     <span
-                        className={`h-0.5 w-5 rounded-full bg-white transition ${isOpen ? "translate-y-2 rotate-45" : ""
+                        className={`h-0.5 w-5 rounded-full bg-white transition ${isOpen
+                                ? "translate-y-2 rotate-45"
+                                : ""
                             }`}
                     />
 
@@ -133,16 +147,26 @@ export default function Navbar() {
                     <div className="mx-auto flex max-w-7xl flex-col rounded-3xl border border-white/10 bg-[#111111] p-5 shadow-2xl">
                         <div className="flex flex-col">
                             {navigation.map((item) => {
-                                const active = isActive(item.href);
+                                const active = isActive(
+                                    item.href,
+                                );
+
+                                const isDreamLink =
+                                    item.href ===
+                                    "/bir-hayalim-var";
 
                                 return (
                                     <Link
                                         key={item.href}
                                         href={item.href}
-                                        onClick={() => setIsOpen(false)}
+                                        onClick={() =>
+                                            setIsOpen(false)
+                                        }
                                         className={`rounded-2xl px-4 py-3 text-base font-semibold transition ${active
                                                 ? "bg-[#27D66B]/10 text-[#27D66B]"
-                                                : "text-white/75 hover:bg-white/5 hover:text-white"
+                                                : isDreamLink
+                                                    ? "text-[#27D66B] hover:bg-[#27D66B]/10"
+                                                    : "text-white/75 hover:bg-white/5 hover:text-white"
                                             }`}
                                     >
                                         {item.label}
@@ -156,7 +180,9 @@ export default function Navbar() {
                                 href={whatsappGroupUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() =>
+                                    setIsOpen(false)
+                                }
                                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
                             >
                                 Topluluğa Katıl
@@ -164,7 +190,9 @@ export default function Navbar() {
 
                             <Link
                                 href="/destek-ol"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() =>
+                                    setIsOpen(false)
+                                }
                                 className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#27D66B] px-6 text-sm font-bold text-[#050505]"
                             >
                                 Destek Ol

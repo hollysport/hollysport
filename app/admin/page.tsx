@@ -4,6 +4,7 @@ import {
     CalendarDays,
     ClipboardList,
     ExternalLink,
+    Lightbulb,
     LogOut,
     MessageCircleQuestion,
     MessageSquareQuote,
@@ -28,6 +29,7 @@ export default async function AdminPage() {
         { count: activeInvestorCount },
         { count: activeSponsorCount },
         { count: pendingQuestionCount },
+        { count: newDreamCount },
         { count: pendingReviewCount },
         { count: approvedReviewCount },
     ] = await Promise.all([
@@ -74,6 +76,11 @@ export default async function AdminPage() {
             .eq("status", "pending"),
 
         supabase
+            .from("dream_submissions")
+            .select("id", { count: "exact", head: true })
+            .eq("status", "new"),
+
+        supabase
             .from("community_reviews")
             .select("id", { count: "exact", head: true })
             .eq("status", "pending"),
@@ -89,9 +96,13 @@ export default async function AdminPage() {
     const safeRegistrationCount = registrationCount ?? 0;
     const safePendingRegistrationCount =
         pendingRegistrationCount ?? 0;
-    const safePendingQuestionCount = pendingQuestionCount ?? 0;
-    const safePendingReviewCount = pendingReviewCount ?? 0;
-    const safeApprovedReviewCount = approvedReviewCount ?? 0;
+    const safePendingQuestionCount =
+        pendingQuestionCount ?? 0;
+    const safeNewDreamCount = newDreamCount ?? 0;
+    const safePendingReviewCount =
+        pendingReviewCount ?? 0;
+    const safeApprovedReviewCount =
+        approvedReviewCount ?? 0;
 
     return (
         <main className="min-h-screen bg-[#050505] px-5 py-8 text-white sm:px-8 sm:py-10 lg:px-12">
@@ -245,7 +256,7 @@ export default async function AdminPage() {
                         </Link>
                     </div>
 
-                    <div className="mt-5 grid gap-5 lg:grid-cols-2">
+                    <div className="mt-5 grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
                         <Link
                             href="/admin/questions"
                             className="group flex min-h-56 flex-col justify-between rounded-[2rem] border border-white/10 bg-[#111111] p-7 transition duration-300 hover:-translate-y-1 hover:border-[#27D66B]/40 sm:p-8"
@@ -270,6 +281,34 @@ export default async function AdminPage() {
 
                                 <div className="mt-5 inline-flex rounded-full bg-[#27D66B]/10 px-4 py-2 text-sm font-bold text-[#27D66B]">
                                     {safePendingQuestionCount} bekleyen soru
+                                </div>
+                            </div>
+                        </Link>
+
+                        <Link
+                            href="/admin/dreams"
+                            className="group flex min-h-56 flex-col justify-between rounded-[2rem] border border-white/10 bg-[#111111] p-7 transition duration-300 hover:-translate-y-1 hover:border-violet-400/45 sm:p-8"
+                        >
+                            <div className="flex items-start justify-between gap-5">
+                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-400/10 text-violet-300">
+                                    <Lightbulb className="h-7 w-7" />
+                                </div>
+
+                                <ArrowUpRight className="h-6 w-6 text-white/25 transition group-hover:text-violet-300" />
+                            </div>
+
+                            <div className="mt-8">
+                                <h3 className="text-2xl font-bold">
+                                    Hayal Başvuruları
+                                </h3>
+
+                                <p className="mt-3 text-sm leading-6 text-white/40">
+                                    Bir Hayalim Var formundan gönderilen
+                                    bireysel hedefleri incele.
+                                </p>
+
+                                <div className="mt-5 inline-flex rounded-full bg-violet-400/10 px-4 py-2 text-sm font-bold text-violet-300">
+                                    {safeNewDreamCount} yeni hayal
                                 </div>
                             </div>
                         </Link>
