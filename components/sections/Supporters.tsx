@@ -1,12 +1,10 @@
-
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 import { ArrowRight, HandHeart } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
 import SupporterTicker from "@/components/support/SupporterTicker";
 
-const fiftyDaysAgo = new Date();
-fiftyDaysAgo.setDate(fiftyDaysAgo.getDate() - 50);
 const sponsorCategoryLabels: Record<string, string> = {
     main_sponsor: "Ana Destekçi",
     official_supporter: "Resmî Destekçi",
@@ -31,6 +29,8 @@ type IndividualSupporter = {
 };
 
 export default async function Supporters() {
+    noStore();
+
     const supabase = await createClient();
 
     const [sponsorsResult, supportersResult] = await Promise.all([
@@ -42,21 +42,42 @@ export default async function Supporters() {
 
         supabase
             .from("individual_supporters")
-            .select("id, display_name, supporter_category, created_at")
+            .select(
+                "id, display_name, supporter_category, sort_order, created_at",
+            )
             .eq("is_active", true)
             .eq("supporter_category", "angel_investor")
-            .gte("created_at", fiftyDaysAgo.toISOString())
-            .order("sort_order", { ascending: true }),
+            .order("sort_order", {
+                ascending: true,
+                nullsFirst: false,
+            })
+            .order("created_at", {
+                ascending: false,
+            }),
     ]);
+
+    if (sponsorsResult.error) {
+        console.error(
+            "Kurumsal destekçiler alınamadı:",
+            sponsorsResult.error,
+        );
+    }
+
+    if (supportersResult.error) {
+        console.error(
+            "Bireysel yatırımcılar alınamadı:",
+            supportersResult.error,
+        );
+    }
 
     const sponsors = (sponsorsResult.data ?? []) as Sponsor[];
 
     const supporters =
         (supportersResult.data ?? []) as IndividualSupporter[];
 
-    const investorNames = supporters.map(
-        (supporter) => supporter.display_name,
-    );
+    const investorNames = supporters
+        .map((supporter) => supporter.display_name?.trim())
+        .filter((name): name is string => Boolean(name));
 
     return (
         <section className="bg-zinc-950 py-20 text-white sm:py-24">
@@ -75,8 +96,9 @@ export default async function Supporters() {
                     </h2>
 
                     <p className="mt-5 max-w-2xl leading-7 text-zinc-400 sm:text-lg">
-                        Emeği, uzmanlığı, ürünleri ve desteğiyle topluluğumuza güç
-                        veren kişi ve kurumlara teşekkür ederiz.
+                        Emeği, uzmanlığı, ürünleri ve desteğiyle
+                        topluluğumuza güç veren kişi ve kurumlara
+                        teşekkür ederiz.
                     </p>
                 </div>
 
@@ -112,8 +134,9 @@ export default async function Supporters() {
                                             </p>
 
                                             <p className="mt-1 text-xs text-zinc-500">
-                                                {sponsorCategoryLabels[sponsor.category] ??
-                                                    "Destekçi"}
+                                                {sponsorCategoryLabels[
+                                                    sponsor.category
+                                                ] ?? "Destekçi"}
                                             </p>
                                         </div>
                                     </>
@@ -125,7 +148,7 @@ export default async function Supporters() {
                                             key={sponsor.id}
                                             href={sponsor.website}
                                             target="_blank"
-                                            rel="noreferrer"
+                                            rel="noopener noreferrer"
                                             className="rounded-3xl bg-white p-6 transition hover:-translate-y-1"
                                         >
                                             {content}
@@ -145,7 +168,8 @@ export default async function Supporters() {
                         </div>
                     ) : (
                         <div className="mt-7 rounded-3xl border border-white/10 bg-white/5 px-6 py-12 text-center text-sm text-zinc-400">
-                            Kurumsal destekçilerimiz yakında burada yer alacak.
+                            Kurumsal destekçilerimiz yakında burada yer
+                            alacak.
                         </div>
                     )}
                 </div>
@@ -161,16 +185,14 @@ export default async function Supporters() {
                         </h3>
 
                         <p className="mt-4 max-w-lg leading-7 text-zinc-400">
-                            Holly Sport’un gelişimine bireysel ve finansal katkı sağlayan
-                            yatırımcılarımıza teşekkür ederiz.
+                            Holly Sport&apos;un gelişimine bireysel ve
+                            finansal katkı sağlayan yatırımcılarımıza
+                            teşekkür ederiz.
                         </p>
 
                         <p className="mt-4 text-sm leading-6 text-zinc-500">
-                            İsimler, yatırımcıların seçtiği gizlilik tercihine göre
-                            gösterilmektedir.
-                        </p>
-                        <p className="mb-3 text-center text-xs text-zinc-500">
-                            Son 50 gün içindeki aktif bireysel destekçiler görüntülenmektedir.
+                            İsimler, yatırımcıların seçtiği gizlilik
+                            tercihine göre gösterilmektedir.
                         </p>
                     </div>
 
@@ -183,12 +205,12 @@ export default async function Supporters() {
                 <div className="mt-12 flex flex-col items-start justify-between gap-6 rounded-3xl bg-white px-6 py-7 text-zinc-950 sm:flex-row sm:items-center sm:px-8">
                     <div>
                         <h3 className="text-xl font-bold">
-                            Sen de Holly Sport’a güç ver.
+                            Sen de Holly Sport&apos;a güç ver.
                         </h3>
 
                         <p className="mt-2 text-sm leading-6 text-zinc-600">
-                            Gönüllü, bireysel veya kurumsal destek seçeneklerini
-                            inceleyebilirsin.
+                            Gönüllü, bireysel veya kurumsal destek
+                            seçeneklerini inceleyebilirsin.
                         </p>
                     </div>
 
