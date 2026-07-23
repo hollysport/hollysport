@@ -2,10 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-    ChevronLeft,
-    ChevronRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
     useCallback,
     useEffect,
@@ -87,14 +84,10 @@ const events = [
 ];
 
 export default function EventMarquee() {
-    const scrollContainerRef =
-        useRef<HTMLDivElement>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-    const [canScrollLeft, setCanScrollLeft] =
-        useState(false);
-
-    const [canScrollRight, setCanScrollRight] =
-        useState(true);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true);
 
     const updateScrollButtons = useCallback(() => {
         const container = scrollContainerRef.current;
@@ -104,11 +97,9 @@ export default function EventMarquee() {
         }
 
         const maximumScroll =
-            container.scrollWidth -
-            container.clientWidth;
+            container.scrollWidth - container.clientWidth;
 
         setCanScrollLeft(container.scrollLeft > 8);
-
         setCanScrollRight(
             container.scrollLeft < maximumScroll - 8,
         );
@@ -181,41 +172,29 @@ export default function EventMarquee() {
                     </h2>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <button
-                        type="button"
-                        onClick={() =>
-                            scrollCards("left")
-                        }
-                        disabled={!canScrollLeft}
-                        aria-label="Önceki etkinlikleri göster"
-                        className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#111111] text-white transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-black active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
-                    >
-                        <ChevronLeft className="h-5 w-5" />
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() =>
-                            scrollCards("right")
-                        }
-                        disabled={!canScrollRight}
-                        aria-label="Sonraki etkinlikleri göster"
-                        className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-[#111111] text-white transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-black active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
-                    >
-                        <ChevronRight className="h-5 w-5" />
-                    </button>
-
-                    <Link
-                        href="/gallery"
-                        className="hidden min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B] hover:text-[#27D66B] sm:inline-flex"
-                    >
-                        Tüm Galeriyi Gör
-                    </Link>
-                </div>
+                <Link
+                    href="/gallery"
+                    className="inline-flex min-h-12 w-fit items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B] hover:text-[#27D66B]"
+                >
+                    Tüm Galeriyi Gör
+                </Link>
             </div>
 
             <div className="relative">
+                <button
+                    type="button"
+                    onClick={() => scrollCards("left")}
+                    disabled={!canScrollLeft}
+                    aria-label="Önceki etkinlikleri göster"
+                    className="absolute left-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/80 text-white shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-black active:scale-95 disabled:pointer-events-none disabled:opacity-25 sm:left-6 sm:h-14 sm:w-14"
+                >
+                    <ChevronLeft
+                        aria-hidden="true"
+                        strokeWidth={2.5}
+                        className="h-6 w-6 sm:h-7 sm:w-7"
+                    />
+                </button>
+
                 <div
                     ref={scrollContainerRef}
                     className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-4 touch-pan-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:px-[max(2rem,calc((100vw-80rem)/2))]"
@@ -254,15 +233,20 @@ export default function EventMarquee() {
                         </Link>
                     ))}
                 </div>
-            </div>
 
-            <div className="mt-6 px-6 sm:hidden">
-                <Link
-                    href="/gallery"
-                    className="flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition active:scale-[0.98]"
+                <button
+                    type="button"
+                    onClick={() => scrollCards("right")}
+                    disabled={!canScrollRight}
+                    aria-label="Sonraki etkinlikleri göster"
+                    className="absolute right-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/80 text-white shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-black active:scale-95 disabled:pointer-events-none disabled:opacity-25 sm:right-6 sm:h-14 sm:w-14"
                 >
-                    Tüm Galeriyi Gör
-                </Link>
+                    <ChevronRight
+                        aria-hidden="true"
+                        strokeWidth={2.5}
+                        className="h-6 w-6 sm:h-7 sm:w-7"
+                    />
+                </button>
             </div>
         </section>
     );
