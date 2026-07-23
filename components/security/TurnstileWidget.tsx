@@ -7,13 +7,18 @@ import {
     useRef,
 } from "react";
 
+const DEVELOPMENT_SITE_KEY =
+    "1x00000000000000000000AA";
+
 type TurnstileRenderOptions = {
     sitekey: string;
     action?: string;
     theme?: "light" | "dark" | "auto";
     callback?: (token: string) => void;
     "expired-callback"?: () => void;
-    "error-callback"?: () => void;
+    "error-callback"?: (
+        errorCode?: string,
+    ) => void;
 };
 
 type TurnstileApi = {
@@ -33,7 +38,9 @@ declare global {
 
 type TurnstileWidgetProps = {
     action: string;
-    onTokenChange: (token: string | null) => void;
+    onTokenChange: (
+        token: string | null,
+    ) => void;
     resetKey?: number;
     theme?: "light" | "dark" | "auto";
 };
@@ -47,59 +54,93 @@ export default function TurnstileWidget({
     const containerRef =
         useRef<HTMLDivElement>(null);
 
-    const widgetIdRef = useRef<string | null>(null);
+    const widgetIdRef =
+        useRef<string | null>(null);
 
-    const callbackRef = useRef(onTokenChange);
+    const callbackRef =
+        useRef(onTokenChange);
 
-    const siteKey =
-        process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+    const isDevelopment =
+        process.env.NODE_ENV ===
+        "development";
+
+    const siteKey = isDevelopment
+        ? DEVELOPMENT_SITE_KEY
+        : process.env
+              .NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
     useEffect(() => {
-        callbackRef.current = onTokenChange;
+        callbackRef.current =
+            onTokenChange;
     }, [onTokenChange]);
 
-    const renderWidget = useCallback(() => {
-        if (
-            !siteKey ||
-            !containerRef.current ||
-            !window.turnstile ||
-            widgetIdRef.current
-        ) {
-            return;
-        }
+    const renderWidget =
+        useCallback(() => {
+            if (
+                !siteKey ||
+                !containerRef.current ||
+                !window.turnstile ||
+                widgetIdRef.current
+            ) {
+                return;
+            }
 
-        widgetIdRef.current =
-            window.turnstile.render(
-                containerRef.current,
-                {
-                    sitekey: siteKey,
-                    action,
-                    theme,
-                    callback(token) {
-                        callbackRef.current(token);
+            widgetIdRef.current =
+                window.turnstile.render(
+                    containerRef.current,
+                    {
+                        sitekey: siteKey,
+                        action,
+                        theme,
+
+                        callback(token) {
+                            callbackRef.current(
+                                token,
+                            );
+                        },
+
+                        "expired-callback"() {
+                            callbackRef.current(
+                                null,
+                            );
+                        },
+
+                        "error-callback"(
+                            errorCode,
+                        ) {
+                            console.error(
+                                "Cloudflare Turnstile hatası:",
+                                errorCode,
+                            );
+
+                            callbackRef.current(
+                                null,
+                            );
+                        },
                     },
-                    "expired-callback"() {
-                        callbackRef.current(null);
-                    },
-                    "error-callback"() {
-                        callbackRef.current(null);
-                    },
-                },
-            );
-    }, [action, siteKey, theme]);
+                );
+        }, [action, siteKey, theme]);
 
     useEffect(() => {
         renderWidget();
 
-        const intervalId = window.setInterval(() => {
-            if (window.turnstile) {
-                renderWidget();
-                window.clearInterval(intervalId);
-            }
-        }, 250);
+        const intervalId =
+            window.setInterval(() => {
+                if (
+                    window.turnstile
+                ) {
+                    renderWidget();
+
+                    window.clearInterval(
+                        intervalId,
+                    );
+                }
+            }, 250);
 
         return () => {
-            window.clearInterval(intervalId);
+            window.clearInterval(
+                intervalId,
+            );
 
             if (
                 widgetIdRef.current &&
@@ -130,8 +171,9 @@ export default function TurnstileWidget({
 
     if (!siteKey) {
         return (
-            <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-                Turnstile site anahtarı tanımlanmamış.
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-600">
+                Turnstile Site Key
+                tanımlanmamış.
             </div>
         );
     }
@@ -139,6 +181,7 @@ export default function TurnstileWidget({
     return (
         <>
             <Script
+                id="cloudflare-turnstile-script"
                 src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
                 strategy="afterInteractive"
                 onLoad={renderWidget}

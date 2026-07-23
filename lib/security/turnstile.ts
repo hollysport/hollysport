@@ -1,5 +1,8 @@
 import "server-only";
 
+const DEVELOPMENT_SECRET_KEY =
+    "1x0000000000000000000000000000000AA";
+
 type TurnstileVerificationResponse = {
     success: boolean;
     action?: string;
@@ -19,8 +22,14 @@ export async function verifyTurnstileToken({
     ipAddress,
     expectedAction,
 }: VerifyTurnstileOptions) {
-    const secretKey =
-        process.env.TURNSTILE_SECRET_KEY;
+    const isDevelopment =
+        process.env.NODE_ENV ===
+        "development";
+
+    const secretKey = isDevelopment
+        ? DEVELOPMENT_SECRET_KEY
+        : process.env
+              .TURNSTILE_SECRET_KEY;
 
     if (!secretKey) {
         throw new Error(
@@ -31,17 +40,26 @@ export async function verifyTurnstileToken({
     if (!token) {
         return {
             success: false,
-            errors: ["missing-input-response"],
+            errors: [
+                "missing-input-response",
+            ],
         };
     }
 
-    const requestBody = new URLSearchParams({
-        secret: secretKey,
-        response: token,
-    });
+    const requestBody =
+        new URLSearchParams({
+            secret: secretKey,
+            response: token,
+        });
 
-    if (ipAddress && ipAddress !== "unknown") {
-        requestBody.set("remoteip", ipAddress);
+    if (
+        ipAddress &&
+        ipAddress !== "unknown"
+    ) {
+        requestBody.set(
+            "remoteip",
+            ipAddress,
+        );
     }
 
     const response = await fetch(
@@ -60,7 +78,9 @@ export async function verifyTurnstileToken({
     if (!response.ok) {
         return {
             success: false,
-            errors: ["siteverify-request-failed"],
+            errors: [
+                "siteverify-request-failed",
+            ],
         };
     }
 
@@ -70,16 +90,22 @@ export async function verifyTurnstileToken({
     if (!result.success) {
         return {
             success: false,
-            errors: result["error-codes"] ?? [],
+            errors:
+                result["error-codes"] ??
+                [],
         };
     }
 
-    const shouldValidateAction =
-        process.env.NODE_ENV === "production" &&
-        Boolean(expectedAction);
-
+    /*
+     * Cloudflare test anahtarının
+     * action değeri üretimden farklı
+     * olabilir. Bu nedenle action
+     * kontrolü yalnızca production'da
+     * yapılır.
+     */
     if (
-        shouldValidateAction &&
+        !isDevelopment &&
+        expectedAction &&
         result.action !== expectedAction
     ) {
         return {
