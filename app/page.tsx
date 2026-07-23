@@ -1,3 +1,5 @@
+import { connection } from "next/server";
+
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 
@@ -15,7 +17,9 @@ import Supporters from "@/components/sections/Supporters";
 
 import TestimonialsSection from "@/components/reviews/TestimonialsSection";
 
-export default function HomePage() {
+export default async function HomePage() {
+    await connection();
+
     return (
         <main>
             <Navbar />
