@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Heart, Users } from "lucide-react";
 
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import MissionVision from "@/components/sections/MissionVision";
 import CommunityValues from "@/components/sections/CommunityValues";
 
@@ -14,6 +16,8 @@ export const metadata: Metadata = {
 export default function AboutPage() {
     return (
         <main>
+            <Navbar />
+
             <section className="bg-zinc-950 py-20 text-white sm:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
@@ -21,13 +25,15 @@ export default function AboutPage() {
                     </p>
 
                     <h1 className="mt-5 max-w-5xl text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-                        Spor aracılığıyla insanları bir araya getiriyoruz.
+                        Spor aracılığıyla insanları bir araya
+                        getiriyoruz.
                     </h1>
 
                     <p className="mt-7 max-w-3xl text-base leading-8 text-zinc-400 sm:text-xl">
-                        Holly Sport, her yaştan insanın fiziksel, mental ve sosyal
-                        açıdan daha aktif bir yaşam sürmesini amaçlayan, gönüllülük
-                        esasına dayanan bağımsız bir spor topluluğudur.
+                        Holly Sport, her yaştan insanın fiziksel, mental
+                        ve sosyal açıdan daha aktif bir yaşam sürmesini
+                        amaçlayan, gönüllülük esasına dayanan bağımsız
+                        bir spor topluluğudur.
                     </p>
                 </div>
             </section>
@@ -40,28 +46,33 @@ export default function AboutPage() {
                         </p>
 
                         <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
-                            Küçük bir arkadaş grubundan güçlü bir topluluğa.
+                            Küçük bir arkadaş grubundan güçlü bir
+                            topluluğa.
                         </h2>
                     </div>
 
                     <div className="space-y-6 text-base leading-8 text-zinc-600 sm:text-lg">
                         <p>
-                            Holly Sport, birlikte spor yapmak isteyen küçük bir arkadaş
-                            grubuyla başladı. Zamanla her katılımcının başka insanları
-                            topluluğa dahil etmesiyle büyüdü ve farklı spor branşlarında
-                            yüzlerce insanı bir araya getiren bir yapıya dönüştü.
+                            Holly Sport, birlikte spor yapmak isteyen
+                            küçük bir arkadaş grubuyla başladı. Zamanla
+                            her katılımcının başka insanları topluluğa
+                            dahil etmesiyle büyüdü ve farklı spor
+                            branşlarında yüzlerce insanı bir araya
+                            getiren bir yapıya dönüştü.
                         </p>
 
                         <p>
-                            Amacımız yalnızca etkinlik düzenlemek değil; insanların yeni
-                            insanlarla tanıştığı, farklı sporları deneyimlediği, dostluklar
-                            kurduğu ve kendini ait hissettiği güvenli bir topluluk
+                            Amacımız yalnızca etkinlik düzenlemek değil;
+                            insanların yeni insanlarla tanıştığı, farklı
+                            sporları deneyimlediği, dostluklar kurduğu ve
+                            kendini ait hissettiği güvenli bir topluluk
                             oluşturmaktır.
                         </p>
 
                         <p>
-                            Yıl boyunca koşu, futbol, basketbol, voleybol, doğa sporları
-                            ve farklı branşlarda ücretsiz veya erişilebilir etkinlikler
+                            Yıl boyunca koşu, futbol, basketbol,
+                            voleybol, doğa sporları ve farklı branşlarda
+                            ücretsiz veya erişilebilir etkinlikler
                             düzenliyoruz.
                         </p>
                     </div>
@@ -81,9 +92,11 @@ export default function AboutPage() {
                             </h2>
 
                             <p className="mt-4 leading-7 text-zinc-600">
-                                Etkinlikler gönüllü organizatörler, topluluk üyeleri ve
-                                destekçilerle birlikte planlanır. Her etkinlikte güvenli,
-                                kapsayıcı ve sosyal bir ortam oluşturmayı hedefleriz.
+                                Etkinlikler gönüllü organizatörler,
+                                topluluk üyeleri ve destekçilerle
+                                birlikte planlanır. Her etkinlikte
+                                güvenli, kapsayıcı ve sosyal bir ortam
+                                oluşturmayı hedefleriz.
                             </p>
                         </article>
 
@@ -97,9 +110,11 @@ export default function AboutPage() {
                             </h2>
 
                             <p className="mt-4 leading-7 text-zinc-600">
-                                Holly Sport’un büyümesinde gönüllü emeğin önemli bir yeri
-                                vardır. Etkinliklerden sosyal medyaya, tasarımdan teknik
-                                desteğe kadar herkes kendi becerisiyle katkı sağlayabilir.
+                                Holly Sport’un büyümesinde gönüllü emeğin
+                                önemli bir yeri vardır. Etkinliklerden
+                                sosyal medyaya, tasarımdan teknik desteğe
+                                kadar herkes kendi becerisiyle katkı
+                                sağlayabilir.
                             </p>
                         </article>
                     </div>
@@ -119,20 +134,24 @@ export default function AboutPage() {
                             </p>
 
                             <h2 className="mt-3 max-w-2xl text-3xl font-bold sm:text-4xl">
-                                Sen de Holly Sport topluluğunun bir parçası ol.
+                                Sen de Holly Sport topluluğunun bir
+                                parçası ol.
                             </h2>
                         </div>
 
                         <Link
                             href="/events"
-                            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-zinc-950 px-6 py-3.5 font-semibold text-white transition hover:bg-zinc-800"
+                            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-zinc-950 px-6 py-3.5 font-semibold text-white transition hover:bg-zinc-800"
                         >
                             Etkinlikleri İncele
-                            <ArrowRight className="h-5 w-5" />
+
+                            <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                         </Link>
                     </div>
                 </div>
             </section>
+
+            <Footer />
         </main>
     );
 }

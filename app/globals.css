@@ -51,8 +51,7 @@ video {
 /* ------------------------------------------------ */
 
 .marquee-track,
-.home-events-marquee,
-.animate-supporter-scroll-down {
+.home-events-marquee {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -92,7 +91,6 @@ video {
   gap: 1rem;
 }
 
-/* Yalnızca mouse kullanılan cihazlarda hover ile durdur. */
 @media (hover: hover) and (pointer: fine) {
   .marquee-row:hover .marquee-track {
     animation-play-state: paused;
@@ -106,36 +104,6 @@ video {
 
   to {
     transform: translate3d(calc(-50% - 0.5rem), 0, 0);
-  }
-}
-
-/* ------------------------------------------------ */
-/* BİREYSEL DESTEKÇİ TICKER */
-/* ------------------------------------------------ */
-
-@keyframes supporter-scroll-down {
-  from {
-    transform: translate3d(0,
-        calc(-1 * var(--ticker-distance)),
-        0);
-  }
-
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.animate-supporter-scroll-down {
-  animation-name: supporter-scroll-down;
-  animation-duration: var(--ticker-duration);
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-play-state: running;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .group:hover .animate-supporter-scroll-down {
-    animation-play-state: paused;
   }
 }
 
@@ -230,20 +198,13 @@ video {
 /* HAREKET AZALTMA AYARI */
 /* ------------------------------------------------ */
 
-/*
-  iPhone'da:
-  Ayarlar > Erişilebilirlik > Hareket > Hareketi Azalt
-  açık olduğunda sürekli kayan animasyonlar bilinçli olarak durdurulur.
-*/
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
   .marquee-track,
-  .home-events-marquee,
-  .animate-supporter-scroll-down {
+  .home-events-marquee {
     animation: none;
     transform: none;
   }

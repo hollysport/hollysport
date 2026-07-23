@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
@@ -36,28 +38,28 @@ export default async function EventDetailPage({
     const { data: event, error } = await supabase
         .from("events")
         .select(`
-      id,
-      slug,
-      title,
-      category,
-      short_description,
-      description,
-      location,
-      address,
-      starts_at,
-      ends_at,
-      registration_deadline,
-      capacity,
-      participant_count,
-      level,
-      is_free,
-      fee_amount,
-      currency,
-      price_note,
-      cover_image_path,
-      registration_open,
-      featured
-    `)
+            id,
+            slug,
+            title,
+            category,
+            short_description,
+            description,
+            location,
+            address,
+            starts_at,
+            ends_at,
+            registration_deadline,
+            capacity,
+            participant_count,
+            level,
+            is_free,
+            fee_amount,
+            currency,
+            price_note,
+            cover_image_path,
+            registration_open,
+            featured
+        `)
         .eq("slug", slug)
         .eq("status", "published")
         .maybeSingle();
@@ -68,7 +70,9 @@ export default async function EventDetailPage({
 
     const { data: galleryData } = await supabase
         .from("event_images")
-        .select("id, storage_path, alt_text, caption, sort_order")
+        .select(
+            "id, storage_path, alt_text, caption, sort_order",
+        )
         .eq("event_id", event.id)
         .order("sort_order", { ascending: true });
 
@@ -90,11 +94,13 @@ export default async function EventDetailPage({
     }));
 
     const currentTime = Date.now();
-    const isPast = new Date(event.ends_at).getTime() < currentTime;
+    const isPast =
+        new Date(event.ends_at).getTime() < currentTime;
 
     const deadlinePassed =
         event.registration_deadline !== null &&
-        new Date(event.registration_deadline).getTime() < currentTime;
+        new Date(event.registration_deadline).getTime() <
+            currentTime;
 
     const isFull =
         event.capacity !== null &&
@@ -115,9 +121,14 @@ export default async function EventDetailPage({
                     <div className="mx-auto max-w-7xl">
                         <Link
                             href="/events"
-                            className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
+                            className="group inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
                         >
-                            ← Etkinliklere dön
+                            <ArrowLeft
+                                aria-hidden="true"
+                                className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
+                            />
+
+                            Etkinliklere dön
                         </Link>
 
                         <div className="mt-10 overflow-hidden rounded-3xl border border-white/10">
@@ -142,7 +153,9 @@ export default async function EventDetailPage({
                                         </span>
 
                                         <span className="rounded-full bg-black/60 px-4 py-2 text-xs font-semibold uppercase tracking-wider backdrop-blur">
-                                            {isPast ? "Etkinlik tamamlandı" : "Yaklaşan etkinlik"}
+                                            {isPast
+                                                ? "Etkinlik tamamlandı"
+                                                : "Yaklaşan etkinlik"}
                                         </span>
 
                                         {event.featured && (
@@ -158,7 +171,9 @@ export default async function EventDetailPage({
 
                                     {event.short_description && (
                                         <p className="mt-7 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
-                                            {event.short_description}
+                                            {
+                                                event.short_description
+                                            }
                                         </p>
                                     )}
                                 </div>
@@ -188,13 +203,17 @@ export default async function EventDetailPage({
                                         Açık adres
                                     </span>
 
-                                    <p className="mt-3 text-lg font-semibold">{event.address}</p>
+                                    <p className="mt-3 text-lg font-semibold">
+                                        {event.address}
+                                    </p>
                                 </div>
                             )}
                         </div>
 
                         <aside className="h-fit rounded-3xl bg-[#111111] p-7 md:p-9">
-                            <h2 className="text-2xl font-bold">Etkinlik bilgileri</h2>
+                            <h2 className="text-2xl font-bold">
+                                Etkinlik bilgileri
+                            </h2>
 
                             <div className="mt-8 divide-y divide-white/10 border-y border-white/10">
                                 <div className="py-5">
@@ -203,7 +222,9 @@ export default async function EventDetailPage({
                                     </span>
 
                                     <strong className="mt-2 block">
-                                        {formatDate(event.starts_at)}
+                                        {formatDate(
+                                            event.starts_at,
+                                        )}
                                     </strong>
                                 </div>
 
@@ -213,7 +234,10 @@ export default async function EventDetailPage({
                                     </span>
 
                                     <strong className="mt-2 block text-[#27D66B]">
-                                        {formatTime(event.starts_at)} –{" "}
+                                        {formatTime(
+                                            event.starts_at,
+                                        )}{" "}
+                                        –{" "}
                                         {formatTime(event.ends_at)}
                                     </strong>
                                 </div>
@@ -223,7 +247,9 @@ export default async function EventDetailPage({
                                         Konum
                                     </span>
 
-                                    <strong className="mt-2 block">{event.location}</strong>
+                                    <strong className="mt-2 block">
+                                        {event.location}
+                                    </strong>
                                 </div>
 
                                 <div className="py-5">
@@ -232,7 +258,8 @@ export default async function EventDetailPage({
                                     </span>
 
                                     <strong className="mt-2 block">
-                                        {event.level || "Tüm seviyeler"}
+                                        {event.level ||
+                                            "Tüm seviyeler"}
                                     </strong>
                                 </div>
 
@@ -243,6 +270,7 @@ export default async function EventDetailPage({
 
                                     <strong className="mt-2 block">
                                         {event.participant_count}
+
                                         {event.capacity !== null
                                             ? ` / ${event.capacity}`
                                             : " kişi"}
@@ -271,7 +299,7 @@ export default async function EventDetailPage({
                             {canRegister ? (
                                 <Link
                                     href={`/join?event=${event.slug}`}
-                                    className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-black transition-transform hover:scale-[1.02]"
+                                    className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-black transition active:scale-[0.98] hover:bg-[#45e27f]"
                                 >
                                     Etkinliğe katıl
                                 </Link>
@@ -280,10 +308,10 @@ export default async function EventDetailPage({
                                     {isPast
                                         ? "Bu etkinlik tamamlandı."
                                         : isFull
-                                            ? "Etkinlik kontenjanı doldu."
-                                            : deadlinePassed
-                                                ? "Başvuru süresi sona erdi."
-                                                : "Etkinlik kayıtları kapalı."}
+                                          ? "Etkinlik kontenjanı doldu."
+                                          : deadlinePassed
+                                            ? "Başvuru süresi sona erdi."
+                                            : "Etkinlik kayıtları kapalı."}
                                 </div>
                             )}
                         </aside>
@@ -302,32 +330,39 @@ export default async function EventDetailPage({
                             </h2>
 
                             <div className="mt-12 grid auto-rows-[300px] gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                {galleryImages.map((image, index) => (
-                                    <article
-                                        key={image.id}
-                                        className={`relative overflow-hidden rounded-2xl ${index === 0 ? "lg:col-span-2 lg:row-span-2" : ""
+                                {galleryImages.map(
+                                    (image, index) => (
+                                        <article
+                                            key={image.id}
+                                            className={`relative overflow-hidden rounded-2xl ${
+                                                index === 0
+                                                    ? "lg:col-span-2 lg:row-span-2"
+                                                    : ""
                                             }`}
-                                    >
-                                        {image.url && (
-                                            <div
-                                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
-                                                style={{
-                                                    backgroundImage: `url("${image.url}")`,
-                                                }}
-                                            />
-                                        )}
+                                        >
+                                            {image.url && (
+                                                <div
+                                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+                                                    style={{
+                                                        backgroundImage: `url("${image.url}")`,
+                                                    }}
+                                                />
+                                            )}
 
-                                        {image.caption && (
-                                            <>
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                                            {image.caption && (
+                                                <>
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
 
-                                                <p className="absolute inset-x-0 bottom-0 p-5 text-sm text-white">
-                                                    {image.caption}
-                                                </p>
-                                            </>
-                                        )}
-                                    </article>
-                                ))}
+                                                    <p className="absolute inset-x-0 bottom-0 p-5 text-sm text-white">
+                                                        {
+                                                            image.caption
+                                                        }
+                                                    </p>
+                                                </>
+                                            )}
+                                        </article>
+                                    ),
+                                )}
                             </div>
                         </div>
                     </section>
@@ -335,25 +370,14 @@ export default async function EventDetailPage({
 
                 {!isPast && (
                     <section className="bg-[#27D66B] px-6 py-20 text-black md:px-10 lg:px-16">
-                        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-10 lg:flex-row lg:items-center">
-                            <div>
-                                <span className="text-sm font-semibold uppercase tracking-[0.3em]">
-                                    Holly Sport
-                                </span>
+                        <div className="mx-auto max-w-7xl">
+                            <span className="text-sm font-semibold uppercase tracking-[0.3em]">
+                                Holly Sport
+                            </span>
 
-                                <h2 className="mt-5 max-w-4xl text-4xl font-bold tracking-tight md:text-6xl">
-                                    Bu deneyimin bir parçası ol.
-                                </h2>
-                            </div>
-
-                            {canRegister && (
-                                <Link
-                                    href={`/join?event=${event.slug}`}
-                                    className="flex h-16 shrink-0 items-center justify-center rounded-full bg-black px-10 text-sm font-semibold uppercase tracking-wider text-white transition-transform hover:scale-105"
-                                >
-                                    Şimdi katıl
-                                </Link>
-                            )}
+                            <h2 className="mt-5 max-w-4xl text-4xl font-bold tracking-tight md:text-6xl">
+                                Bu deneyimin bir parçası ol.
+                            </h2>
                         </div>
                     </section>
                 )}

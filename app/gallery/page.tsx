@@ -2,6 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Metadata } from "next";
 
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import GalleryGrid, {
     type GalleryImage,
 } from "@/components/gallery/GalleryGrid";
@@ -21,7 +23,9 @@ function shuffleArray<T>(items: T[]): T[] {
             item,
             sort: Math.random(),
         }))
-        .sort((a, b) => a.sort - b.sort)
+        .sort((firstItem, secondItem) => {
+            return firstItem.sort - secondItem.sort;
+        })
         .map(({ item }) => item);
 }
 
@@ -45,7 +49,9 @@ function getGalleryImages(): GalleryImage[] {
             .filter(
                 (fileName) =>
                     imageExtensionPattern.test(fileName) &&
-                    !/^kapak\.(avif|gif|jpe?g|png|webp)$/i.test(fileName),
+                    !/^kapak\.(avif|gif|jpe?g|png|webp)$/i.test(
+                        fileName,
+                    ),
             )
             .sort((firstFile, secondFile) =>
                 firstFile.localeCompare(secondFile, "tr", {
@@ -67,7 +73,9 @@ export default function GalleryPage() {
     const galleryImages = getGalleryImages();
 
     return (
-        <main>
+        <main className="min-h-screen bg-white">
+            <Navbar />
+
             <section className="bg-[#050505] py-20 text-white sm:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
@@ -79,8 +87,9 @@ export default function GalleryPage() {
                     </h1>
 
                     <p className="mt-6 max-w-2xl text-base leading-7 text-white/50 sm:text-lg">
-                        Koşudan turnuvalara, Holly Fest’ten sosyal sorumluluk
-                        projelerine kadar topluluğumuzdan kareler.
+                        Koşudan voleybola, doğa sporlarından
+                        turnuvalara kadar topluluğumuzun birlikte
+                        biriktirdiği anıları keşfet.
                     </p>
                 </div>
             </section>
@@ -90,6 +99,8 @@ export default function GalleryPage() {
                     <GalleryGrid images={galleryImages} />
                 </div>
             </section>
+
+            <Footer />
         </main>
     );
 }

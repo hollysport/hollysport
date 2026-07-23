@@ -1,83 +1,82 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 type SupporterTickerProps = {
     names: string[];
     emptyMessage?: string;
 };
 
+const visibleLimit = 8;
+
 export default function SupporterTicker({
     names,
     emptyMessage = "Bireysel yatırımcılarımız yakında burada görünecek.",
 }: SupporterTickerProps) {
+    const [showAll, setShowAll] = useState(false);
+
     const uniqueNames = Array.from(
-        new Set(names.map((name) => name.trim()).filter(Boolean)),
+        new Set(
+            names
+                .map((name) => name.trim())
+                .filter(Boolean),
+        ),
     );
 
     if (uniqueNames.length === 0) {
         return (
-            <div className="flex h-56 items-center justify-center rounded-3xl border border-white/10 bg-white/5 px-6 text-center text-sm text-zinc-400">
+            <div className="flex min-h-56 items-center justify-center rounded-3xl border border-white/10 bg-white/5 px-6 text-center text-sm text-zinc-400">
                 {emptyMessage}
             </div>
         );
     }
 
-    const containerHeight = 224;
-    const itemHeight = 48;
-    const gapHeight = 24;
+    const visibleNames = showAll
+        ? uniqueNames
+        : uniqueNames.slice(0, visibleLimit);
 
-    const groupHeight = Math.max(
-        containerHeight + gapHeight,
-        uniqueNames.length * itemHeight + gapHeight,
-    );
-
-    const animationDuration = Math.max(12, groupHeight / 19);
-
-    const animationStyle = {
-        "--ticker-distance": `${groupHeight}px`,
-        "--ticker-duration": `${animationDuration}s`,
-        "--ticker-group-height": `${groupHeight}px`,
-        "--ticker-content-height": `${groupHeight - gapHeight}px`,
-    } as CSSProperties;
+    const hasMore = uniqueNames.length > visibleLimit;
 
     return (
-        <div className="group relative h-56 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-            <div
-                style={animationStyle}
-                className="animate-supporter-scroll-down group-hover:[animation-play-state:paused]"
-            >
-                {[0, 1].map((groupIndex) => (
+        <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            <div className="divide-y divide-white/10">
+                {visibleNames.map((name, index) => (
                     <div
-                        key={groupIndex}
-                        style={{
-                            height: "var(--ticker-group-height)",
-                        }}
+                        key={`${name}-${index}`}
+                        className="flex min-h-14 items-center px-5 py-3 sm:px-6"
                     >
-                        <div
-                            style={{
-                                height: "var(--ticker-content-height)",
-                            }}
-                            className="flex flex-col justify-around"
-                        >
-                            {uniqueNames.map((name, index) => (
-                                <div
-                                    key={`${groupIndex}-${name}-${index}`}
-                                    className="flex h-12 shrink-0 items-center justify-center border-b border-white/5 px-4 text-center font-semibold text-white"
-                                >
-                                    {name}
-                                </div>
-                            ))}
-                        </div>
+                        <span className="mr-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#27D66B]/10 text-xs font-bold text-[#27D66B]">
+                            {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                        <div style={{ height: `${gapHeight}px` }} />
+                        <span className="font-semibold text-white">
+                            {name}
+                        </span>
                     </div>
                 ))}
             </div>
 
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-2 bg-gradient-to-b from-zinc-950 to-transparent" />
-
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-2 bg-gradient-to-t from-zinc-950 to-transparent" />
+            {hasMore && (
+                <button
+                    type="button"
+                    onClick={() => setShowAll((current) => !current)}
+                    aria-expanded={showAll}
+                    className="flex min-h-14 w-full items-center justify-center gap-2 border-t border-white/10 px-5 text-sm font-semibold text-[#27D66B] transition-colors hover:bg-white/5"
+                >
+                    {showAll ? (
+                        <>
+                            Daha az göster
+                            <ChevronUp className="h-4 w-4" />
+                        </>
+                    ) : (
+                        <>
+                            Daha fazla göster
+                            <ChevronDown className="h-4 w-4" />
+                        </>
+                    )}
+                </button>
+            )}
         </div>
     );
 }

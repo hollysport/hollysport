@@ -8,6 +8,8 @@ import {
     Users,
 } from "lucide-react";
 
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import QuestionForm from "@/components/contact/QuestionForm";
 
 export const metadata: Metadata = {
@@ -21,7 +23,7 @@ const contactOptions = [
         title: "Sıkça Sorulan Sorular",
         description:
             "Etkinlikler, katılım ve topluluk hakkında sık sorulan cevapları incele.",
-        href: "/faq",
+        href: "/#faq",
         linkText: "Soruları incele",
         icon: CircleHelp,
         external: false,
@@ -48,7 +50,9 @@ const contactOptions = [
 
 export default function ContactPage() {
     return (
-        <main className="bg-[#050505] text-white">
+        <main className="min-h-screen bg-[#050505] text-white">
+            <Navbar />
+
             <section className="border-b border-white/10 px-6 py-20 sm:py-28 lg:px-8">
                 <div className="mx-auto max-w-7xl">
                     <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#27D66B]">
@@ -60,8 +64,9 @@ export default function ContactPage() {
                     </h1>
 
                     <p className="mt-6 max-w-2xl text-base leading-8 text-white/50 sm:text-lg">
-                        Etkinlikler, topluluğa katılım, gönüllülük, destek ve kurumsal
-                        iş birlikleri hakkında bize ulaşabilirsin.
+                        Etkinlikler, topluluğa katılım, gönüllülük,
+                        destek ve kurumsal iş birlikleri hakkında bize
+                        ulaşabilirsin.
                     </p>
                 </div>
             </section>
@@ -97,18 +102,20 @@ export default function ContactPage() {
                                     </p>
                                 </div>
 
-                                <div className="mt-8 flex items-center justify-between">
+                                <div className="mt-8 flex items-center justify-between gap-4">
                                     <span className="text-sm font-semibold text-[#27D66B]">
                                         {option.linkText}
                                     </span>
 
-                                    <ArrowUpRight className="h-5 w-5 text-white/30 transition group-hover:text-[#27D66B]" />
+                                    <span className="holly-arrow-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/50 md:group-hover:border-[#27D66B]/40 md:group-hover:text-[#27D66B]">
+                                        <ArrowUpRight className="holly-arrow-icon h-5 w-5" />
+                                    </span>
                                 </div>
                             </>
                         );
 
                         const cardClassName =
-                            "group flex min-h-64 flex-col justify-between rounded-3xl border border-white/10 bg-[#111111] p-7 transition hover:border-[#27D66B]/40";
+                            "group flex min-h-64 flex-col justify-between rounded-3xl border border-white/10 bg-[#111111] p-7 transition duration-300 active:scale-[0.985] md:hover:-translate-y-1 md:hover:border-[#27D66B]/40";
 
                         return option.external ? (
                             <a
@@ -143,9 +150,10 @@ export default function ContactPage() {
                         </h2>
 
                         <p className="mt-5 max-w-md text-sm leading-7 text-black/65">
-                            Formu doldurduğunda mesajın doğrudan Holly Sport yönetim
-                            ekibine ulaşır. En kısa sürede verdiğin iletişim bilgileri
-                            üzerinden dönüş yapılır.
+                            Formu doldurduğunda mesajın doğrudan Holly
+                            Sport yönetim ekibine ulaşır. En kısa sürede
+                            verdiğin iletişim bilgileri üzerinden dönüş
+                            yapılır.
                         </p>
 
                         <div className="mt-10 rounded-2xl border border-black/10 bg-black/5 p-5">
@@ -154,7 +162,8 @@ export default function ContactPage() {
                             </p>
 
                             <p className="mt-2 text-sm leading-6 text-black/60">
-                                E-posta ve telefon bilgilerini doğru yazdığından emin ol.
+                                E-posta ve telefon bilgilerini doğru
+                                yazdığından emin ol.
                             </p>
                         </div>
                     </div>
@@ -164,6 +173,8 @@ export default function ContactPage() {
                     </div>
                 </div>
             </section>
+
+            <Footer />
         </main>
     );
 }
