@@ -47,69 +47,21 @@ video {
 }
 
 /* ------------------------------------------------ */
-/* GENEL IOS SAFARI ANİMASYON DESTEĞİ */
+/* ANA SAYFA ETKİNLİK ANİMASYONU */
 /* ------------------------------------------------ */
 
-.marquee-track,
 .home-events-marquee {
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
   will-change: transform;
-}
 
-/* ------------------------------------------------ */
-/* GENEL MARQUEE */
-/* ------------------------------------------------ */
-
-.marquee-row {
-  position: relative;
-  overflow: hidden;
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  gap: 1rem;
-  animation-name: holly-marquee;
-  animation-duration: 35s;
+  animation-name: home-events-marquee;
+  animation-duration: 55s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-play-state: running;
 }
-
-.marquee-track-reverse {
-  animation-direction: reverse;
-  animation-duration: 42s;
-}
-
-.marquee-group {
-  display: flex;
-  flex-shrink: 0;
-  gap: 1rem;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .marquee-row:hover .marquee-track {
-    animation-play-state: paused;
-  }
-}
-
-@keyframes holly-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-
-  to {
-    transform: translate3d(calc(-50% - 0.5rem), 0, 0);
-  }
-}
-
-/* ------------------------------------------------ */
-/* ANA SAYFA ETKİNLİK MARQUEE */
-/* ------------------------------------------------ */
 
 @keyframes home-events-marquee {
   from {
@@ -119,14 +71,6 @@ video {
   to {
     transform: translate3d(calc(-50% - 10px), 0, 0);
   }
-}
-
-.home-events-marquee {
-  animation-name: home-events-marquee;
-  animation-duration: 55s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-play-state: running;
 }
 
 @media (max-width: 640px) {
@@ -141,6 +85,7 @@ video {
 
 .holly-arrow-button {
   transform: translate3d(0, 0, 0);
+
   transition:
     transform 220ms ease,
     background-color 220ms ease,
@@ -203,7 +148,6 @@ video {
     scroll-behavior: auto;
   }
 
-  .marquee-track,
   .home-events-marquee {
     animation: none;
     transform: none;
