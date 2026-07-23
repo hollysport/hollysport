@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050505;
+  --surface: #111111;
+  --primary: #27d66b;
+  --foreground: #f5f5f5;
+  --muted: #808080;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-manrope), Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.marquee-row {
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  animation: holly-marquee 35s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-reverse {
+  animation-direction: reverse;
+  animation-duration: 42s;
+}
+
+.marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: 1rem;
+}
+
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes holly-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes supporter-scroll-down {
+  from {
+    transform: translateY(calc(-1 * var(--ticker-distance)));
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-supporter-scroll-down {
+  animation: supporter-scroll-down var(--ticker-duration) linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-supporter-scroll-down {
+    animation: none;
+    transform: none;
+  }
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  color: #18181b;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a1a1aa;
+  opacity: 1;
+}
+
+select option {
+  color: #18181b;
+  background-color: #ffffff;
+}
+
+select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.admin-event-field {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+  caret-color: #27d66b !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.admin-event-field::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.admin-event-field option {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+}
+
+.admin-event-field:-webkit-autofill,
+.admin-event-field:-webkit-autofill:hover,
+.admin-event-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #27d66b !important;
+  box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+  transition: background-color 9999s ease-out;
+}
+
+.registration-field {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+  caret-color: #27d66b !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.registration-field::placeholder {
+  color: rgba(255, 255, 255, 0.35) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.registration-field option {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+}
+
+.registration-field:-webkit-autofill,
+.registration-field:-webkit-autofill:hover,
+.registration-field:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #27d66b !important;
+  box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+}
+
+@keyframes home-events-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 10px));
+  }
+}
+
+.home-events-marquee {
+  animation: home-events-marquee 55s linear infinite;
+  will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .home-events-marquee {
+    animation-duration: 42s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-events-marquee {
+    animation: none;
+  }
+}
+
+.form-field-dark {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #27d66b;
+}
+
+.form-field-dark::placeholder {
+  color: rgba(255, 255, 255, 0.28) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+.form-field-dark:-webkit-autofill,
+.form-field-dark:-webkit-autofill:hover,
+.form-field-dark:-webkit-autofill:focus,
+.form-field-dark:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #27d66b;
+  box-shadow: 0 0 0 1000px #181818 inset !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+select.form-field-dark {
+  color-scheme: dark;
+}
+
+select.form-field-dark option {
+  background: #181818;
+  color: #ffffff;
+}
