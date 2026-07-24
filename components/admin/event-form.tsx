@@ -1,7 +1,9 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import Image from "next/image";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Check, Images, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { sports } from "@/data/sports";
 
@@ -16,6 +18,13 @@ const allowedImageTypes: Record<string, string> = {
 };
 
 type EventStatus = "draft" | "published" | "cancelled";
+
+export type GalleryLibraryImage = {
+    src: string;
+    alt: string;
+    branch: string;
+    branchName: string;
+};
 
 export type EventFormInitialData = {
     id: string;
@@ -46,6 +55,7 @@ export type EventFormInitialData = {
 type EventFormProps = {
     initialEvent?: EventFormInitialData;
     initialGalleryCount?: number;
+    galleryLibraryImages?: GalleryLibraryImage[];
 };
 
 function slugify(value: string) {
@@ -115,6 +125,7 @@ function validateImage(file: File) {
 export default function EventForm({
     initialEvent,
     initialGalleryCount = 0,
+    galleryLibraryImages = [],
 }: EventFormProps) {
     const router = useRouter();
 
@@ -123,11 +134,135 @@ export default function EventForm({
     const [errorMessage, setErrorMessage] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const [isGalleryPickerOpen, setIsGalleryPickerOpen] = useState(false);
+    const [galleryBranch, setGalleryBranch] = useState("all");
+    const [galleryFileCount, setGalleryFileCount] = useState(0);
+    const [selectedGalleryImages, setSelectedGalleryImages] = useState<
+        GalleryLibraryImage[]
+    >([]);
+
+    const filteredGalleryLibraryImages = useMemo(() => {
+        const supportedImages = galleryLibraryImages.filter((image) =>
+            /\.(avif|jpe?g|png|webp)$/i.test(image.src),
+        );
+
+        if (galleryBranch === "all") {
+            return supportedImages;
+        }
+
+        return supportedImages.filter(
+            (image) => image.branch === galleryBranch,
+        );
+    }, [galleryBranch, galleryLibraryImages]);
+
+    const galleryBranches = useMemo(
+        () =>
+            sports.filter((sport) =>
+                galleryLibraryImages.some(
+                    (image) => image.branch === sport.slug,
+                ),
+            ),
+        [galleryLibraryImages],
+    );
+
+    const selectedGallerySources = useMemo(
+        () => new Set(selectedGalleryImages.map((image) => image.src)),
+        [selectedGalleryImages],
+    );
+
+    const newGalleryCount =
+        galleryFileCount + selectedGalleryImages.length;
+
+    const remainingGallerySlots = Math.max(
+        0,
+        MAX_GALLERY_IMAGES - initialGalleryCount - newGalleryCount,
+    );
+
+    useEffect(() => {
+        if (!isGalleryPickerOpen) {
+            return;
+        }
+
+        const previousOverflow = document.body.style.overflow;
+
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                setIsGalleryPickerOpen(false);
+            }
+        }
+
+        document.body.style.overflow = "hidden";
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isGalleryPickerOpen]);
+
+    function toggleGalleryLibraryImage(image: GalleryLibraryImage) {
+        setSelectedGalleryImages((currentImages) => {
+            const isSelected = currentImages.some(
+                (currentImage) => currentImage.src === image.src,
+            );
+
+            if (isSelected) {
+                return currentImages.filter(
+                    (currentImage) => currentImage.src !== image.src,
+                );
+            }
+
+            if (
+                initialGalleryCount +
+                    galleryFileCount +
+                    currentImages.length >=
+                MAX_GALLERY_IMAGES
+            ) {
+                setErrorMessage(
+                    `Galeride toplam en fazla ${MAX_GALLERY_IMAGES} görsel bulunabilir.`,
+                );
+                return currentImages;
+            }
+
+            setErrorMessage("");
+            return [...currentImages, image];
+        });
+    }
+
+    function removeSelectedGalleryImage(src: string) {
+        setSelectedGalleryImages((currentImages) =>
+            currentImages.filter((image) => image.src !== src),
+        );
+    }
+
+    function handleGalleryFileChange(
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) {
+        const selectedFileCount = event.target.files?.length ?? 0;
+
+        if (
+            initialGalleryCount +
+                selectedGalleryImages.length +
+                selectedFileCount >
+            MAX_GALLERY_IMAGES
+        ) {
+            event.target.value = "";
+            setGalleryFileCount(0);
+            setErrorMessage(
+                `Galeride toplam en fazla ${MAX_GALLERY_IMAGES} görsel bulunabilir.`,
+            );
+            return;
+        }
+
+        setGalleryFileCount(selectedFileCount);
+        setErrorMessage("");
+    }
+
     const inputClass =
-        "admin-event-field mt-2 h-14 w-full rounded-xl border border-white/10 bg-[#1A1A1A] px-4 outline-none transition-colors placeholder:text-white/35 focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
+        "mt-2 h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/20 focus:border-[#27D66B]";
 
     const textareaClass =
-        "admin-event-field mt-2 w-full rounded-xl border border-white/10 bg-[#1A1A1A] px-4 py-4 outline-none transition-colors placeholder:text-white/35 focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
+        "mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-white outline-none transition-colors placeholder:text-white/20 focus:border-[#27D66B]";
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -289,7 +424,9 @@ export default function EventForm({
         }
 
         if (
-            initialGalleryCount + galleryFiles.length >
+            initialGalleryCount +
+                galleryFiles.length +
+                selectedGalleryImages.length >
             MAX_GALLERY_IMAGES
         ) {
             setErrorMessage(
@@ -432,6 +569,58 @@ export default function EventForm({
                 if (galleryUploadError) {
                     throw new Error(
                         `Galeri görseli yüklenemedi: ${galleryUploadError.message}`,
+                    );
+                }
+
+                uploadedPaths.push(galleryPath);
+                galleryPaths.push(galleryPath);
+            }
+
+            for (const galleryImage of selectedGalleryImages) {
+                const response = await fetch(galleryImage.src, {
+                    cache: "no-store",
+                });
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Galerideki görsel alınamadı: ${galleryImage.alt}`,
+                    );
+                }
+
+                const imageBlob = await response.blob();
+                const extension = allowedImageTypes[imageBlob.type];
+
+                if (!extension) {
+                    throw new Error(
+                        `Galerideki görsel desteklenmeyen bir formatta: ${galleryImage.alt}`,
+                    );
+                }
+
+                if (imageBlob.size > MAX_FILE_SIZE) {
+                    throw new Error(
+                        `Galerideki görsel 5 MB'dan büyük: ${galleryImage.alt}`,
+                    );
+                }
+
+                const imageNumber =
+                    initialGalleryCount + galleryPaths.length + 1;
+
+                const galleryPath =
+                    `${eventId}/gallery/` +
+                    `${String(imageNumber).padStart(2, "0")}-` +
+                    `${crypto.randomUUID()}.${extension}`;
+
+                const { error: galleryUploadError } = await supabase.storage
+                    .from("event-media")
+                    .upload(galleryPath, imageBlob, {
+                        cacheControl: "3600",
+                        contentType: imageBlob.type,
+                        upsert: false,
+                    });
+
+                if (galleryUploadError) {
+                    throw new Error(
+                        `Galeriden seçilen görsel yüklenemedi: ${galleryUploadError.message}`,
                     );
                 }
 
@@ -922,25 +1111,96 @@ export default function EventForm({
                         />
                     </label>
 
-                    <label className="block rounded-2xl border border-dashed border-white/15 p-6">
+                    <div className="block rounded-2xl border border-dashed border-white/15 p-6">
                         <span className="block text-sm font-semibold">
                             Galeri görselleri
                         </span>
 
                         <span className="mt-2 block text-xs leading-5 text-white/35">
-                            Galeride şu anda {initialGalleryCount} görsel bulunuyor.
-                            Toplam en fazla {MAX_GALLERY_IMAGES} görsel olabilir. Her
-                            görsel en fazla 5 MB.
+                            Etkinlikte şu anda {initialGalleryCount} görsel bulunuyor.
+                            Toplam en fazla {MAX_GALLERY_IMAGES} görsel olabilir.
+                            Mevcut Holly Sport galerisinden seçebilir veya bilgisayardan
+                            yeni görsel yükleyebilirsin.
                         </span>
 
-                        <input
-                            name="gallery_images"
-                            type="file"
-                            multiple
-                            accept="image/jpeg,image/png,image/webp,image/avif"
-                            className="mt-5 block w-full text-sm text-white/45 file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-5 file:py-3 file:font-semibold file:text-black"
-                        />
-                    </label>
+                        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                            <button
+                                type="button"
+                                onClick={() => setIsGalleryPickerOpen(true)}
+                                disabled={
+                                    galleryLibraryImages.length === 0 ||
+                                    remainingGallerySlots === 0
+                                }
+                                className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-sm font-semibold text-black transition hover:bg-[#45e27f] disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                <Images className="h-4 w-4" />
+                                Galeriden seç
+                            </button>
+
+                            <label className="flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10">
+                                Bilgisayardan yükle
+
+                                <input
+                                    name="gallery_images"
+                                    type="file"
+                                    multiple
+                                    accept="image/jpeg,image/png,image/webp,image/avif"
+                                    onChange={handleGalleryFileChange}
+                                    className="sr-only"
+                                />
+                            </label>
+                        </div>
+
+                        <div className="mt-4 flex flex-wrap gap-2 text-xs">
+                            <span className="rounded-full bg-white/5 px-3 py-2 text-white/45">
+                                Galeriden seçilen: {selectedGalleryImages.length}
+                            </span>
+
+                            <span className="rounded-full bg-white/5 px-3 py-2 text-white/45">
+                                Bilgisayardan seçilen: {galleryFileCount}
+                            </span>
+
+                            <span className="rounded-full bg-[#27D66B]/10 px-3 py-2 text-[#27D66B]">
+                                Kalan hak: {remainingGallerySlots}
+                            </span>
+                        </div>
+
+                        {selectedGalleryImages.length > 0 && (
+                            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                                {selectedGalleryImages.map((image) => (
+                                    <div
+                                        key={image.src}
+                                        className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white/5"
+                                    >
+                                        <Image
+                                            src={image.src}
+                                            alt={image.alt}
+                                            fill
+                                            sizes="(max-width: 640px) 50vw, 220px"
+                                            className="object-cover"
+                                        />
+
+                                        <button
+                                            type="button"
+                                            aria-label="Seçilen görseli kaldır"
+                                            onClick={() =>
+                                                removeSelectedGalleryImage(image.src)
+                                            }
+                                            className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/75 text-white transition hover:bg-red-500"
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {galleryLibraryImages.length === 0 && (
+                            <p className="mt-4 text-xs leading-5 text-amber-300/80">
+                                Site galerisinde seçilebilir görsel bulunamadı.
+                            </p>
+                        )}
+                    </div>
                 </div>
             </section>
 
@@ -993,6 +1253,136 @@ export default function EventForm({
                             : "Etkinliği kaydet"}
                 </button>
             </div>
+
+
+            {isGalleryPickerOpen && (
+                <div
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Holly Sport galerisinden görsel seç"
+                    className="fixed inset-0 z-[150] bg-black/90 p-4 backdrop-blur-sm sm:p-6"
+                    onClick={() => setIsGalleryPickerOpen(false)}
+                >
+                    <div
+                        className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#0B0B0B]"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <div className="flex flex-col gap-5 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#27D66B]">
+                                    Holly Sport Galeri
+                                </p>
+
+                                <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
+                                    Etkinlik fotoğraflarını seç
+                                </h2>
+
+                                <p className="mt-2 text-sm text-white/40">
+                                    {selectedGalleryImages.length} fotoğraf seçildi ·
+                                    {" "}
+                                    {remainingGallerySlots} seçim hakkın kaldı.
+                                </p>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                <select
+                                    value={galleryBranch}
+                                    onChange={(event) =>
+                                        setGalleryBranch(event.target.value)
+                                    }
+                                    className="form-field-dark h-12 min-w-48 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white outline-none focus:border-[#27D66B]"
+                                >
+                                    <option value="all">Tüm branşlar</option>
+
+                                    {galleryBranches.map((sport) => (
+                                        <option key={sport.slug} value={sport.slug}>
+                                            {sport.name}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <button
+                                    type="button"
+                                    aria-label="Galeriyi kapat"
+                                    onClick={() => setIsGalleryPickerOpen(false)}
+                                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-black transition hover:scale-105"
+                                >
+                                    <X className="h-5 w-5" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="min-h-0 flex-1 overflow-y-auto p-5 sm:p-7">
+                            {filteredGalleryLibraryImages.length > 0 ? (
+                                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                                    {filteredGalleryLibraryImages.map((image) => {
+                                        const isSelected =
+                                            selectedGallerySources.has(image.src);
+
+                                        return (
+                                            <button
+                                                key={image.src}
+                                                type="button"
+                                                onClick={() =>
+                                                    toggleGalleryLibraryImage(image)
+                                                }
+                                                className={`group relative aspect-[4/3] overflow-hidden rounded-2xl border text-left transition ${
+                                                    isSelected
+                                                        ? "border-[#27D66B] ring-2 ring-[#27D66B]/30"
+                                                        : "border-white/10 hover:border-white/30"
+                                                }`}
+                                            >
+                                                <Image
+                                                    src={image.src}
+                                                    alt={image.alt}
+                                                    fill
+                                                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                                    className="object-cover transition duration-500 group-hover:scale-105"
+                                                />
+
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+
+                                                <span className="absolute bottom-3 left-3 right-12 truncate text-xs font-semibold text-white">
+                                                    {image.branchName}
+                                                </span>
+
+                                                <span
+                                                    className={`absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border transition ${
+                                                        isSelected
+                                                            ? "border-[#27D66B] bg-[#27D66B] text-black"
+                                                            : "border-white/30 bg-black/50 text-transparent"
+                                                    }`}
+                                                >
+                                                    <Check className="h-4 w-4" />
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <div className="flex min-h-72 items-center justify-center rounded-2xl border border-dashed border-white/10 text-sm text-white/35">
+                                    Bu branşta galeride fotoğraf bulunamadı.
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col gap-3 border-t border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                            <p className="text-sm text-white/40">
+                                Seçtiğin fotoğraflar etkinlik kaydedilirken
+                                etkinliğin galerisine kopyalanacak.
+                            </p>
+
+                            <button
+                                type="button"
+                                onClick={() => setIsGalleryPickerOpen(false)}
+                                className="flex h-12 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-black transition hover:bg-[#45e27f]"
+                            >
+                                Seçimi tamamla ({selectedGalleryImages.length})
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </form>
     );
 }

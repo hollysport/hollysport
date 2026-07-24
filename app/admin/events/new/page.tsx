@@ -1,9 +1,17 @@
 import Link from "next/link";
+
 import { requireAdmin } from "@/lib/auth/require-admin";
+import {
+    getLocalGalleryImages,
+} from "@/lib/gallery/get-local-gallery-images";
+
 import EventForm from "@/components/admin/event-form";
 
 export default async function NewEventPage() {
     await requireAdmin();
+
+    const galleryLibraryImages =
+        getLocalGalleryImages();
 
     return (
         <main className="min-h-screen bg-[#050505] px-6 py-10 text-white md:px-10 lg:px-16">
@@ -25,12 +33,17 @@ export default async function NewEventPage() {
                     </h1>
 
                     <p className="mt-4 max-w-2xl leading-7 text-white/40">
-                        Etkinlik bilgilerini, yayın durumunu ve görsellerini tek ekrandan
-                        yönet.
+                        Etkinlik bilgilerini, yayın
+                        durumunu ve görsellerini tek
+                        ekrandan yönet.
                     </p>
                 </header>
 
-                <EventForm />
+                <EventForm
+                    galleryLibraryImages={
+                        galleryLibraryImages
+                    }
+                />
             </div>
         </main>
     );
