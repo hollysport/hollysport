@@ -45,8 +45,15 @@ export default function GalleryGrid({
     const [shuffledImages, setShuffledImages] =
         useState<GalleryImage[]>(images);
 
+    // Hidrasyon uyumsuzluğunu önlemek için ilk karıştırma tarayıcıda,
+    // bir sonraki frame'de yapılır (setState doğrudan effect gövdesinde
+    // çağrılmaz).
     useEffect(() => {
-        setShuffledImages(shuffleImages(images));
+        const frame = requestAnimationFrame(() => {
+            setShuffledImages(shuffleImages(images));
+        });
+
+        return () => cancelAnimationFrame(frame);
     }, [images]);
 
     useEffect(() => {

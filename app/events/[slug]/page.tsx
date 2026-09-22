@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentTimestamp } from "@/lib/time";
 
 type EventDetailPageProps = {
     params: Promise<{
@@ -93,7 +94,7 @@ export default async function EventDetailPage({
         url: getImageUrl(image.storage_path),
     }));
 
-    const currentTime = Date.now();
+    const currentTime = getCurrentTimestamp();
     const isPast =
         new Date(event.ends_at).getTime() < currentTime;
 

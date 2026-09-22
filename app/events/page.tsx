@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentTimestamp } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
 
@@ -179,7 +180,7 @@ export default async function EventsPage() {
         .order("starts_at", { ascending: true });
 
     const allEvents = (data ?? []) as EventItem[];
-    const currentTime = Date.now();
+    const currentTime = getCurrentTimestamp();
 
     const upcomingEvents = allEvents.filter(
         (event) =>
@@ -278,12 +279,12 @@ export default async function EventsPage() {
                         {upcomingEvents.length === 0 ? (
                             <div className="mt-10 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
                                 <h3 className="text-2xl font-semibold">
-                                    Yaklaşan etkinlik bulunmuyor.
+                                    Yakında yepyeni etkinliklerle karşınızda
+                                    olacağız.
                                 </h3>
 
                                 <p className="mt-3 text-white/40">
-                                    Admin panelinden yayınlanan ileri tarihli
-                                    etkinlikler burada görünecek.
+                                    Takipte kalın!
                                 </p>
                             </div>
                         ) : (

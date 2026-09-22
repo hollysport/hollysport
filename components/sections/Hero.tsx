@@ -56,7 +56,7 @@ export default function Hero() {
                 className="absolute inset-0 will-change-transform"
             >
                 <Image
-                    src="/images/hero-background.jpg"
+                    src="/images/hero-background-v2.jpg"
                     alt=""
                     fill
                     priority

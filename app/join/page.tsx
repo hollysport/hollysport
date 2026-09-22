@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentTimestamp } from "@/lib/time";
 import RegistrationForm from "./registration-form";
 
 type JoinPageProps = {
@@ -76,7 +77,8 @@ export default async function JoinPage({
         const selectableEvents = events.filter((event) => {
             const deadlinePassed =
                 event.registration_deadline !== null &&
-                new Date(event.registration_deadline).getTime() <= Date.now();
+                new Date(event.registration_deadline).getTime() <=
+                getCurrentTimestamp();
 
             const isFull =
                 event.capacity !== null &&
@@ -231,7 +233,7 @@ export default async function JoinPage({
     }
 
     const event = selectedEvent as EventItem;
-    const currentTime = Date.now();
+    const currentTime = getCurrentTimestamp();
 
     const isPast =
         new Date(event.ends_at).getTime() <= currentTime;
