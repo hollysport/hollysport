@@ -83,22 +83,22 @@ export default async function Supporters() {
         .filter((name): name is string => Boolean(name));
 
     return (
-        <section className="bg-zinc-950 py-20 text-white sm:py-24">
+        <section className="bg-[#050505] py-20 text-white sm:py-24">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#27D66B] text-[#050505]">
                         <HandHeart className="h-6 w-6" />
                     </div>
 
-                    <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                    <p className="mt-6 text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
                         Destekçilerimiz
                     </p>
 
-                    <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">
+                    <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">
                         Holly Sport birlikte büyüyor.
                     </h2>
 
-                    <p className="mt-5 max-w-2xl leading-7 text-zinc-400 sm:text-lg">
+                    <p className="mt-5 max-w-2xl leading-7 text-white/55 sm:text-lg">
                         Emeği, uzmanlığı, ürünleri ve desteğiyle
                         topluluğumuza güç veren kişi ve kurumlara
                         teşekkür ederiz.
@@ -108,7 +108,7 @@ export default async function Supporters() {
                 <div className="mt-14">
                     <div className="flex items-end justify-between gap-6">
                         <div>
-                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
                                 Kurumsal
                             </p>
 
@@ -152,7 +152,7 @@ export default async function Supporters() {
                                             href={sponsor.website}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="rounded-3xl bg-white p-6 transition hover:-translate-y-1"
+                                            className="rounded-3xl border border-transparent bg-white p-6 transition duration-300 hover:border-white/30"
                                         >
                                             {content}
                                         </a>
@@ -162,7 +162,7 @@ export default async function Supporters() {
                                 return (
                                     <div
                                         key={sponsor.id}
-                                        className="rounded-3xl bg-white p-6"
+                                        className="rounded-3xl border border-transparent bg-white p-6"
                                     >
                                         {content}
                                     </div>
@@ -170,7 +170,7 @@ export default async function Supporters() {
                             })}
                         </div>
                     ) : (
-                        <div className="mt-7 rounded-3xl border border-white/10 bg-white/5 px-6 py-12 text-center text-sm text-zinc-400">
+                        <div className="mt-7 rounded-3xl border border-white/10 bg-[#111111] px-6 py-12 text-center text-sm text-white/55">
                             Kurumsal destekçilerimiz yakında burada yer
                             alacak.
                         </div>
@@ -179,7 +179,7 @@ export default async function Supporters() {
 
                 <div className="mt-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
                     <div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
                             Bireysel Destek
                         </p>
 
@@ -187,13 +187,13 @@ export default async function Supporters() {
                             Bireysel Yatırımcılarımız
                         </h3>
 
-                        <p className="mt-4 max-w-lg leading-7 text-zinc-400">
+                        <p className="mt-4 max-w-lg leading-7 text-white/55">
                             Holly Sport&apos;un gelişimine bireysel ve
                             finansal katkı sağlayan yatırımcılarımıza
                             teşekkür ederiz.
                         </p>
 
-                        <p className="mt-4 text-sm leading-6 text-zinc-500">
+                        <p className="mt-4 text-sm leading-6 text-white/40">
                             İsimler, yatırımcıların seçtiği gizlilik
                             tercihine göre gösterilmektedir.
                         </p>
@@ -205,13 +205,13 @@ export default async function Supporters() {
                     />
                 </div>
 
-                <div className="mt-12 flex flex-col items-start justify-between gap-6 rounded-3xl bg-white px-6 py-7 text-zinc-950 sm:flex-row sm:items-center sm:px-8">
+                <div className="mt-12 flex flex-col items-start justify-between gap-6 rounded-3xl border border-white/10 bg-[#111111] px-6 py-7 text-white sm:flex-row sm:items-center sm:px-8">
                     <div>
                         <h3 className="text-xl font-bold">
                             Sen de Holly Sport&apos;a güç ver.
                         </h3>
 
-                        <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        <p className="mt-2 text-sm leading-6 text-white/55">
                             Gönüllü, bireysel veya kurumsal destek
                             seçeneklerini inceleyebilirsin.
                         </p>
@@ -219,7 +219,7 @@ export default async function Supporters() {
 
                     <Link
                         href="/destek-ol"
-                        className="inline-flex shrink-0 items-center gap-2 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white transition hover:bg-orange-600"
+                        className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#27D66B] px-6 py-3 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
                     >
                         Destekçilerimiz Arasına Katıl
                         <ArrowRight className="h-5 w-5" />

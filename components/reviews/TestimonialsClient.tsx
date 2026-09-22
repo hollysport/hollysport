@@ -54,8 +54,8 @@ function RatingStars({
                             ? "h-6 w-6 sm:h-7 sm:w-7"
                             : "h-4 w-4"
                         } ${star <= Math.round(rating)
-                            ? "fill-[#FFD54A] text-[#FFD54A]"
-                            : "fill-transparent text-black/20"
+                            ? "fill-[#27D66B] text-[#27D66B]"
+                            : "fill-transparent text-white/15"
                         }`}
                 />
             ))}
@@ -82,11 +82,11 @@ export default function TestimonialsClient({
 
     return (
         <>
-            <section className="bg-[#27D66B] px-6 py-16 text-black sm:py-20 lg:px-8">
+            <section className="bg-[#050505] px-6 py-16 text-white sm:py-20 lg:px-8">
                 <div className="mx-auto max-w-7xl">
                     <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
                         <div>
-                            <p className="text-sm font-extrabold uppercase tracking-[0.25em] text-black/55">
+                            <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
                                 Topluluğun Sesi
                             </p>
 
@@ -96,14 +96,14 @@ export default function TestimonialsClient({
                                 gerçek dostluklar.
                             </h2>
 
-                            <p className="mt-5 max-w-2xl text-base leading-7 text-black/60 sm:text-lg">
+                            <p className="mt-5 max-w-2xl text-base leading-7 text-white/55 sm:text-lg">
                                 Holly Sport üyelerinin topluluk, etkinlikler ve
                                 birlikte yaşadıkları deneyimler hakkındaki
                                 görüşleri.
                             </p>
                         </div>
 
-                        <div className="w-full rounded-[2rem] border border-black/10 bg-black p-7 text-white sm:w-auto sm:min-w-80">
+                        <div className="w-full rounded-[2rem] border border-white/10 bg-[#111111] p-7 text-white sm:w-auto sm:min-w-80">
                             <div className="flex items-end gap-3">
                                 <strong className="text-5xl font-extrabold tracking-[-0.05em]">
                                     {reviews.length > 0
@@ -132,20 +132,20 @@ export default function TestimonialsClient({
                     </div>
 
                     {hasError && (
-                        <div className="mt-10 rounded-2xl border border-red-900/20 bg-red-950/10 px-5 py-4 text-sm text-red-950">
+                        <div className="mt-10 rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-300">
                             Görüşler yüklenirken bir hata oluştu.
                         </div>
                     )}
 
                     {!hasError && reviews.length === 0 && (
-                        <div className="mt-10 rounded-[2rem] border border-dashed border-black/20 bg-black/[0.04] px-6 py-12 text-center">
-                            <MessageSquareQuote className="mx-auto h-9 w-9 text-black/45" />
+                        <div className="mt-10 rounded-[2rem] border border-dashed border-white/15 bg-white/[0.025] px-6 py-12 text-center">
+                            <MessageSquareQuote className="mx-auto h-9 w-9 text-white/45" />
 
                             <h3 className="mt-5 text-2xl font-extrabold">
                                 İlk görüşü sen paylaş.
                             </h3>
 
-                            <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-black/55">
+                            <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-white/55">
                                 Holly Sport deneyimini anlat. Görüşün yönetim
                                 onayından sonra burada yayınlansın.
                             </p>
@@ -157,7 +157,7 @@ export default function TestimonialsClient({
                             {visibleReviews.map((review) => (
                                 <article
                                     key={review.id}
-                                    className="flex min-h-80 flex-col rounded-[2rem] border border-black/10 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:p-7"
+                                    className="flex min-h-80 flex-col rounded-[2rem] border border-white/10 bg-[#111111] p-6 sm:p-7"
                                 >
                                     <div className="flex items-center gap-4">
                                         {review.photo_url ? (
@@ -167,7 +167,7 @@ export default function TestimonialsClient({
                                                 className="h-14 w-14 shrink-0 rounded-full object-cover"
                                             />
                                         ) : (
-                                            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-black text-sm font-extrabold text-[#27D66B]">
+                                            <div                                                 className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm font-extrabold text-[#27D66B]">
                                                 {getInitials(
                                                     review.full_name,
                                                 )}
@@ -179,7 +179,7 @@ export default function TestimonialsClient({
                                                 {review.full_name}
                                             </h3>
 
-                                            <p className="mt-1 text-xs font-semibold text-black/45">
+                                            <p className="mt-1 text-xs font-semibold text-white/45">
                                                 {review.membership_duration} üye
                                             </p>
                                         </div>
@@ -190,17 +190,17 @@ export default function TestimonialsClient({
                                             rating={review.rating}
                                         />
 
-                                        <span className="text-xs text-black/35">
+                                        <span className="text-xs text-white/35">
                                             {formatDate(review.created_at)}
                                         </span>
                                     </div>
 
-                                    <blockquote className="mt-6 flex-1 text-base leading-7 text-black/65">
+                                    <blockquote className="mt-6 flex-1 text-base leading-7 text-white/65">
                                         “{review.comment}”
                                     </blockquote>
 
-                                    <div className="mt-6 border-t border-black/10 pt-5">
-                                        <span className="text-xs font-bold uppercase tracking-[0.18em] text-black/35">
+                                    <div className="mt-6 border-t border-white/10 pt-5">
+                                        <span className="text-xs font-bold uppercase tracking-[0.18em] text-white/35">
                                             Onaylı topluluk görüşü
                                         </span>
                                     </div>
@@ -214,7 +214,7 @@ export default function TestimonialsClient({
                             <button
                                 type="button"
                                 onClick={showMoreReviews}
-                                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-black/20 px-7 text-sm font-extrabold transition hover:border-black hover:bg-black hover:text-white sm:w-auto"
+                                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/15 px-7 text-sm font-extrabold text-white transition hover:border-white/35 hover:bg-white/5 sm:w-auto"
                             >
                                 Daha Fazla Gör
                                 <ChevronDown className="h-4 w-4" />
@@ -224,7 +224,7 @@ export default function TestimonialsClient({
                         <button
                             type="button"
                             onClick={() => setIsFormOpen(true)}
-                            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-black px-7 text-sm font-extrabold text-white transition hover:scale-[1.02] hover:bg-[#151515] sm:w-auto"
+                            className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] sm:w-auto"
                         >
                             Görüşünü Paylaş
                         </button>

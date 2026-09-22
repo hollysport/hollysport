@@ -30,36 +30,36 @@ const faqs = [
 
 export default function Faq() {
     return (
-        <section id="faq" className="scroll-mt-20 bg-white py-20 sm:py-24">
+        <section id="faq" className="scroll-mt-20 bg-[#050505] py-20 sm:py-24">
             <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
                 <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
                         Merak Ettiklerin
                     </p>
 
-                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
+                    <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
                         Sık sorulan sorular.
                     </h2>
 
-                    <p className="mt-5 max-w-lg text-base leading-7 text-zinc-600 sm:text-lg">
+                    <p className="mt-5 max-w-lg text-base leading-7 text-white/55 sm:text-lg">
                         Katılım süreci ve etkinlikler hakkında en çok sorulan soruların
                         cevaplarını burada bulabilirsin.
                     </p>
                 </div>
 
-                <div className="divide-y divide-zinc-200 border-y border-zinc-200">
+                <div className="divide-y divide-white/10 border-y border-white/10">
                     {faqs.slice(0, 5).map((faq) => (
                         <details key={faq.question} className="group py-6">
-                            <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left text-lg font-semibold text-zinc-950">
+                            <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-1 text-left text-lg font-semibold text-white [-webkit-tap-highlight-color:transparent]">
                                 {faq.question}
 
-                                <span className="relative h-5 w-5 shrink-0">
-                                    <span className="absolute left-0 top-1/2 h-0.5 w-5 -translate-y-1/2 bg-zinc-950" />
-                                    <span className="absolute left-1/2 top-0 h-5 w-0.5 -translate-x-1/2 bg-zinc-950 transition group-open:rotate-90 group-open:opacity-0" />
+                                <span className="relative mt-1 h-5 w-5 shrink-0">
+                                    <span className="absolute left-0 top-1/2 h-0.5 w-5 -translate-y-1/2 bg-white" />
+                                    <span className="absolute left-1/2 top-0 h-5 w-0.5 -translate-x-1/2 bg-white transition group-open:rotate-90 group-open:opacity-0" />
                                 </span>
                             </summary>
 
-                            <p className="mt-4 max-w-2xl pr-10 leading-7 text-zinc-600">
+                            <p className="mt-4 max-w-2xl pr-10 leading-7 text-white/55">
                                 {faq.answer}
                             </p>
                         </details>

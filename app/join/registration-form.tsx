@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 
-import { createClient } from "@/lib/supabase/client";
+import TurnstileWidget from "@/components/security/TurnstileWidget";
 
 type RegistrationFormProps = {
     eventId: string;
@@ -19,6 +19,17 @@ export default function RegistrationForm({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [honeypot, setHoneypot] = useState("");
+    const [turnstileToken, setTurnstileToken] =
+        useState<string | null>(null);
+    const [turnstileResetKey, setTurnstileResetKey] =
+        useState(0);
+
+    function resetTurnstile() {
+        setTurnstileToken(null);
+        setTurnstileResetKey((current) => current + 1);
+    }
 
     const inputClass =
         "registration-field mt-2 h-14 w-full rounded-xl border border-white/10 bg-[#1A1A1A] px-4 outline-none transition-colors focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
@@ -79,39 +90,60 @@ export default function RegistrationForm({
             return;
         }
 
-        const supabase = createClient();
-
-        const { error } = await supabase
-            .from("event_registrations")
-            .insert({
-                event_id: eventId,
-                user_id: null,
-                full_name: fullName,
-                email,
-                phone,
-                gender,
-                notes: notes || null,
-                status: "pending",
-                consent_accepted: true,
-            });
-
-        if (error) {
-            if (error.code === "23505") {
-                setErrorMessage(
-                    "Bu e-posta adresiyle etkinliğe daha önce başvuru yapılmış.",
-                );
-            } else {
-                setErrorMessage(
-                    `Başvuru gönderilemedi: ${error.message}`,
-                );
-            }
-
+        if (!turnstileToken) {
+            setErrorMessage(
+                "Lütfen güvenlik doğrulamasını tamamla.",
+            );
             setIsSubmitting(false);
             return;
         }
 
-        setIsCompleted(true);
-        setIsSubmitting(false);
+        try {
+            const response = await fetch(
+                "/api/forms/registration",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        eventId,
+                        fullName,
+                        email,
+                        phone,
+                        gender,
+                        notes,
+                        consentAccepted,
+                        turnstileToken,
+                        website: honeypot,
+                    }),
+                },
+            );
+
+            const result = (await response.json()) as {
+                success?: boolean;
+                message?: string;
+            };
+
+            if (!response.ok || !result.success) {
+                setErrorMessage(
+                    result.message ??
+                        "Başvuru gönderilemedi. Lütfen tekrar dene.",
+                );
+                resetTurnstile();
+                setIsSubmitting(false);
+                return;
+            }
+
+            setIsCompleted(true);
+            setIsSubmitting(false);
+        } catch {
+            setErrorMessage(
+                "Bağlantı hatası oluştu. Lütfen tekrar dene.",
+            );
+            resetTurnstile();
+            setIsSubmitting(false);
+        }
     }
 
     if (isCompleted) {
@@ -158,6 +190,27 @@ export default function RegistrationForm({
             onSubmit={handleSubmit}
             className="rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-10"
         >
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+            >
+                <label htmlFor="registration-website">
+                    İnternet sitesi
+                </label>
+
+                <input
+                    id="registration-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(event) =>
+                        setHoneypot(event.target.value)
+                    }
+                />
+            </div>
+
             <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
                 Etkinlik Başvurusu
             </span>
@@ -286,9 +339,24 @@ export default function RegistrationForm({
                 </label>
             </div>
 
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+                <TurnstileWidget
+                    action="registration_form"
+                    resetKey={turnstileResetKey}
+                    theme="dark"
+                    onTokenChange={(token) => {
+                        setTurnstileToken(token);
+
+                        if (token) {
+                            setErrorMessage("");
+                        }
+                    }}
+                />
+            </div>
+
             <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !turnstileToken}
                 className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-black transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {isSubmitting

@@ -1,13 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import {
-  motion,
-  useReducedMotion,
-  type Variants,
-} from "framer-motion";
 
 import { sports } from "@/data/sports";
 
@@ -19,35 +12,7 @@ const featuredSlugs = [
   "trekkinghiking",
 ];
 
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const cardVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 28,
-    scale: 0.98,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.65,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
 export default function Gallery() {
-  const shouldReduceMotion = useReducedMotion();
-
   const featuredImages = featuredSlugs
     .map((slug) =>
       sports.find((sport) => sport.slug === slug),
@@ -60,86 +25,44 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-20 overflow-hidden bg-white py-16 sm:py-20"
+      className="scroll-mt-20 overflow-hidden bg-[#050505] py-16 sm:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={
-            shouldReduceMotion
-              ? false
-              : {
-                opacity: 0,
-                y: 24,
-              }
-          }
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.25,
-          }}
-          transition={{
-            duration: 0.7,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end"
-        >
+        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
               Bizden Kareler
             </p>
 
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
+            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
               Spor, enerji ve gerçek dostluklar.
             </h2>
 
-            <p className="mt-4 text-base leading-7 text-zinc-600 sm:text-lg">
+            <p className="mt-4 text-base leading-7 text-white/55 sm:text-lg">
               Holly Sport etkinliklerinde yalnızca spor
               yapmıyor, birlikte unutulmaz anılar
               biriktiriyoruz.
             </p>
           </div>
 
-          <motion.div
-            whileTap={{
-              scale: 0.96,
-            }}
-            className="w-fit shrink-0"
+          <Link
+            href="/gallery"
+            className="tap-scale group inline-flex min-h-12 w-fit shrink-0 items-center justify-center gap-2.5 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-[#050505] transition duration-300 hover:bg-[#45e27f]"
           >
-            <Link
-              href="/gallery"
-              className="group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-[#050505] transition duration-300 hover:-translate-y-0.5 hover:bg-[#45e27f]"
-            >
-              Tüm Galeriyi Gör
+            Tüm Galeriyi Gör
 
-              <ArrowRight
-                aria-hidden="true"
-                strokeWidth={2.2}
-                className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
-          </motion.div>
-        </motion.div>
+            <ArrowRight
+              aria-hidden="true"
+              strokeWidth={2.2}
+              className="h-[18px] w-[18px] transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial={shouldReduceMotion ? false : "hidden"}
-          whileInView="visible"
-          viewport={{
-            once: true,
-            amount: 0.08,
-          }}
-          className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2"
-        >
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
           {featuredImages.map((sport, index) => (
-            <motion.div
+            <div
               key={sport.slug}
-              variants={cardVariants}
-              whileTap={{
-                scale: 0.98,
-              }}
               className={
                 index === 0
                   ? "sm:col-span-2 lg:col-span-2 lg:row-span-2"
@@ -148,7 +71,7 @@ export default function Gallery() {
             >
               <Link
                 href={`/gallery?branch=${sport.slug}`}
-                className={`group relative block min-h-[240px] overflow-hidden rounded-2xl bg-zinc-200 ${index === 0
+                className={`tap-scale group relative block min-h-[240px] overflow-hidden rounded-2xl border border-white/10 bg-[#111111] ${index === 0
                     ? "lg:min-h-[540px]"
                     : "lg:h-full lg:min-h-0"
                   }`}
@@ -192,9 +115,9 @@ export default function Gallery() {
                   </span>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

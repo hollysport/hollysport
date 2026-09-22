@@ -217,7 +217,11 @@ export default async function SupportRequestsPage() {
                                     request={{
                                         id: request.id,
                                         full_name: request.full_name,
-                                        name_visibility: request.name_visibility,
+                                        name_visibility:
+                                            request.name_visibility as
+                                                | "full"
+                                                | "surname_masked"
+                                                | "initials_masked",
                                         display_consent: request.display_consent,
                                         support_types: request.support_types,
                                         status: request.status,

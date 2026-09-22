@@ -17,7 +17,7 @@ import { createClient } from "@/lib/supabase/client";
 type Sponsor = {
     id: string;
     name: string;
-    logo_path: string;
+    logo_path: string | null;
     logo_storage_path: string | null;
     website: string | null;
     category: string;
@@ -327,11 +327,17 @@ export default function SponsorManager({
                         className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
                     >
                         <div className="flex h-28 items-center justify-center rounded-2xl bg-zinc-50 p-5">
-                            <img
-                                src={sponsor.logo_path}
-                                alt={`${sponsor.name} logosu`}
-                                className="max-h-full max-w-full object-contain"
-                            />
+                            {sponsor.logo_path ? (
+                                <img
+                                    src={sponsor.logo_path}
+                                    alt={`${sponsor.name} logosu`}
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                            ) : (
+                                <span className="text-sm text-zinc-400">
+                                    Logo yok
+                                </span>
+                            )}
                         </div>
 
                         <div className="mt-5 flex items-start justify-between gap-4">

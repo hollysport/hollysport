@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 
 const whatsappGroupUrl =
     "https://chat.whatsapp.com/LEHiMPxVmsC7lGB0zvjoJK";
@@ -54,6 +54,35 @@ export default function Navbar() {
         return pathname === href;
     }
 
+    /*
+     * Hash linkleri (örn. "/#faq"): kullanıcı zaten ana sayfadaysa
+     * Next.js'in sayfayı başa kaydırmasını engeller ve hedefe
+     * pürüzsüz kaydırma yapar. Mobil menü açıksa kapatılır.
+     */
+    function handleNavClick(
+        event: MouseEvent<HTMLAnchorElement>,
+        href: string,
+    ) {
+        const hashIndex = href.indexOf("#");
+
+        if (hashIndex === -1) {
+            setIsOpen(false);
+            return;
+        }
+
+        const targetPath = href.slice(0, hashIndex) || "/";
+        const targetId = href.slice(hashIndex + 1);
+
+        if (pathname === targetPath) {
+            event.preventDefault();
+            document
+                .getElementById(targetId)
+                ?.scrollIntoView({ behavior: "smooth" });
+        }
+
+        setIsOpen(false);
+    }
+
     return (
         <header className="sticky inset-x-0 top-0 z-50 border-b border-white/10 bg-[#050505]/95 text-white backdrop-blur-xl">
             <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
@@ -75,6 +104,9 @@ export default function Navbar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
+                                onClick={(event) =>
+                                    handleNavClick(event, item.href)
+                                }
                                 className={`relative whitespace-nowrap py-2 text-[13px] font-medium transition-colors ${active
                                         ? "text-[#27D66B]"
                                         : isDreamLink
@@ -159,8 +191,11 @@ export default function Navbar() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
-                                        onClick={() =>
-                                            setIsOpen(false)
+                                        onClick={(event) =>
+                                            handleNavClick(
+                                                event,
+                                                item.href,
+                                            )
                                         }
                                         className={`rounded-2xl px-4 py-3 text-base font-semibold transition ${active
                                                 ? "bg-[#27D66B]/10 text-[#27D66B]"

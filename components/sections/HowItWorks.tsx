@@ -26,52 +26,73 @@ const steps = [
 
 export default function HowItWorks() {
     return (
-        <section className="bg-zinc-50 py-20 sm:py-24">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="max-w-2xl">
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+        <section className="bg-[#050505] py-20 sm:py-24">
+            <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-8">
+                <div className="max-w-xl">
+                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
                         Nasıl Katılırım?
                     </p>
 
-                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
+                    <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
                         Üç adımda harekete geç.
                     </h2>
 
-                    <p className="mt-5 text-base leading-7 text-zinc-600 sm:text-lg">
-                        Holly Sport etkinliklerine katılmak için üyelik veya profesyonel
-                        spor geçmişi gerekmiyor.
+                    <p className="mt-6 max-w-lg text-base leading-8 text-white/55 sm:text-lg sm:leading-8">
+                        Holly Sport etkinliklerine katılmak için üyelik veya
+                        profesyonel spor geçmişi gerekmiyor.
                     </p>
                 </div>
 
-                <div className="mt-12 grid gap-5 md:grid-cols-3">
-                    {steps.map((step) => {
-                        const Icon = step.icon;
+                <div className="relative">
+                    <div className="absolute bottom-6 left-4 top-6 hidden w-px bg-white/10 sm:block" aria-hidden="true" />
 
-                        return (
-                            <div
-                                key={step.number}
-                                className="group relative overflow-hidden rounded-3xl border border-zinc-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-200/60 sm:p-8"
-                            >
-                                <span className="absolute right-6 top-4 text-6xl font-black text-zinc-100 transition group-hover:text-orange-50">
-                                    {step.number}
-                                </span>
+                    <div className="flex flex-col gap-12 sm:gap-14">
+                        {steps.map((step, index) => {
+                            const Icon = step.icon;
+                            const isLast = index === steps.length - 1;
 
-                                <div className="relative">
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
-                                        <Icon className="h-6 w-6" />
+                            return (
+                                <div
+                                    key={step.number}
+                                    className="flex items-start gap-6"
+                                >
+                                    <div className="relative hidden shrink-0 flex-col items-center sm:flex">
+                                        <div className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full border border-[#27D66B]/40 bg-[#050505]">
+                                            <span className="text-xs font-bold text-[#27D66B]">
+                                                {step.number}
+                                            </span>
+                                        </div>
                                     </div>
 
-                                    <h3 className="mt-8 text-xl font-bold text-zinc-950">
-                                        {step.title}
-                                    </h3>
+                                    <div className="min-w-0 flex-1">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xs font-bold text-[#27D66B] sm:hidden">
+                                                {step.number}
+                                            </span>
 
-                                    <p className="mt-3 leading-7 text-zinc-600">
-                                        {step.description}
-                                    </p>
+                                            <Icon
+                                                aria-hidden="true"
+                                                className="h-4.5 w-4.5 text-[#27D66B]"
+                                                strokeWidth={2}
+                                            />
+
+                                            <h3 className="text-xl font-bold text-white sm:text-2xl">
+                                                {step.title}
+                                            </h3>
+                                        </div>
+
+                                        <p className="mt-3 max-w-md text-base leading-7 text-white/55">
+                                            {step.description}
+                                        </p>
+
+                                        {!isLast && (
+                                            <div className="mt-8 h-px w-full bg-white/5 sm:hidden" aria-hidden="true" />
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </section>
