@@ -1,6 +1,83 @@
 # Proje Durumu — Holly Sport
 
-Son güncelleme: 2026-09-20
+Son güncelleme: 2026-09-23
+
+## 2026-09-26 (devam 3): Auth modalına Turnstile koruması
+
+- Kayıt ve Şifremi Unuttum formlarına mevcut `components/security/TurnstileWidget` entegre edildi (dark tema, dev test key fallback, `action` etiketli). Register'da widget şifre tekrarının altında; buton token'sız disabled. Forgot view'da e-postanın altında; aynı kural.
+- Görünüm geçişlerinde `switchView` token'ı sıfırlar ve widget'ı resetKey ile yeniden kurar.
+- Not: Token şu an client tarafında zorunlu; Supabase Auth'da CAPTCHA doğrulaması (Dashboard → Auth → Security → CAPTCHA = Turnstile) açılırsa token'ı `signUp({ captchaToken })` seçeneğiyle göndermek gerekir — eklememi ister misin?
+
+## 2026-09-26 (devam 2): Ana sayfa Antrenman vitrini + SEO
+
+- `layout.tsx` metadata güncellendi: title "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman", description ve OpenGraph/Twitter metinleri Antrenman Merkezi mesajıyla harmanlandı.
+- Yeni `components/sections/TrainingShowcase.tsx`: mevcut landing korunarak Hero'nun hemen altına eklendi — `#0a0a0a` zemin, neon glow'lu "Hemen Başla" CTA (→/training), 3 kartlık özellikler (İnteraktif 3D Anatomi / Bilimsel Algoritma / Kişisel Kütüphane), hover lift + border geçişleri.
+- Mevcut 11 bölümlük landing hiçbir şekilde silinmedi (kullanıcı onayıyla korundu).
+- tsc / eslint / build temiz.
+
+## 2026-09-26 (devam): WorkoutGenerator ↔ saved_workouts bağlantısı
+
+- Oturum dinleme: `getUser()` + `onAuthStateChange` ile `userId` state'i.
+- Program listelendikten sonra altta **Kaydet** butonu: girişsiz kullanıcıda "Kaydetmek İçin Giriş Yap" → WorkoutGenerator içine gömülü AuthDialog açılır; girişli kullanıcıda "Profilime Kaydet" → `saved_workouts` INSERT (`user_id, title [şablon adı], goal, environment, muscles[], exercises[{name,sets,reps,muscle}]`).
+- Durum: `saving` spinner → `saved` ("Kaydedildi ✓", disabled) + profil linki yeşil bildirim; hata mesajı. Program değişince kayıt durumu sıfırlanır.
+
+## 2026-09-26: Preset avatar sistemi + Profil sayfası
+
+- `components/auth/avatar-selector.tsx`: 14 preset Lucide simgesi (dumbbell, flame, zap, trophy…), radyo-grid; seçim yeşil çerçeve. `AvatarIcon` export'u anahtar→ikon çözümleyici.
+- AuthDialog kayıt formu: Yaş + Cinsiyet + Avatar seçici; `signUp` options.data = `{full_name, age, gender, avatar}`.
+- `app/profile/page.tsx` (server, login yoksa `/`'ye redirect) + `components/auth/profile-dashboard.tsx` (client): avatar + profil bilgileri + Çıkış Yap; sekmeler: **Antrenmanlarım** (`saved_workouts` kart liste + accordion + DELETE + empty state → /training) ve **Etkinliklerim** (bilgi kartı).
+- `database.types.ts`: profiles'e `age/gender/avatar_url`, yeni `saved_workouts` tablosu (kolonlar VARSAYILAN: title, goal, environment, muscles text[], exercises jsonb).
+- Bekleyen DB işleri (kullanıcı dashboard'da): profiles kolonları SQL'i + `handle_new_user` trigger'ına age/gender/avatar eşlemesi + saved_workouts tablosu/RLS (user-owned select/delete). Aşağıda rapor notunda SQL öneriliyor.
+- tsc / eslint / build temiz.
+
+## 2026-09-25: Üyelik Auth Modalı
+
+- Yeni `components/auth/auth-dialog.tsx`: 3 görünümlü modal (login / register / forgot_password), metin linkleriyle pürüzsüz geçiş. Register manuel doğrulama (e-posta formatı, e-posta+tekrar eşleşmesi, şifre ≥8 + tekrar eşleşmesi, alan altı kırmızı uyarılar); başarıda "Kayıt başarılı, giriş yapabilirsiniz" + login görünümü. Login başarıda modalı kapatır; forgot şifrede yeşil başarı mesajı. Supabase Auth: `signUp` / `signInWithPassword` / `resetPasswordForEmail`. Editoryal koyu-neon tema, Esc/backdrop kapanış, scroll kilidi, spinner'lı butonlar.
+- `navbar.tsx`: masaüstüne "Giriş Yap" butonu (Topluluğa Katıl'ın solu), mobil menüye aynı buton; ikisi de modalı tetikler.
+- tsc / eslint / build temiz.
+
+## 2026-09-24 (FAZ 3.4): Filtreler dropdown mimarisine geçti
+
+- Yeni `components/training/select-controls.tsx`: editoryal tema uyumlu `SingleSelect` / `MultiSelect` (dışarı tıklama + Esc kapanış, absolute panel, neon yeşil seçim durumu).
+- **Antrenman Şablonu** (single-select): Özel Seçim, Fullbody (tüm gruplar), Üst Vücut (göğüs/sırt/omuz/kollar/karın), Alt Vücut (ön/arka bacak + kalça), Push, Pull — seçim `selectedMuscles`'ı anında günceller ve 3D etiketlerle senkron. Manuel bölge değişimi şablonu "Özel Seçim"e döndürür.
+- **Kas Grupları**: harita altındaki rozet butonları kaldırıldı; checkbox'lı multi-select dropdown ile %100 senkron.
+- **Antrenman Hedefi**: pill'ler kaldırıldı, single-select dropdown. Hedef açıklaması + set/tekrar özeti korundu.
+- `lib/data/exercises.ts`'e `TemplateKey` + `TRAINING_TEMPLATES` eklendi.
+- tsc / eslint / build temiz.
+
+## 2026-09-24 (FAZ 3.3): Canlı veriye geçiş — mock havuz kaldırıldı
+
+- **WorkoutGenerator**: `lib/data/exercises.ts` mock havuzu tamamen silindi (≈90 kayıt POOL + MOCK_EXERCISES); `buildProgram` yerini saf `groupExercises` aldı (bölge başı limit + hedef set/tekrar eşlemesi). Sorgu canlı: `exercises.in("target_muscle", …).eq("environment", …).contains("goals", [goal])`. Skeleton yükleme durumu (bölge başına pulse satırları) + hata durumu eklendi.
+- **Admin egzersiz formu**: "Hedefler" checkbox grubu (5 hedef, en az biri zorunlu), `goals text[]` olarak insert; listede hedef rozetleri görünüyor.
+- **ProgramRequestDialog**: canlı INSERT → `custom_program_requests` (full_name, contact, age, height, weight, goal, notes); loading + editoryal başarı ekranı + hata mesajı. ⚠️ Veritabanı kolon adları `full_name/contact/age/height/weight/goal/notes` olarak VARSAYILDI — Supabase'deki gerçek kolonlar farklıysa eşleştirilir. Not: Bu form AGENTS.md'deki service-role route deseninin dışında (client insert); Turnstile/rate-limit ile sertleştirme önerilir.
+- `database.types.ts`: `exercises.goals: string[]` + `custom_program_requests` tablosu eklendi.
+- tsc / eslint / build temiz.
+
+## 2026-09-24 (FAZ 3.2): Kalibrasyon kilitlendi + bilimsel algoritma
+
+- **3D**: Leva kalibrasyon paneli kaldırıldı; model sabitlendi (`scale=0.13`, `position=[0, 0.85, 0]`). Otomatik `Box3`/`Center` mantığı tamamen silindi. Hitbox'lar tekrar görünmez (`visible={false}`).
+- **Kalça bölgesi**: `MuscleGroup`'a `kalca` eklendi (label "Kalça"); hitbox `[0, 0.85, -0.15]`, etiket çapası `[0, 1.0, -0.15]`.
+- **Bilimsel veri mimarisi**: `Exercise` tipine `goals: TrainingGoal[]` eklendi. Mock havuz hedefe göre ayrıştırıldı (Hacim/Kuvvet: Bench Press, Squat, Deadlift…; Esneklik: Pigeon Pose, Cat-Cow, Cobra…; Postür: Face Pull, Wall Angels, Bird-Dog, Prone Cobra…; Sıçrama: Box Jump, Depth Jump, Jump Squat…; Kalça: Hip Thrust, Glute Bridge vb.). 9 kas grubu × 2 ortam.
+- **Akıllı filtreleme**: `buildProgram` kas + ortam + `goals.includes(goal)` üçlüsüyle filtreliyor; hedefe uygun hareketi olmayan bölge boş grup döner; UI grup bazında "Bu bölge için seçilen amaca uygun spesifik bir hareket bulunmuyor, farklı bir kombinasyon deneyin." mesajı gösterir.
+- Not: Gerçek DB'ye geçişte `exercises` tablosuna `goals text[]` kolonu gerekecek.
+- tsc temiz, eslint temiz, build başarılı.
+
+## 2026-09-23 (FAZ 3.1): Hitbox mimarisi + gerçek 3D modeller
+
+- `AnatomyMap3D.tsx` "Görünmez Zırh (Hitbox)" mimarisine geçti: yekpare `.glb` model (`public/models/male_anatomy.glb`, `female_anatomy.glb`) `useGLTF` ile yükleniyor, materyaline dokunulmuyor; tıklamalar `material.visible={false}` kutular (13 hitbox, 9 kas grubu) üzerinden yakalanıyor. Seçilen bölgeler model üzerinde `<Html>` neon yeşil "X Aktif" etiketleriyle işaretleniyor (`LABEL_ANCHORS`).
+- `WorkoutGenerator.tsx`: Erkek/Kadın toggle'ı eklendi, `gender` prop'u 3D haritaya geçiliyor.
+- Hata yönetimi: Suspense fallback ("3D Model Hazırlanıyor…") + `ModelErrorBoundary` (yükleme hatasında şık hata mesajı). `useGLTF.preload` ile iki model önden yükleniyor.
+- Hitbox koordinatları ~1.9 birimlik silüete göre yazıldı; gerçek model ölçüsüne göre `HITBOXES`/`LABEL_ANCHORS` sabitlerinden ince ayar yapılabilir.
+- tsc temiz, eslint (2 dosya) temiz, build başarılı.
+
+## 2026-09-23: Antrenman Merkezi /training — FAZ 3 (3D + dinamik algoritma)
+
+- **3D altyapı**: `three`, `@react-three/fiber`, `@react-three/drei` (+ dev `@types/three`) kuruldu. Yeni `components/training/AnatomyMap3D.tsx`: OrbitControls ile 360° döndürülebilir sahne; kas gruplarını stilize mesh'lerle temsil eden tıklanabilir yer tutucu harita (gerçek .glb gelene kadar). Çoklu bölge seçimi (Array). `next/dynamic` ile `ssr:false` yüklenir. Eski 2D `AnatomyMap.tsx` kaldırıldı.
+- **Algoritma motoru**: `WorkoutGenerator.tsx` baştan yazıldı. Hedef seçimi (Hacim 3×12, Maks. Kuvvet 5×5, Esneklik 3×30sn, Postür 3×15, Dikey Sıçrama 4×6) + çoklu bölge; bölge başı hareket kuralı: 1 bölge→4, 2→3, 3+→2. Havuz: `lib/data/exercises.ts` içindeki MOCK_EXERCISES (8 kas grubu × Ev/Salon × 5 hareket); `buildProgram()` hedefe göre set/tekrar ezerek üretir. Supabase fetch kaldırıldı (şimdilik mock).
+- **Kas grupları genişletildi**: `gogus/sirt/omuz/on_kol/arka_kol/on_bacak/arka_bacak/karin` (eski `kol`/`bacak` ayrıldı). Admin `exercise-manager` yeni union ile uyumlu.
+- **"Kişisel Antrenman Programı İstiyorum" modalı**: `ProgramRequestDialog.tsx` — Ad Soyad, İletişim, Yaş/Boy/Kilo, Hedef select, Notlar; Esc/backdrop kapanış, scroll kilidi. Backend henüz YOK (yerel başarı durumu); ileride `api/forms` desenine bağlanacak.
+- **Admin**: "Egzersiz Yönetimi" kartı + `/admin/exercises` (requireAdmin + client CRUD) önceki fazdan zaten mevcut; `exercises` tablosu + RLS Supabase'de kuruldu (kullanıcı onayladı).
+- Doğrulama: `tsc --noEmit` temiz, `npm run lint` 0 hata (önceden var olan 6 uyarı), `npm run build` başarılı (`/training` statik prerender).
 
 ## 2026-09-20 (Düzeltme): Stats → tarihsel toplamlar
 

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 
+import AuthDialog from "@/components/auth/auth-dialog";
+
 const whatsappGroupUrl =
     "https://chat.whatsapp.com/LEHiMPxVmsC7lGB0zvjoJK";
 
@@ -23,6 +25,10 @@ const navigation = [
     {
         label: "Etkinlikler",
         href: "/events",
+    },
+    {
+        label: "Antrenman",
+        href: "/training",
     },
     {
         label: "Bir Hayalim Var",
@@ -45,6 +51,7 @@ const navigation = [
 export default function Navbar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+    const [authOpen, setAuthOpen] = useState(false);
 
     function isActive(href: string) {
         if (href.includes("#")) {
@@ -84,6 +91,7 @@ export default function Navbar() {
     }
 
     return (
+        <>
         <header className="sticky inset-x-0 top-0 z-50 border-b border-white/10 bg-[#050505]/95 text-white backdrop-blur-xl">
             <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
                 <Link
@@ -125,6 +133,14 @@ export default function Navbar() {
                 </div>
 
                 <div className="hidden items-center gap-3 lg:flex">
+                    <button
+                        type="button"
+                        onClick={() => setAuthOpen(true)}
+                        className="inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-semibold text-white/70 transition hover:text-[#27D66B]"
+                    >
+                        Giriş Yap
+                    </button>
+
                     <a
                         href={whatsappGroupUrl}
                         target="_blank"
@@ -211,6 +227,17 @@ export default function Navbar() {
                         </div>
 
                         <div className="mt-5 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    setAuthOpen(true);
+                                }}
+                                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
+                            >
+                                Giriş Yap
+                            </button>
+
                             <a
                                 href={whatsappGroupUrl}
                                 target="_blank"
@@ -237,5 +264,11 @@ export default function Navbar() {
                 </div>
             )}
         </header>
+
+        <AuthDialog
+            open={authOpen}
+            onClose={() => setAuthOpen(false)}
+        />
+        </>
     );
 }

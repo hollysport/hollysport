@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 
 import Hero from "@/components/sections/Hero";
+import TrainingShowcase from "@/components/home/training-showcase";
 import About from "@/components/sections/About";
 import Stats from "@/components/sections/Stats";
 import EventMarquee from "@/components/sections/EventMarquee";
@@ -24,6 +25,7 @@ export default async function HomePage() {
         <main>
             <Navbar />
             <Hero />
+            <TrainingShowcase />
             <About />
             <Stats />
             <EventMarquee />

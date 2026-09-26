@@ -3,6 +3,7 @@ import {
     ArrowUpRight,
     CalendarDays,
     ClipboardList,
+    Dumbbell,
     ExternalLink,
     Lightbulb,
     LogOut,
@@ -344,6 +345,31 @@ export default async function AdminPage() {
                                         {safeApprovedReviewCount} yayında
                                     </span>
                                 </div>
+                            </div>
+                        </Link>
+
+                        <Link
+                            href="/admin/exercises"
+                            className="group flex min-h-56 flex-col justify-between rounded-[2rem] border border-white/10 bg-[#111111] p-7 transition duration-300 hover:-translate-y-1 hover:border-[#27D66B]/40 sm:p-8"
+                        >
+                            <div className="flex items-start justify-between gap-5">
+                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#27D66B]/10 text-[#27D66B]">
+                                    <Dumbbell className="h-7 w-7" />
+                                </div>
+
+                                <ArrowUpRight className="h-6 w-6 text-white/25 transition group-hover:text-[#27D66B]" />
+                            </div>
+
+                            <div className="mt-8">
+                                <h3 className="text-2xl font-bold">
+                                    Egzersiz Yönetimi
+                                </h3>
+
+                                <p className="mt-3 text-sm leading-6 text-white/40">
+                                    Antrenman Merkezi&apos;ndeki
+                                    bölgesel egzersizleri ekle,
+                                    düzenle veya sil.
+                                </p>
                             </div>
                         </Link>
                     </div>

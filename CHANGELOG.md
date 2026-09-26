@@ -2,6 +2,10 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-09-23 (commit bekliyor)
+
+- Antrenman Merkezi FAZ 3: 3D kas haritası (`AnatomyMap3D`, three/r3f/drei, çoklu bölge seçimi), dinamik program algoritması (`buildProgram`, hedef bazlı set/tekrar, 1→4 / 2→3 / 3+→2 kuralı), kişisel program talebi modalı. Kas grupları 8'e genişledi; mock egzersiz havuzu `lib/data/exercises.ts`'te. Eski 2D `AnatomyMap.tsx` kaldırıldı.
+
 ## 2025-09-16 (commit bekliyor)
 
 - Kayıt formu sunucuya taşındı: `POST /api/forms/registration` (Turnstile + honeypot + rate limit + KVKK + etkinlik uygunluk kontrolü); client'tan doğrudan Supabase insert kaldırıldı. Forma Turnstile widget'ı ve gizli honeypot alanı eklendi.

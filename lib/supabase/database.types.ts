@@ -25,18 +25,69 @@ export type Database = {
                     email: string | null;
                     full_name: string | null;
                     role: string;
+                    age: number | null;
+                    gender: string | null;
+                    avatar_url: string | null;
+                    birth_date: string | null;
+                    join_date: string | null;
+                    interested_sports: string[] | null;
                 };
                 Insert: {
                     id: string;
                     email?: string | null;
                     full_name?: string | null;
                     role?: string;
+                    age?: number | null;
+                    gender?: string | null;
+                    avatar_url?: string | null;
+                    birth_date?: string | null;
+                    join_date?: string | null;
+                    interested_sports?: string[] | null;
                 };
                 Update: {
                     id?: string;
                     email?: string | null;
                     full_name?: string | null;
                     role?: string;
+                    age?: number | null;
+                    gender?: string | null;
+                    avatar_url?: string | null;
+                    birth_date?: string | null;
+                    join_date?: string | null;
+                    interested_sports?: string[] | null;
+                };
+                Relationships: [];
+            };
+            saved_workouts: {
+                Row: {
+                    id: string;
+                    user_id: string;
+                    title: string;
+                    goal: string | null;
+                    environment: string | null;
+                    muscles: string[];
+                    exercises: Json;
+                    created_at: string;
+                };
+                Insert: {
+                    id?: string;
+                    user_id: string;
+                    title: string;
+                    goal?: string | null;
+                    environment?: string | null;
+                    muscles?: string[];
+                    exercises?: Json;
+                    created_at?: string;
+                };
+                Update: {
+                    id?: string;
+                    user_id?: string;
+                    title?: string;
+                    goal?: string | null;
+                    environment?: string | null;
+                    muscles?: string[];
+                    exercises?: Json;
+                    created_at?: string;
                 };
                 Relationships: [];
             };
@@ -440,6 +491,78 @@ export type Database = {
                     consent?: boolean;
                     status?: string;
                     approved_at?: string | null;
+                    created_at?: string;
+                };
+                Relationships: [];
+            };
+            exercises: {
+                Row: {
+                    id: string;
+                    name: string;
+                    target_muscle: string;
+                    environment: string;
+                    sets: string;
+                    reps: string;
+                    description: string | null;
+                    goals: string[];
+                    created_at: string;
+                };
+                Insert: {
+                    id?: string;
+                    name: string;
+                    target_muscle: string;
+                    environment: string;
+                    sets: string;
+                    reps: string;
+                    description?: string | null;
+                    goals?: string[];
+                    created_at?: string;
+                };
+                Update: {
+                    id?: string;
+                    name?: string;
+                    target_muscle?: string;
+                    environment?: string;
+                    sets?: string;
+                    reps?: string;
+                    description?: string | null;
+                    goals?: string[];
+                    created_at?: string;
+                };
+                Relationships: [];
+            };
+            custom_program_requests: {
+                Row: {
+                    id: string;
+                    full_name: string;
+                    contact: string;
+                    age: number | null;
+                    height: number | null;
+                    weight: number | null;
+                    goal: string;
+                    notes: string | null;
+                    created_at: string;
+                };
+                Insert: {
+                    id?: string;
+                    full_name: string;
+                    contact: string;
+                    age?: number | null;
+                    height?: number | null;
+                    weight?: number | null;
+                    goal: string;
+                    notes?: string | null;
+                    created_at?: string;
+                };
+                Update: {
+                    id?: string;
+                    full_name?: string;
+                    contact?: string;
+                    age?: number | null;
+                    height?: number | null;
+                    weight?: number | null;
+                    goal?: string;
+                    notes?: string | null;
                     created_at?: string;
                 };
                 Relationships: [];

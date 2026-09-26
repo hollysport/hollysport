@@ -6,7 +6,7 @@ import "./globals.css";
 const siteUrl = "https://hollysport.net";
 
 const siteDescription =
-    "Holly Sport; spor, sosyalleşme ve yeni deneyimler etrafında insanları bir araya getiren bağımsız ve gönüllülük temelli bir spor topluluğudur.";
+    "Holly Sport; spor, sosyalleşme ve yeni deneyimler etrafında insanları bir araya getiren bağımsız bir spor topluluğu ve 3D anatomi destekli antrenman platformudur.";
 
 const manrope = Manrope({
     subsets: ["latin"],
@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
 
-    title: "Holly Sport | Spor Topluluğu",
+    title: "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman",
 
     description: siteDescription,
 
@@ -60,9 +60,9 @@ export const metadata: Metadata = {
         locale: "tr_TR",
         url: "/",
         siteName: "Holly Sport",
-        title: "Holly Sport | Spor Topluluğu",
+        title: "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman",
         description:
-            "Spor yap, yeni insanlarla tanış ve birlikte hareket et. Holly Sport topluluğunu keşfet.",
+            "İnteraktif 3D anatomi haritası ve bilimsel algoritmayla kişisel antrenman programını oluştur. Spor yap, yeni insanlarla tanış, birlikte hareket et.",
         images: [
             {
                 url: "/images/seo/holly-sport-og.jpg",
@@ -75,9 +75,9 @@ export const metadata: Metadata = {
 
     twitter: {
         card: "summary_large_image",
-        title: "Holly Sport | Spor Topluluğu",
+        title: "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman",
         description:
-            "Spor yap, yeni insanlarla tanış ve birlikte hareket et.",
+            "İnteraktif 3D anatomi haritasıyla hedefine özel antrenman programını oluştur.",
         images: ["/images/seo/holly-sport-og.jpg"],
     },
 
