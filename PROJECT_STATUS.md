@@ -2,6 +2,14 @@
 
 Son güncelleme: 2026-09-23
 
+## 2026-09-26 (devam 4): Profil → tam donanımlı üyelik paneli
+
+- `components/auth/profile-dashboard.tsx` yeniden yazıldı: 3 sekmeli panel (Antrenmanlarım / Etkinliklerim / Ayarlar), üstte tüm üyelik bilgileri kartı (avatar, ad, e-posta, üyelik rozeti, doğumdan hesaplanan yaş, cinsiyet, ilgi sporları rozetleri).
+- **Ayarlar**: `saveProfile` server action + profil düzenleme formu (ad, cinsiyet, max 3 spor chip'i, preset `AvatarSelector` — upload yok, `avatar_url` string). Şifre değiştirme bölümü (`updateUser`, tekrar kontrolü, yeşil bildirim). Danger Zone: şifre onaylı modal → `signInWithPassword` doğrulama → `deleteMyAccount` server action (service-role ile `auth.admin.deleteUser`, auth.users'tan kalıcı silme) → `signOut` + tam sayfa `/` yönlendirmesi.
+- `app/profile/actions.ts`: `saveProfile` + `deleteMyAccount` (ikisi de cookie oturumuyla kimlik doğrular, admin client `lib/supabase/admin.ts`).
+- Not: PowerShell Add-Content kaynaklı UTF-8 bozulması nedeniyle dashboard dosyası temiz şekilde yeniden yazıldı.
+- tsc / eslint / build temiz.
+
 ## 2026-09-26 (devam 3): Auth modalına Turnstile koruması
 
 - Kayıt ve Şifremi Unuttum formlarına mevcut `components/security/TurnstileWidget` entegre edildi (dark tema, dev test key fallback, `action` etiketli). Register'da widget şifre tekrarının altında; buton token'sız disabled. Forgot view'da e-postanın altında; aynı kural.
