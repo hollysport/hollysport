@@ -1,4 +1,5 @@
 import ExerciseManager from "@/components/admin/exercise-manager";
+import SeedExercisesButton from "@/components/admin/seed-exercises-button";
 import type { Exercise } from "@/lib/data/exercises";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { createClient } from "@/lib/supabase/server";
@@ -25,7 +26,14 @@ export default async function ExercisesAdminPage() {
         <main className="min-h-screen bg-zinc-50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-10">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                    <a
+                        href="/admin"
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 transition hover:text-zinc-900"
+                    >
+                        ← Geri Dön
+                    </a>
+
+                    <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
                         Admin Paneli
                     </p>
 
@@ -38,6 +46,10 @@ export default async function ExercisesAdminPage() {
                         antrenman egzersizlerini ekle veya sil.
                     </p>
                 </div>
+
+                {(!exercises || exercises.length === 0) && (
+                    <SeedExercisesButton />
+                )}
 
                 <ExerciseManager
                     exercises={(exercises ?? []) as Exercise[]}

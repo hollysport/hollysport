@@ -64,7 +64,7 @@ export default async function AdminPage() {
             .from("individual_supporters")
             .select("id", { count: "exact", head: true })
             .eq("is_active", true)
-            .eq("supporter_category", "angel_investor"),
+            .in("supporter_category", ["angel_investor", "individual"]),
 
         supabase
             .from("sponsors")

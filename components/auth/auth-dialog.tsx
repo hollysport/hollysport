@@ -234,7 +234,9 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                     full_name: fullName.trim(),
                     birth_date: birthDate || null,
                     gender: gender || null,
+                    // Trigger uyumluluğu için iki anahtar da gönderilir
                     avatar,
+                    avatar_url: avatar,
                     interested_sports: sports,
                     join_date: joinDate,
                 },
