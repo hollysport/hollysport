@@ -282,7 +282,12 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
             return;
         }
 
-        onClose();
+        /*
+         * Çerezlerin istemciye kesin yazılması ve tüm istemci
+         * oturum durumunun (Navbar dahil) senkronlanması için
+         * tam sayfa geçişi (client-side router değil).
+         */
+        window.location.href = "/profile";
     }
 
     async function handleReset(event: FormEvent<HTMLFormElement>) {

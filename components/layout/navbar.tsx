@@ -2,9 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, type MouseEvent } from "react";
+import {
+    useEffect,
+    useMemo,
+    useState,
+    type MouseEvent,
+} from "react";
+import { UserRound } from "lucide-react";
 
 import AuthDialog from "@/components/auth/auth-dialog";
+import { createClient } from "@/lib/supabase/client";
 
 const whatsappGroupUrl =
     "https://chat.whatsapp.com/LEHiMPxVmsC7lGB0zvjoJK";
@@ -52,6 +59,24 @@ export default function Navbar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [authOpen, setAuthOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const supabase = useMemo(() => createClient(), []);
+
+    // Oturum durumunu başlangıçta al ve değişiklikleri canlı dinle
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data }) => {
+            setIsLoggedIn(Boolean(data.session?.user));
+        });
+
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+            setIsLoggedIn(Boolean(session?.user));
+        });
+
+        return () => subscription.unsubscribe();
+    }, [supabase]);
 
     function isActive(href: string) {
         if (href.includes("#")) {
@@ -133,13 +158,23 @@ export default function Navbar() {
                 </div>
 
                 <div className="hidden items-center gap-3 lg:flex">
-                    <button
-                        type="button"
-                        onClick={() => setAuthOpen(true)}
-                        className="inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-semibold text-white/70 transition hover:text-[#27D66B]"
-                    >
-                        Giriş Yap
-                    </button>
+                    {isLoggedIn ? (
+                        <Link
+                            href="/profile"
+                            aria-label="Profilim"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
+                        >
+                            <UserRound className="h-5 w-5" />
+                        </Link>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={() => setAuthOpen(true)}
+                            className="inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm font-semibold text-white/70 transition hover:text-[#27D66B]"
+                        >
+                            Giriş Yap
+                        </button>
+                    )}
 
                     <a
                         href={whatsappGroupUrl}
@@ -227,16 +262,26 @@ export default function Navbar() {
                         </div>
 
                         <div className="mt-5 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    setAuthOpen(true);
-                                }}
-                                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
-                            >
-                                Giriş Yap
-                            </button>
+                            {isLoggedIn ? (
+                                <Link
+                                    href="/profile"
+                                    onClick={() => setIsOpen(false)}
+                                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#27D66B]/40 px-6 text-sm font-semibold text-[#27D66B] transition hover:bg-[#27D66B]/10"
+                                >
+                                    Profilim
+                                </Link>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        setAuthOpen(true);
+                                    }}
+                                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
+                                >
+                                    Giriş Yap
+                                </button>
+                            )}
 
                             <a
                                 href={whatsappGroupUrl}
