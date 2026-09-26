@@ -1,7 +1,11 @@
 "use server";
 
+import "server-only";
+
+import { createClient as createJsClient } from "@supabase/supabase-js";
+
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import type { Database } from "@/lib/supabase/database.types";
 
 export type DeleteAccountResult = {
     success: boolean;
@@ -64,11 +68,14 @@ export async function saveProfile(
 }
 
 /*
- * Hesap silme (Danger Zone). Kimlik cookie oturumundan doğrulanır;
- * silme service-role admin client ile auth.users üzerinde yapılır
- * (profiles'a bağlı kayıtlar ON DELETE CASCADE ile temizlenir).
+ * Hesap silme (Danger Zone).
+ * Kimlik cookie tabanlı SSR client ile `getUser()` üzerinden doğrulanır;
+ * silme işlemi doğrudan service-role anahtarıyla oluşturulan admin
+ * client ile `auth.admin.deleteUser` üzerinde yapılır (cookie/RLS
+ * client'ı admin işlemlerinde kullanılmaz).
  */
 export async function deleteMyAccount(): Promise<DeleteAccountResult> {
+    // 1) Kimlik doğrulama — mevcut SSR oturumu
     const supabase = await createClient();
 
     const {
@@ -77,21 +84,75 @@ export async function deleteMyAccount(): Promise<DeleteAccountResult> {
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
+        console.error(
+            "deleteMyAccount: oturum doğrulanamadı:",
+            userError?.message,
+        );
         return {
             success: false,
             error: "Oturum bulunamadı. Lütfen yeniden giriş yap.",
         };
     }
 
-    const admin = createAdminClient();
+    // 2) Ortam değişkenleri kontrolü
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    const { error } = await admin.auth.admin.deleteUser(user.id);
-
-    if (error) {
-        console.error("Hesap silme hatası:", error);
+    if (!supabaseUrl || !serviceRoleKey) {
+        console.error(
+            "deleteMyAccount: eksik env değişkeni:",
+            !supabaseUrl
+                ? "NEXT_PUBLIC_SUPABASE_URL"
+                : "SUPABASE_SERVICE_ROLE_KEY",
+        );
         return {
             success: false,
-            error: "Hesap silinemedi. Lütfen daha sonra tekrar dene.",
+            error: "Sunucu yapılandırması eksik (service role key).",
+        };
+    }
+
+    // 3) Admin client — cookie kullanmaz, doğrudan service-role
+    const supabaseAdmin = createJsClient<Database>(
+        supabaseUrl,
+        serviceRoleKey,
+        {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false,
+                detectSessionInUrl: false,
+            },
+        },
+    );
+
+    // 4) Kalıcı silme — detaylı hata yakalama
+    try {
+        const { error } = await supabaseAdmin.auth.admin.deleteUser(
+            user.id,
+        );
+
+        if (error) {
+            console.error("deleteMyAccount: deleteUser hatası:", {
+                message: error.message,
+                code: error.code,
+                status: error.status,
+                name: error.name,
+            });
+            return {
+                success: false,
+                error: `Silme hatası: ${error.message}`,
+            };
+        }
+    } catch (unexpectedError) {
+        console.error(
+            "deleteMyAccount: beklenmeyen hata:",
+            unexpectedError,
+        );
+        return {
+            success: false,
+            error:
+                unexpectedError instanceof Error
+                    ? `Beklenmeyen hata: ${unexpectedError.message}`
+                    : "Beklenmeyen bir hata oluştu.",
         };
     }
 
