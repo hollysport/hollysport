@@ -226,7 +226,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                 ? computeJoinDate(duration.monthsBack)
                 : null;
 
-        const result = await registerUser({
+        const payload = {
             email: registerEmail.trim(),
             password: registerPassword,
             fullName: fullName.trim(),
@@ -236,7 +236,21 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
             interestedSports: sports,
             joinDate,
             captchaToken: turnstileToken,
+        };
+
+        /*
+         * Seçimler submit anında state'ten okunur (form adımları
+         * unmount olmadığı için değer kaybı olmaz). Gönderilen
+         * değerleri konsola bas ki kayıt sonrası DB ile kıyaslanabilsin.
+         */
+        console.log("[registerUser] gönderilen payload:", {
+            gender: payload.gender,
+            interestedSports: payload.interestedSports,
+            joinDate: payload.joinDate,
+            birthDate: payload.birthDate,
         });
+
+        const result = await registerUser(payload);
 
         setLoading(false);
 

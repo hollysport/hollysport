@@ -2,6 +2,14 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-09-29 (commit bekliyor)
+
+- **Veri bütünlüğü — gerçek şema ile hizalama:** PostgREST openapi çıktısı üzerinden `saved_workouts` gerçek kolonları (`user_id, template_name, target_goal, exercises`) doğrulandı; kodun kullandığı `title/goal/environment/muscles` ve `profiles.age` kolonları tabloda yoktu (PGRST204). `app/training/actions.ts`, `app/profile/page.tsx`, `profile-dashboard.tsx` ve `database.types.ts` gerçek şemaya göre düzeltildi. `environment`/`muscles` bilgisi artık jsonb `exercises` içine gömülüyor.
+- **`saveWorkout` yeniden yazıldı:** whitelist payload + `JSON.parse(JSON.stringify())` JSONB normalizasyonu, `.select()`siz insert (RLS'te SELECT politikası yoksa oluşan PGRST116 sahte hatası önlenir), ilk hatada service-role fallback (`SUPABASE_SECRET_KEY ?? SUPABASE_SERVICE_ROLE_KEY`), arayüze gerçek `code + message` dönen hata metni.
+- **`registerUser` mühürleme + doğrulama:** upsert sonrası satır geri okunup `gender` / `interested_sports` / `join_date` gönderilen değerlerle karşılaştırılır; eşleşmezse bir kez daha yazılır, hâlâ eşleşmezse kayıt geri alınır (auth user + profil satırı silinir). Kayıt payload'ı hem istemcide (`[registerUser] gönderilen payload`) hem sunucuda loglanıyor.
+- **Env anahtarı hizası:** `.env.local`'da yalnız `SUPABASE_SECRET_KEY` var; `auth/actions.ts`, `profile/actions.ts`, `training/actions.ts` artık `SUPABASE_SECRET_KEY ?? SUPABASE_SERVICE_ROLE_KEY` okuyor (eski tekil okuma fallback'i kırıyordu).
+- Profil kartı: yaş yalnızca `birth_date`'ten hesaplanır, hedef etiketi `GOALS`'tan gelir; teşhis script'leri repo'dan temizlendi.
+
 ## 2026-09-23 (commit bekliyor)
 
 - Antrenman Merkezi FAZ 3: 3D kas haritası (`AnatomyMap3D`, three/r3f/drei, çoklu bölge seçimi), dinamik program algoritması (`buildProgram`, hedef bazlı set/tekrar, 1→4 / 2→3 / 3+→2 kuralı), kişisel program talebi modalı. Kas grupları 8'e genişledi; mock egzersiz havuzu `lib/data/exercises.ts`'te. Eski 2D `AnatomyMap.tsx` kaldırıldı.

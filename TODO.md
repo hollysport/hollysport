@@ -13,6 +13,22 @@
   -- drop policy if exists "<policy_adi>" on public.event_registrations;
   ```
   Not: admin paneli `review_event_registration` RPC'sini kullanıyor; bu RPC'nin varlığını ve yetkilerini de dashboard'dan doğrula.
+- [ ] `saved_workouts` RLS politikası (Supabase dashboard — SQL'i sen çalıştır, bana gösterme):
+  ```sql
+  -- Önce mevcut politikaları listele:
+  select policyname, cmd, roles from pg_policies where tablename = 'saved_workouts';
+
+  -- Girişli kullanıcı kendi programını yazabilsin (service-role fallback'ini gereksiz kılar):
+  create policy "saved_workouts_insert_own" on public.saved_workouts
+    for insert to authenticated with check (auth.uid() = user_id);
+
+  -- Okuma / silme (profil sayfası ve karttaki sil butonu için):
+  create policy "saved_workouts_select_own" on public.saved_workouts
+    for select to authenticated using (auth.uid() = user_id);
+  create policy "saved_workouts_delete_own" on public.saved_workouts
+    for delete to authenticated using (auth.uid() = user_id);
+  ```
+  Not: şu an insert `42501` ile engelleniyor ve `saveWorkout` service-role fallback'e düşüyor; politika eklenirse normal yol çalışır.
 - [ ] `.env.local` değerlerinin canlı (Vercel/hosting) ortam değişkenleriyle birebir tanımlı olduğunu doğrula (`SUPABASE_SECRET_KEY`, `TURNSTILE_SECRET_KEY`, `FORM_RATE_LIMIT_SALT`).
 - [ ] Production Turnstile anahtarlarıyla üç formu canlıda test et.
 

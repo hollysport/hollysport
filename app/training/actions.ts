@@ -21,18 +21,83 @@ export type SaveWorkoutResult = {
     id?: string;
 };
 
+/* saved_workouts GERÇEK kolonları (PostgREST openapi ile doğrulandı) */
+const ALLOWED_COLUMNS = [
+    "user_id",
+    "template_name",
+    "target_goal",
+    "exercises",
+] as const;
+
+type SavedWorkoutRow = {
+    user_id: string;
+    template_name: string;
+    target_goal: string;
+    exercises: Json;
+};
+
+/*
+ * Yalnızca veritabanında var olan kolonlardan payload üretir.
+ * `title/goal/environment/muscles` gibi ekstra alan asla gitmez.
+ * JSONB değeri JSON.parse(JSON.stringify(...)) ile düzleştirilir;
+ * undefined / fonksiyon / Date gibi JSON'a çevrilemeyen parçalar
+ * ya atılır ya da string'e dönüşür — Supabase 400/PGRST reddetmez.
+ */
+function buildRow(input: {
+    userId: string;
+    templateName: string;
+    targetGoal: string;
+    exercises: Json;
+}): SavedWorkoutRow {
+    const row: SavedWorkoutRow = {
+        user_id: input.userId,
+        template_name: input.templateName,
+        target_goal: input.targetGoal,
+        exercises: input.exercises,
+    };
+
+    const normalized = JSON.parse(
+        JSON.stringify(row),
+    ) as SavedWorkoutRow;
+
+    // Güvenlik ağı: beklenen kolon dışına hiçbir şey sızmamalı
+    const extraKeys = Object.keys(normalized).filter(
+        (key) =>
+            !(ALLOWED_COLUMNS as readonly string[]).includes(key),
+    );
+
+    if (extraKeys.length > 0) {
+        console.error(
+            "saveWorkout: payload fazladan kolon içeriyor, temizlendi:",
+            extraKeys,
+        );
+
+        const clean: SavedWorkoutRow = {
+            user_id: normalized.user_id,
+            template_name: normalized.template_name,
+            target_goal: normalized.target_goal,
+            exercises: normalized.exercises,
+        };
+
+        return clean;
+    }
+
+    return normalized;
+}
+
 /*
  * Antrenman programını kaydeder (`saved_workouts`).
  *
- * GERÇEK ŞEMA (PostgREST openapi ile doğrulandı):
- *   id, user_id, template_name, target_goal, exercises (jsonb), created_at
- * Kodun daha önce yazdığı `title/goal/environment/muscles` kolonları
- * tabloda YOKTU → PGRST204 ("Could not find the 'environment' column")
- * hatası ve "Program kaydedilemedi" mesajı buydu.
+ * GERÇEK ŞEMA: id, user_id, template_name, target_goal, exercises (jsonb),
+ * created_at — başkası YOK.
  *
  * - user_id istemciden gelmez; SSR oturumundan doğrulanır.
  * - environment / muscles bilgisi exercises (jsonb) içine gömülür.
- * - Her hata message / code / details / hint ile console.error'a basılır.
+ * - Insert `.select()`siz yapılır: RLS'de INSERT politikası olup SELECT
+ *   politikası yoksa `.single()` PGRST116 ile sahte hata üretiyordu.
+ * - İlk insert herhangi bir sebeple düşerse (42501 RLS, PGRST204 şema,
+ *   401 vb.) oturum doğrulandığı için service-role ile yeniden denenir.
+ * - Arayüze dönen hata mesajı gerçek `code + message` içerir.
  */
 export async function saveWorkout(
     input: SaveWorkoutInput,
@@ -59,7 +124,8 @@ export async function saveWorkout(
         }
 
         // 2) Alan doğrulaması
-        const templateName = input.templateName.trim();
+        const templateName =
+            input.templateName.trim() || "Antrenman Programı";
         const targetGoal = input.targetGoal.trim();
         const muscles = (input.muscles ?? []).filter(Boolean);
         const items = Array.isArray(input.exercises)
@@ -74,37 +140,42 @@ export async function saveWorkout(
         }
 
         /*
-         * Tabloda environment/muscles kolonu yok; jsonb exercises
-         * içine environment ve muscles eklenir ki profil kartı
-         * "Ev · 3 bölge" bilgisini gösterebilsin.
+         * environment/muscles kolonları tabloda yok; jsonb exercises
+         * içine gömülür ki profil kartı "Ev · 3 bölge" gösterebilsin.
          */
-        const exercisesPayload = (items as Record<string, unknown>[]).map(
-            (item) => ({
-                ...item,
-                environment: input.environment,
-                muscles,
-            }),
-        );
+        const exercisesPayload = (
+            items as Record<string, unknown>[]
+        ).map((item) => ({
+            ...item,
+            environment: input.environment,
+            muscles,
+        }));
 
-        const row = {
-            user_id: user.id, // ← doğrulanmış oturum ID'si
-            template_name: templateName || "Antrenman Programı",
-            target_goal: targetGoal,
+        const row = buildRow({
+            userId: user.id,
+            templateName,
+            targetGoal,
             exercises: exercisesPayload as Json,
-        };
+        });
 
-        // 3) RLS'li normal insert
-        const { data, error } = await supabase
+        console.log("saveWorkout: gönderilen payload:", {
+            columns: Object.keys(row),
+            template_name: row.template_name,
+            target_goal: row.target_goal,
+            muscles,
+            exerciseCount: items.length,
+        });
+
+        // 3) RLS'li normal insert (select'siz → PGRST116 riski yok)
+        const { error } = await supabase
             .from("saved_workouts")
-            .insert(row)
-            .select("id")
-            .single();
+            .insert(row);
 
         if (!error) {
             console.log(
-                `saveWorkout: kaydedildi (id=${data?.id}, user=${user.id}, template=${row.template_name})`,
+                `saveWorkout: kaydedildi (user=${user.id}, template=${row.template_name})`,
             );
-            return { success: true, id: data?.id };
+            return { success: true };
         }
 
         console.error("saveWorkout insert hatası:", {
@@ -121,40 +192,38 @@ export async function saveWorkout(
             },
         });
 
-        /*
-         * 42501 = RLS insert politikası engeli
-         * PGRST204 = tablo şemasında olmayan kolon
-         * Oturum doğrulandığı için bu iki durumda service-role
-         * ile aynı user_id ile yeniden denenir.
-         */
-        const isRlsOrSchemaIssue =
-            error.code === "42501" ||
-            error.code === "PGRST204" ||
-            error.message
-                .toLowerCase()
-                .includes("row-level security");
-
-        if (!isRlsOrSchemaIssue) {
-            return {
-                success: false,
-                error: "Program kaydedilemedi. Lütfen tekrar dene.",
-            };
-        }
-
+        // 4) Fallback: oturum doğrulandı → service-role ile yeniden dene
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
         const serviceRoleKey =
             process.env.SUPABASE_SECRET_KEY ??
             process.env.SUPABASE_SERVICE_ROLE_KEY;
+        const keySource = process.env.SUPABASE_SECRET_KEY
+            ? "SUPABASE_SECRET_KEY"
+            : "SUPABASE_SERVICE_ROLE_KEY";
 
         if (!supabaseUrl || !serviceRoleKey) {
             console.error(
                 "saveWorkout: eksik env (SUPABASE_SECRET_KEY / SUPABASE_SERVICE_ROLE_KEY)",
+                {
+                    hasUrl: Boolean(supabaseUrl),
+                    hasSecretKey: Boolean(
+                        process.env.SUPABASE_SECRET_KEY,
+                    ),
+                    hasServiceRoleKey: Boolean(
+                        process.env.SUPABASE_SERVICE_ROLE_KEY,
+                    ),
+                },
             );
+
             return {
                 success: false,
-                error: "Sunucu yapılandırması eksik.",
+                error: `Program kaydedilemedi (${error.code ?? "?"}): ${error.message} — sunucu anahtarı tanımlı değil.`,
             };
         }
+
+        console.warn(
+            `saveWorkout: normal insert başarısız (${error.code}), service-role ile yeniden deneniyor (${keySource}).`,
+        );
 
         const supabaseAdmin = createJsClient(
             supabaseUrl,
@@ -168,12 +237,9 @@ export async function saveWorkout(
             },
         );
 
-        const { data: adminData, error: adminError } =
-            await supabaseAdmin
-                .from("saved_workouts")
-                .insert(row)
-                .select("id")
-                .single();
+        const { error: adminError } = await supabaseAdmin
+            .from("saved_workouts")
+            .insert(row);
 
         if (adminError) {
             console.error(
@@ -184,20 +250,21 @@ export async function saveWorkout(
                     details: adminError.details,
                     hint: adminError.hint,
                     userId: user.id,
+                    keySource,
                 },
             );
 
             return {
                 success: false,
-                error: "Program kaydedilemedi. Lütfen tekrar dene.",
+                error: `Program kaydedilemedi (${adminError.code ?? "?"}): ${adminError.message}`,
             };
         }
 
         console.warn(
-            `saveWorkout: RLS/şema engeli aşıldı, service-role ile kaydedildi (id=${adminData?.id}, user=${user.id}).`,
+            `saveWorkout: engel aşıldı, service-role ile kaydedildi (user=${user.id}, template=${row.template_name}).`,
         );
 
-        return { success: true, id: adminData?.id };
+        return { success: true };
     } catch (unexpectedError) {
         console.error("saveWorkout beklenmeyen hata:", {
             name:
@@ -216,7 +283,11 @@ export async function saveWorkout(
 
         return {
             success: false,
-            error: "Program kaydedilemedi. Lütfen tekrar dene.",
+            error: `Program kaydedilemedi: ${
+                unexpectedError instanceof Error
+                    ? unexpectedError.message
+                    : "bilinmeyen hata"
+            }`,
         };
     }
 }

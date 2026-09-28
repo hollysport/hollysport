@@ -240,8 +240,129 @@ export async function registerUser(
             };
         }
 
+        /*
+         * 5) YAZIM DOĞRULAMASI — kayıt "başarılı" demeden önce satır
+         *    geri okunur: cinsiyet, ilgi alanları ve üyelik tarihi
+         *    gönderilen değerlerle birebir eşleşmeli. Eşleşmezse bir
+         *    kez daha yazılır; hâlâ eşleşmiyorsa kayıt GERİ ALINIR
+         *    (auth user + profil satırı silinir) ki kullanıcı
+         *    eksik veriyle hesap sahibi olmasın.
+         */
+        const verifyProfile = async (): Promise<{
+            ok: boolean;
+            detail: string;
+        }> => {
+            const { data: verifyRow, error: verifyError } =
+                await supabaseAdmin
+                    .from("profiles")
+                    .select(
+                        "gender, interested_sports, join_date",
+                    )
+                    .eq("id", user.id)
+                    .single();
+
+            if (verifyError || !verifyRow) {
+                return {
+                    ok: false,
+                    detail: `okunamadı: ${
+                        verifyError?.message ?? "satır yok"
+                    }`,
+                };
+            }
+
+            const writtenGender =
+                (verifyRow.gender as string | null) ?? null;
+            const writtenSports = Array.isArray(
+                verifyRow.interested_sports,
+            )
+                ? (verifyRow.interested_sports as string[])
+                : [];
+            const writtenJoin =
+                (verifyRow.join_date as string | null) ?? null;
+
+            const genderOk =
+                writtenGender === (input.gender ?? null);
+
+            const sportsOk =
+                JSON.stringify(writtenSports) ===
+                JSON.stringify(input.interestedSports);
+
+            const joinOk = joinDate
+                ? writtenJoin !== null &&
+                  Math.abs(
+                      new Date(writtenJoin).getTime() -
+                          new Date(joinDate).getTime(),
+                  ) < 1000
+                : writtenJoin === null;
+
+            return {
+                ok: genderOk && sportsOk && joinOk,
+                detail: `gender=${String(writtenGender)} sports=${JSON.stringify(writtenSports)} join_date=${String(writtenJoin)}`,
+            };
+        };
+
+        let verification = await verifyProfile();
+
+        if (!verification.ok) {
+            console.warn(
+                "registerUser: yazım doğrulaması başarısız, profil yeniden yazılıyor:",
+                verification.detail,
+            );
+
+            const { error: rewriteError } = await supabaseAdmin
+                .from("profiles")
+                .upsert(baseProfileRow, {
+                    onConflict: "id",
+                });
+
+            if (rewriteError) {
+                console.error(
+                    "registerUser: yeniden yazma hatası:",
+                    {
+                        message: rewriteError.message,
+                        code: rewriteError.code,
+                    },
+                );
+            }
+
+            verification = await verifyProfile();
+        }
+
+        if (!verification.ok) {
+            const rollbackProfile = await supabaseAdmin
+                .from("profiles")
+                .delete()
+                .eq("id", user.id);
+            const rollbackUser =
+                await supabaseAdmin.auth.admin.deleteUser(
+                    user.id,
+                );
+
+            console.error(
+                "registerUser: profil alanları mühürlenemedi — kayıt geri alındı:",
+                {
+                    userId: user.id,
+                    reason: verification.detail,
+                    expected: {
+                        gender: input.gender,
+                        interested_sports: input.interestedSports,
+                        join_date: joinDate,
+                    },
+                    rollbackProfile:
+                        rollbackProfile.error?.message ?? "ok",
+                    rollbackUser:
+                        rollbackUser.error?.message ?? "ok",
+                },
+            );
+
+            return {
+                success: false,
+                error: "Kayıt sırasında profil bilgileri yazılamadı. Lütfen tekrar deneyin.",
+            };
+        }
+
         console.log(
-            `registerUser: kullanıcı=${user.id} profili mühürlendi (full_name="${input.fullName}", avatar_url="${input.avatar}", join_date=${joinDate})`,
+            `registerUser: kullanıcı=${user.id} profili mühürlendi ve doğrulandı (full_name="${input.fullName}", avatar="${input.avatar}", gender=${String(input.gender)}, sports=${JSON.stringify(input.interestedSports)}, join_date=${joinDate})`,
         );
 
         return { success: true };
