@@ -228,6 +228,7 @@ export default function WorkoutGenerator() {
                     gender={gender}
                     selected={selectedMuscles}
                     onToggle={handleToggle}
+                    labelsHidden={dialogOpen || authOpen}
                 />
 
                 {hasSelection && (

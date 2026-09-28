@@ -20,7 +20,16 @@ type AnatomyMap3DProps = {
     gender: Gender;
     selected: MuscleGroup[];
     onToggle: (muscle: MuscleGroup) => void;
+    /* Modal (dialog) açıkken aktif bölge etiketlerini gizler */
+    labelsHidden?: boolean;
 };
+
+/*
+ * drei <Html> varsayılan zIndexRange'si [16777271, 0] gibi bir
+ * aralık üretir; bu, z-50'lik modallerin bile üstünde kalmasına
+ * yol açar. Etiketler her zaman düşük z-index bandında tutulur.
+ */
+const LABEL_Z_INDEX_RANGE = [10, 0];
 
 /*
  * "Görünmez Zırh (Hitbox)" mimarisi:
@@ -136,7 +145,7 @@ function HitboxMesh({
 
 function ErrorFallback() {
     return (
-        <Html center>
+        <Html center zIndexRange={LABEL_Z_INDEX_RANGE}>
             <div className="whitespace-nowrap rounded-full border border-red-500/30 bg-[#0a0a0a]/90 px-5 py-2.5 text-sm font-medium text-red-300">
                 3D model yüklenemedi.
             </div>
@@ -167,6 +176,7 @@ export default function AnatomyMap3D({
     gender,
     selected,
     onToggle,
+    labelsHidden = false,
 }: AnatomyMap3DProps) {
     const [hovered, setHovered] = useState<MuscleGroup | null>(null);
 
@@ -237,7 +247,20 @@ export default function AnatomyMap3D({
                                 position={anchor}
                                 center
                                 distanceFactor={4}
-                                style={{ pointerEvents: "none" }}
+                                zIndexRange={LABEL_Z_INDEX_RANGE}
+                                style={{
+                                    pointerEvents: "none",
+                                    /*
+                                     * Modal açıkken etiketler gizlenir:
+                                     * opacity + visibility, böylece formun
+                                     * altında bile görünmezler.
+                                     */
+                                    opacity: labelsHidden ? 0 : 1,
+                                    visibility: labelsHidden
+                                        ? "hidden"
+                                        : "visible",
+                                    transition: "opacity 0.2s ease",
+                                }}
                             >
                                 <div className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#27D66B]/60 bg-[#050505]/85 px-3.5 py-1.5 shadow-[0_0_18px_rgba(39,214,107,0.35)]">
                                     <span className="h-1.5 w-1.5 rounded-full bg-[#27D66B]" />

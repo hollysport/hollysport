@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
@@ -108,12 +109,17 @@ export default function ProgramRequestDialog({
     const labelClass =
         "text-xs font-semibold uppercase tracking-wider text-white/40";
 
-    return (
+    /*
+     * Modal document.body'ye portal edilir: DOM ağacından (3D Canvas
+     * katmanı dahil kardeş hiçbir eleman) bağımsız olarak en üstte
+     * kalır. SSR'da document tanımsızdır, o zaman doğrudan render.
+     */
+    const dialogTree = (
         <div
             role="dialog"
             aria-modal="true"
             aria-label="Kişisel antrenman programı talebi"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
             onClick={handleClose}
         >
             <div
@@ -299,4 +305,12 @@ export default function ProgramRequestDialog({
             </div>
         </div>
     );
+
+    /*
+     * SSR aşamasında document yoktur (ancak `open` false olur);
+     * istemci tarafında ise modal body'ye portal edilir.
+     */
+    if (typeof document === "undefined") return dialogTree;
+
+    return createPortal(dialogTree, document.body);
 }
