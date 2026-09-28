@@ -28,14 +28,14 @@ export default async function ProfilePage() {
             supabase
                 .from("profiles")
                 .select(
-                    "id, email, full_name, age, gender, avatar_url, birth_date, join_date, interested_sports",
+                    "id, email, full_name, gender, avatar_url, birth_date, join_date, interested_sports",
                 )
                 .eq("id", user.id)
                 .maybeSingle(),
             supabase
                 .from("saved_workouts")
                 .select(
-                    "id, user_id, title, goal, environment, muscles, exercises, created_at",
+                    "id, user_id, template_name, target_goal, exercises, created_at",
                 )
                 .eq("user_id", user.id)
                 .order("created_at", { ascending: false }),

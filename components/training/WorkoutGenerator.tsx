@@ -171,11 +171,11 @@ export default function WorkoutGenerator() {
          * gerçek hata (message/code/details) terminale yazılır.
          */
         const result = await saveWorkout({
-            title:
+            templateName:
                 template !== "custom" && templateInfo
                     ? `${templateInfo.label} Programı`
                     : "Antrenman Programı",
-            goal,
+            targetGoal: goal,
             environment,
             muscles: selectedMuscles,
             exercises: flatExercises,

@@ -96,11 +96,13 @@ export async function deleteMyAccount(): Promise<DeleteAccountResult> {
 
     // 2) Ortam değişkenleri kontrolü
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const serviceRoleKey =
+        process.env.SUPABASE_SECRET_KEY ??
+        process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceRoleKey) {
         console.error(
-            "deleteMyAccount: eksik env değişkeni:",
+            "deleteMyAccount: eksik env anahtarı:",
             !supabaseUrl
                 ? "NEXT_PUBLIC_SUPABASE_URL"
                 : "SUPABASE_SERVICE_ROLE_KEY",

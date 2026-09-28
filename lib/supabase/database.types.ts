@@ -25,7 +25,6 @@ export type Database = {
                     email: string | null;
                     full_name: string | null;
                     role: string;
-                    age: number | null;
                     gender: string | null;
                     avatar_url: string | null;
                     birth_date: string | null;
@@ -37,7 +36,6 @@ export type Database = {
                     email?: string | null;
                     full_name?: string | null;
                     role?: string;
-                    age?: number | null;
                     gender?: string | null;
                     avatar_url?: string | null;
                     birth_date?: string | null;
@@ -49,7 +47,6 @@ export type Database = {
                     email?: string | null;
                     full_name?: string | null;
                     role?: string;
-                    age?: number | null;
                     gender?: string | null;
                     avatar_url?: string | null;
                     birth_date?: string | null;
@@ -62,30 +59,24 @@ export type Database = {
                 Row: {
                     id: string;
                     user_id: string;
-                    title: string;
-                    goal: string | null;
-                    environment: string | null;
-                    muscles: string[];
+                    template_name: string;
+                    target_goal: string;
                     exercises: Json;
                     created_at: string;
                 };
                 Insert: {
                     id?: string;
                     user_id: string;
-                    title: string;
-                    goal?: string | null;
-                    environment?: string | null;
-                    muscles?: string[];
+                    template_name: string;
+                    target_goal: string;
                     exercises?: Json;
                     created_at?: string;
                 };
                 Update: {
                     id?: string;
                     user_id?: string;
-                    title?: string;
-                    goal?: string | null;
-                    environment?: string | null;
-                    muscles?: string[];
+                    template_name?: string;
+                    target_goal?: string;
                     exercises?: Json;
                     created_at?: string;
                 };

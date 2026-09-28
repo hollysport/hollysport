@@ -46,11 +46,12 @@ export async function registerUser(
         const supabaseUrl =
             process.env.NEXT_PUBLIC_SUPABASE_URL;
         const serviceRoleKey =
+            process.env.SUPABASE_SECRET_KEY ??
             process.env.SUPABASE_SERVICE_ROLE_KEY;
 
         if (!supabaseUrl || !serviceRoleKey) {
             console.error(
-                "registerUser: eksik env değişkeni (NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY)",
+                "registerUser: eksik env değişkeni (NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SECRET_KEY)",
             );
             return {
                 success: false,

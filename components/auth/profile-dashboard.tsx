@@ -18,6 +18,7 @@ import {
 
 import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.types";
+import { GOALS } from "@/lib/data/exercises";
 import {
     deleteMyAccount,
     saveProfile,
@@ -33,7 +34,6 @@ type Profile = {
     id: string;
     email: string | null;
     full_name: string | null;
-    age: number | null;
     gender: string | null;
     avatar_url: string | null;
     birth_date: string | null;
@@ -51,13 +51,46 @@ type SavedExercise = {
 type SavedWorkout = {
     id: string;
     user_id: string;
-    title: string;
-    goal: string | null;
-    environment: string | null;
-    muscles: string[];
+    /* saved_workouts gerçek şeması: template_name + target_goal */
+    template_name: string;
+    target_goal: string | null;
     exercises: Json;
     created_at: string;
 };
+
+/*
+ * environment / muscles kolonları tabloda yok; kaydetme sırasında
+ * exercises (jsonb) satırlarına gömülür. Kart başlığında göstermek
+ * için ilk elemandan türetilir.
+ */
+function planMeta(exercises: Json): {
+    environment: string | null;
+    muscles: string[];
+} {
+    if (!Array.isArray(exercises)) {
+        return { environment: null, muscles: [] };
+    }
+
+    const first = exercises.find(
+        (item): item is Record<string, Json> =>
+            typeof item === "object" &&
+            item !== null &&
+            !Array.isArray(item),
+    );
+
+    const env =
+        typeof first?.environment === "string"
+            ? first.environment
+            : null;
+
+    const muscles = Array.isArray(first?.muscles)
+        ? first.muscles.filter(
+              (item): item is string => typeof item === "string",
+          )
+        : [];
+
+    return { environment: env, muscles };
+}
 
 const ENVIRONMENT_LABELS: Record<string, string> = {
     home: "Ev",
@@ -327,9 +360,10 @@ export default function ProfileDashboard({
         window.location.href = "/";
     }
 
+    // Yaş yalnızca birth_date'ten hesaplanır (profiles'ta age kolonu yok)
     const age = profile?.birth_date
         ? calculateAge(profile.birth_date)
-        : (profile?.age ?? null);
+        : null;
 
     // Üyelik başlangıcı: profiles.join_date -> user_metadata.join_date
     const resolvedJoinDate = resolveJoinDate({
@@ -509,6 +543,17 @@ export default function ProfileDashboard({
                                 const exercises = parseExercises(
                                     workout.exercises,
                                 );
+                                const meta = planMeta(
+                                    workout.exercises,
+                                );
+                                const goalLabel =
+                                    GOALS.find(
+                                        (item) =>
+                                            item.key ===
+                                            workout.target_goal,
+                                    )?.label ??
+                                    workout.target_goal ??
+                                    null;
 
                                 return (
                                     <li
@@ -530,20 +575,23 @@ export default function ProfileDashboard({
                                             >
                                                 <div>
                                                     <h3 className="font-semibold">
-                                                        {workout.title}
+                                                        {
+                                                            workout.template_name
+                                                        }
                                                     </h3>
                                                     <p className="mt-1 text-xs text-white/40">
                                                         {[
-                                                            workout.environment
+                                                            goalLabel,
+                                                            meta.environment
                                                                 ? (ENVIRONMENT_LABELS[
-                                                                      workout
+                                                                      meta
                                                                           .environment
                                                                   ] ??
-                                                                  workout.environment)
+                                                                  meta.environment)
                                                                 : null,
-                                                            workout.muscles
-                                                                ?.length
-                                                                ? `${workout.muscles.length} bölge`
+                                                            meta.muscles
+                                                                .length
+                                                                ? `${meta.muscles.length} bölge`
                                                                 : null,
                                                             new Date(
                                                                 workout.created_at,
