@@ -23,6 +23,10 @@ import {
     saveProfile,
 } from "@/app/profile/actions";
 import AvatarSelector, { AvatarIcon } from "./avatar-selector";
+import {
+    resolveAvatarKey,
+    resolveDisplayName,
+} from "@/lib/auth/display";
 
 type Profile = {
     id: string;
@@ -140,10 +144,13 @@ export default function ProfileDashboard({
     email,
     profile,
     workouts,
+    metadata,
 }: {
     email: string;
     profile: Profile | null;
     workouts: SavedWorkout[];
+    /* auth.user_metadata — profiles satırı boşsa yedek kaynak */
+    metadata?: Record<string, unknown> | null;
 }) {
     const router = useRouter();
     const supabase = useMemo(() => createClient(), []);
@@ -153,9 +160,12 @@ export default function ProfileDashboard({
     const [busyId, setBusyId] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Ayarlar formu
+    // Ayarlar formu — profiles satırı boşsa user_metadata yedeği
     const [editName, setEditName] = useState(
-        profile?.full_name ?? "",
+        profile?.full_name ??
+            (typeof metadata?.full_name === "string"
+                ? metadata.full_name
+                : ""),
     );
     const [editGender, setEditGender] = useState(
         profile?.gender ?? "",
@@ -164,7 +174,10 @@ export default function ProfileDashboard({
         profile?.interested_sports ?? [],
     );
     const [editAvatar, setEditAvatar] = useState<string | null>(
-        profile?.avatar_url ?? null,
+        resolveAvatarKey({
+            avatarUrl: profile?.avatar_url,
+            metadata,
+        }),
     );
     const [saving, setSaving] = useState(false);
     const [savedMessage, setSavedMessage] = useState("");
@@ -347,7 +360,14 @@ export default function ProfileDashboard({
                             </span>
 
                             <h1 className="mt-1 text-2xl font-bold sm:text-3xl">
-                                {editName || "İsimsiz Üye"}
+                                {resolveDisplayName({
+                                    fullName:
+                                        editName ||
+                                        profile?.full_name,
+                                    email:
+                                        profile?.email ?? email,
+                                    metadata,
+                                })}
                             </h1>
 
                             <p className="mt-1 text-sm text-white/45">

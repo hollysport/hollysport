@@ -50,6 +50,12 @@ export default async function ProfilePage() {
                     email={user.email ?? ""}
                     profile={profile}
                     workouts={workouts ?? []}
+                    metadata={
+                        (user.user_metadata as Record<
+                            string,
+                            unknown
+                        > | null) ?? null
+                    }
                 />
             </main>
 

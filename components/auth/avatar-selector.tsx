@@ -54,12 +54,64 @@ export function AvatarIcon({
     className?: string;
 }) {
     const preset = AVATAR_PRESETS.find(
-        (item) => item.key === avatar,
+        (item) => item.key === normalizeAvatarKey(avatar),
     );
 
     const Icon = preset?.Icon ?? Dumbbell;
 
     return <Icon className={className} aria-hidden="true" />;
+}
+
+/*
+ * Kayıtlı avatar değerini preset anahtarına çevirir.
+ *
+ * Veritabanına farklı biçimlerde yazılabilir: "flame",
+ * "Flame", "icon-flame", "/icons/flame.svg" veya tam bir URL.
+ * Hepsi tek bir normalizasyondan geçer; hiçbiri eşleşmezse null
+ * döner (çağıran varsayılan ikona düşer).
+ */
+export function normalizeAvatarKey(
+    value: string | null | undefined,
+): string | null {
+    if (typeof value !== "string") return null;
+
+    let candidate = value.trim();
+
+    if (!candidate) return null;
+
+    // URL / yol varsa son segmenti al, sorgu-parçayı at
+    const withoutQuery = candidate.split(/[?#]/)[0];
+    const segments = withoutQuery.split("/");
+    candidate = (segments[segments.length - 1] || "").trim();
+
+    if (!candidate) return null;
+
+    // Uzantıyı at (.svg, .png, .webp ...)
+    candidate = candidate.replace(/\.[a-z0-9]{2,6}$/i, "");
+
+    // "icon-flame", "avatar_flame" gibi önek/ekleri temizle
+    const normalized = candidate
+        .toLowerCase()
+        .replace(/^(avatar|icon|user)[-_]*/i, "")
+        .replace(/[-_]+/g, "")
+        .trim();
+
+    if (!normalized) return null;
+
+    const exact = AVATAR_PRESETS.find(
+        (item) => item.key === normalized,
+    );
+
+    if (exact) return exact.key;
+
+    // "flameicon" / "flameavatar" gibi ekli isimlerde ara
+    const partial = AVATAR_PRESETS.find(
+        (item) =>
+            normalized.includes(item.key) ||
+            item.key.includes(normalized),
+    );
+
+    return partial?.key ?? null;
 }
 
 type AvatarSelectorProps = {

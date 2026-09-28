@@ -13,6 +13,7 @@ import {
 
 import SupportAdminLinks from "@/components/admin/SupportAdminLinks";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { resolveDisplayName } from "@/lib/auth/display";
 
 import { logout } from "./actions";
 
@@ -120,7 +121,11 @@ export default async function AdminPage() {
 
                         <p className="mt-3 text-sm text-white/40">
                             Hoş geldin,{" "}
-                            {profile.full_name || profile.email}.
+                            {resolveDisplayName({
+                                fullName: profile.full_name,
+                                email: profile.email,
+                            })}
+                            .
                         </p>
                     </div>
 

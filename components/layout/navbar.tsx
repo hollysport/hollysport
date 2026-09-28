@@ -11,6 +11,11 @@ import {
 import { UserRound } from "lucide-react";
 
 import AuthDialog from "@/components/auth/auth-dialog";
+import { AvatarIcon } from "@/components/auth/avatar-selector";
+import {
+    resolveAvatarKey,
+    resolveDisplayName,
+} from "@/lib/auth/display";
 import { createClient } from "@/lib/supabase/client";
 
 const whatsappGroupUrl =
@@ -60,22 +65,93 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [authOpen, setAuthOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    /* Navbar'da görünen ad/.avatar — profiles satırı + user_metadata */
+    const [displayName, setDisplayName] = useState<string | null>(
+        null,
+    );
+    const [avatarKey, setAvatarKey] = useState<string | null>(null);
 
     const supabase = useMemo(() => createClient(), []);
+
+    /*
+     * Kimlik bilgileri iki kaynaktan birleştirilir:
+     * 1) auth.user_metadata (kayıt anında yazılır)
+     * 2) profiles satırı (profil sayfasından güncellenmiş olabilir)
+     * Eksik olan her alan diğer kaynaktan tamamlanır.
+     */
+    async function applyIdentity(user: {
+        id?: string;
+        email?: string | null;
+        user_metadata?: Record<string, unknown> | null;
+    } | null) {
+        if (!user) {
+            setDisplayName(null);
+            setAvatarKey(null);
+            return;
+        }
+
+        const metadata = user.user_metadata ?? null;
+
+        setDisplayName(
+            resolveDisplayName({
+                email: user.email,
+                metadata,
+            }),
+        );
+        setAvatarKey(
+            resolveAvatarKey({ metadata }),
+        );
+
+        if (!user.id) return;
+
+        try {
+            const { data } = await supabase
+                .from("profiles")
+                .select("full_name, email, avatar_url")
+                .eq("id", user.id)
+                .maybeSingle();
+
+            if (!data) return;
+
+            setDisplayName(
+                resolveDisplayName({
+                    fullName: data.full_name,
+                    email: data.email ?? user.email,
+                    metadata,
+                }),
+            );
+            setAvatarKey(
+                resolveAvatarKey({
+                    avatarUrl: data.avatar_url,
+                    metadata,
+                }) ?? resolveAvatarKey({ metadata }),
+            );
+        } catch (error) {
+            console.error(
+                "Navbar profil bilgisi alınamadı:",
+                error,
+            );
+        }
+    }
 
     // Oturum durumunu başlangıçta al ve değişiklikleri canlı dinle
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
-            setIsLoggedIn(Boolean(data.session?.user));
+            const user = data.session?.user ?? null;
+            setIsLoggedIn(Boolean(user));
+            applyIdentity(user);
         });
 
         const {
             data: { subscription },
         } = supabase.auth.onAuthStateChange((_event, session) => {
-            setIsLoggedIn(Boolean(session?.user));
+            const user = session?.user ?? null;
+            setIsLoggedIn(Boolean(user));
+            applyIdentity(user);
         });
 
         return () => subscription.unsubscribe();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [supabase]);
 
     function isActive(href: string) {
@@ -161,10 +237,24 @@ export default function Navbar() {
                     {isLoggedIn ? (
                         <Link
                             href="/profile"
-                            aria-label="Profilim"
+                            aria-label={
+                                displayName
+                                    ? `${displayName} — Profilim`
+                                    : "Profilim"
+                            }
+                            title={
+                                displayName ?? "Profilim"
+                            }
                             className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
                         >
-                            <UserRound className="h-5 w-5" />
+                            {avatarKey ? (
+                                <AvatarIcon
+                                    avatar={avatarKey}
+                                    className="h-5 w-5"
+                                />
+                            ) : (
+                                <UserRound className="h-5 w-5" />
+                            )}
                         </Link>
                     ) : (
                         <button
@@ -266,9 +356,17 @@ export default function Navbar() {
                                 <Link
                                     href="/profile"
                                     onClick={() => setIsOpen(false)}
-                                    className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#27D66B]/40 px-6 text-sm font-semibold text-[#27D66B] transition hover:bg-[#27D66B]/10"
+                                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#27D66B]/40 px-6 text-sm font-semibold text-[#27D66B] transition hover:bg-[#27D66B]/10"
                                 >
-                                    Profilim
+                                    {avatarKey && (
+                                        <AvatarIcon
+                                            avatar={avatarKey}
+                                            className="h-4 w-4"
+                                        />
+                                    )}
+                                    {displayName
+                                        ? `${displayName}`
+                                        : "Profilim"}
                                 </Link>
                             ) : (
                                 <button
