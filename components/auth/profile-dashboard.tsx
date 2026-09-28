@@ -27,6 +27,7 @@ import {
     resolveAvatarKey,
     resolveDisplayName,
 } from "@/lib/auth/display";
+import { membershipBadge, resolveJoinDate } from "@/lib/auth/membership";
 
 type Profile = {
     id: string;
@@ -109,21 +110,10 @@ function calculateAge(birthDate: string): number | null {
     return age >= 0 ? age : null;
 }
 
-function membershipLabel(joinDate: string | null): string {
-    if (!joinDate) return "Yeni Üye";
-
-    const join = new Date(joinDate).getTime();
-    if (Number.isNaN(join)) return "Yeni Üye";
-
-    const months =
-        (Date.now() - join) / (1000 * 60 * 60 * 24 * 30.44);
-
-    if (months < 3) return "Yeni / 1-3 Aylık Üye";
-    if (months < 6) return "3-6 Aylık Üye";
-    if (months < 12) return "6-12 Aylık Üye";
-    if (months < 24) return "1-2 Yıllık Üye";
-    return "2+ Yıllık Üye";
-}
+/*
+ * Üyelik rozeti artık lib/auth/membership.ts içindeki
+ * membershipBadge ile hesaplanır (join_date + user_metadata yedeği).
+ */
 
 function parseExercises(exercises: Json): SavedExercise[] {
     if (!Array.isArray(exercises)) return [];
@@ -341,6 +331,12 @@ export default function ProfileDashboard({
         ? calculateAge(profile.birth_date)
         : (profile?.age ?? null);
 
+    // Üyelik başlangıcı: profiles.join_date -> user_metadata.join_date
+    const resolvedJoinDate = resolveJoinDate({
+        joinDate: profile?.join_date,
+        metadata,
+    });
+
     return (
         <div className="mx-auto max-w-5xl">
             {/* Profil bilgi kartı */}
@@ -375,10 +371,21 @@ export default function ProfileDashboard({
                             </p>
 
                             <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold">
-                                <span className="rounded-full border border-[#27D66B]/40 bg-[#27D66B]/10 px-3 py-1 text-[#27D66B]">
-                                    {membershipLabel(
-                                        profile?.join_date ?? null,
-                                    )}
+                                <span
+                                    title={
+                                        resolvedJoinDate
+                                            ? `Üyelik başlangıcı: ${new Date(
+                                                  resolvedJoinDate,
+                                              ).toLocaleDateString("tr-TR")}`
+                                            : undefined
+                                    }
+                                    className="rounded-full border border-[#27D66B]/40 bg-[#27D66B]/10 px-3 py-1 text-[#27D66B]"
+                                >
+                                    {membershipBadge({
+                                        joinDate:
+                                            profile?.join_date,
+                                        metadata,
+                                    })}
                                 </span>
 
                                 {age !== null && (

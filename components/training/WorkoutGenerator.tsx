@@ -22,6 +22,7 @@ import {
 } from "@/lib/data/exercises";
 import ProgramRequestDialog from "./ProgramRequestDialog";
 import { MultiSelect, SingleSelect } from "./select-controls";
+import { saveWorkout } from "@/app/training/actions";
 import type { Gender } from "./AnatomyMap3D";
 
 const AnatomyMap3D = dynamic(() => import("./AnatomyMap3D"), {
@@ -164,25 +165,39 @@ export default function WorkoutGenerator() {
             })),
         );
 
-        const { error } = await supabase
-            .from("saved_workouts")
-            .insert({
-                user_id: userId,
-                title:
-                    template !== "custom" && templateInfo
-                        ? `${templateInfo.label} Programı`
-                        : "Antrenman Programı",
-                goal,
-                environment,
-                muscles: selectedMuscles,
-                exercises: flatExercises,
-            });
+        /*
+         * Kayıt sunucuda yapılır: user_id SSR oturumundan gelir,
+         * RLS/şema engelleri server action içinde ayrıştırılır ve
+         * gerçek hata (message/code/details) terminale yazılır.
+         */
+        const result = await saveWorkout({
+            title:
+                template !== "custom" && templateInfo
+                    ? `${templateInfo.label} Programı`
+                    : "Antrenman Programı",
+            goal,
+            environment,
+            muscles: selectedMuscles,
+            exercises: flatExercises,
+        });
 
-        if (error) {
-            console.error(error);
+        if (!result.success) {
+            console.error(
+                "WorkoutGenerator handleSave başarısız:",
+                {
+                    message: result.error,
+                    userId,
+                    muscles: selectedMuscles,
+                    exerciseCount: flatExercises.length,
+                    goal,
+                    environment,
+                },
+            );
+
             setSaveState("idle");
             setSaveError(
-                "Program kaydedilemedi. Lütfen tekrar dene.",
+                result.error ??
+                    "Program kaydedilemedi. Lütfen tekrar dene.",
             );
             return;
         }
