@@ -2,6 +2,12 @@
 
 Son güncelleme: 2026-09-23
 
+## 2026-09-27 (devam): Kayıt artık Server Action + admin upsert
+
+- Yeni `app/auth/actions.ts` → `registerUser`: SSR client ile `signUp` (captchaToken dahil) → `user.id` döner dönmez **service-role admin client ile `profiles.upsert({onConflict:'id'})`** (full_name, avatar_url, gender, birth_date, interested_sports, join_date=NOW/geçmiş ISO). SQL trigger bağımlılığı kaldırıldı; RLS bypass. Tüm hatalar try-catch + console.error (code/status dahil).
+- `auth-dialog.tsx` handleRegister bu action'ı çağırır; Turnstile token hata durumunda sıfırlanır.
+- tsc / eslint / build temiz.
+
 ## 2026-09-26 (devam 4): Profil → tam donanımlı üyelik paneli
 
 - `components/auth/profile-dashboard.tsx` yeniden yazıldı: 3 sekmeli panel (Antrenmanlarım / Etkinliklerim / Ayarlar), üstte tüm üyelik bilgileri kartı (avatar, ad, e-posta, üyelik rozeti, doğumdan hesaplanan yaş, cinsiyet, ilgi sporları rozetleri).

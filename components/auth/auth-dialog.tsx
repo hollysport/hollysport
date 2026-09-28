@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
+import { registerUser } from "@/app/auth/actions";
 import TurnstileWidget from "@/components/security/TurnstileWidget";
 import AvatarSelector from "./avatar-selector";
 
@@ -223,34 +224,24 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
         const joinDate =
             isVeteran && duration
                 ? computeJoinDate(duration.monthsBack)
-                : undefined;
+                : null;
 
-        const { error } = await supabase.auth.signUp({
+        const result = await registerUser({
             email: registerEmail.trim(),
             password: registerPassword,
-            options: {
-                captchaToken: turnstileToken ?? undefined,
-                data: {
-                    full_name: fullName.trim(),
-                    birth_date: birthDate || null,
-                    gender: gender || null,
-                    // Trigger uyumluluğu için iki anahtar da gönderilir
-                    avatar,
-                    avatar_url: avatar,
-                    interested_sports: sports,
-                    join_date: joinDate,
-                },
-            },
+            fullName: fullName.trim(),
+            avatar: avatar ?? "dumbbell",
+            gender: gender || null,
+            birthDate: birthDate || null,
+            interestedSports: sports,
+            joinDate,
+            captchaToken: turnstileToken,
         });
 
         setLoading(false);
 
-        if (error) {
-            setErrorMessage(
-                error.message.includes("already registered")
-                    ? "Bu e-posta adresiyle zaten bir hesap var."
-                    : `Kayıt tamamlanamadı: ${error.message}`,
-            );
+        if (!result.success) {
+            setErrorMessage(result.error ?? "Kayıt tamamlanamadı.");
 
             // Turnstile token tek kullanımlıktır; yeniden üret
             setTurnstileToken(null);
