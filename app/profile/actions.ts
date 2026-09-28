@@ -5,6 +5,10 @@ import "server-only";
 import { createClient as createJsClient } from "@supabase/supabase-js";
 
 import { createClient } from "@/lib/supabase/server";
+import {
+    isValidPhone,
+    PHONE_INVALID_MESSAGE,
+} from "@/lib/validation/phone";
 import type { Database } from "@/lib/supabase/database.types";
 
 export type DeleteAccountResult = {
@@ -227,6 +231,13 @@ export async function saveProfile(
 
     if (!input.fullName.trim()) {
         return { success: false, error: "Ad soyad zorunludur." };
+    }
+
+    if (!isValidPhone(input.phone ?? "")) {
+        return {
+            success: false,
+            error: PHONE_INVALID_MESSAGE,
+        };
     }
 
     const { error } = await supabase

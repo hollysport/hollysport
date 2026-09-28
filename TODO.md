@@ -45,6 +45,9 @@
   - `components/gallery/GalleryGrid.tsx` → effect içinde senkron `setShuffledImages`.
 - [ ] Form rate-limit RPC'sinin (`check_and_record_form_rate_limit`) davranışını yük altında test et.
 - [ ] Registration akışı uçtan uca: doluluk, son başvuru geçmiş, kapalı kayıt, mükerrer e-posta (409) senaryoları.
+- [ ] Tek tuşla etkinlik katılım uçtan uca (üye): ilk kayıtta **"Kaydınız tamamlanmıştır"**, ikinci denemede yalnızca gerçek kayıt varsa "zaten kayıtlısın"; iptal/ret sonrası yeniden katılım `pending` olarak açılmalı.
+- [ ] Telefon validasyonu: kayıt formu + profil (9 haneli, 16 haneli, harf içeren numaralar reddedilmeli; boş bırakılabilir).
+- [ ] Mobil görünüm: profil sekme barı (Antrenmanlarım / Etkinliklerim / **Düzenle**) dar ekranda yatay kaydırılabilmeli; 3D model etiketleri kas seçiminin tıklamasını engellememeli.
 
 ## Özellik geliştirme
 

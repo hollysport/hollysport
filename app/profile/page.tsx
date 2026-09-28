@@ -81,7 +81,7 @@ export default async function ProfilePage() {
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-[#050505] px-6 py-24 text-white md:px-10 lg:px-16">
+            <main className="min-h-screen bg-[#050505] px-4 py-16 text-white sm:px-6 md:px-10 md:py-24 lg:px-16">
                 <ProfileDashboard
                     email={user.email ?? ""}
                     profile={profile}

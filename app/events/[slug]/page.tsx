@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isActiveRegistrationStatus } from "@/lib/events/registration-status";
 import QuickJoinButton from "@/components/events/quick-join-button";
 import { getCurrentTimestamp } from "@/lib/time";
 
@@ -132,24 +133,24 @@ export default async function EventDetailPage({
 
             const { data: byUser } = await supabaseAdmin
                 .from("event_registrations")
-                .select("id")
+                .select("id, status")
                 .eq("event_id", event.id)
                 .eq("user_id", user.id)
                 .maybeSingle();
 
+            const { data: byEmail } = user.email
+                ? await supabaseAdmin
+                      .from("event_registrations")
+                      .select("id, status")
+                      .eq("event_id", event.id)
+                      .eq("email", user.email)
+                      .maybeSingle()
+                : { data: null };
+
+            /* Yalnızca aktif (onaylı/bekleyen) kayıt "zaten kayıtlı" sayılır */
             alreadyRegistered =
-                Boolean(byUser) ||
-                Boolean(
-                    user.email &&
-                        (
-                            await supabaseAdmin
-                                .from("event_registrations")
-                                .select("id")
-                                .eq("event_id", event.id)
-                                .eq("email", user.email)
-                                .maybeSingle()
-                        ).data,
-                );
+                isActiveRegistrationStatus(byUser?.status) ||
+                isActiveRegistrationStatus(byEmail?.status);
         } catch (lookupError) {
             console.error(
                 "EventDetailPage: kayıt kontrolü başarısız:",

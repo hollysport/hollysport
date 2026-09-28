@@ -6,6 +6,10 @@ import { CheckCircle2, Loader2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { registerUser } from "@/app/auth/actions";
 import TurnstileWidget from "@/components/security/TurnstileWidget";
+import {
+    isValidPhone,
+    PHONE_INVALID_MESSAGE,
+} from "@/lib/validation/phone";
 import AvatarSelector from "./avatar-selector";
 
 type AuthView = "login" | "register" | "forgot_password";
@@ -196,6 +200,10 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
 
         if (!avatar) {
             errors.avatar = "Bir avatar simgesi seç.";
+        }
+
+        if (phone.trim() && !isValidPhone(phone.trim())) {
+            errors.phone = PHONE_INVALID_MESSAGE;
         }
 
         setFieldErrors(errors);
@@ -645,7 +653,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                             </label>
                         </div>
 
-                        {/* Telefon — zorunlu değil, doğrulamasız */}
+                        {/* Telefon — opsiyonel; doluysa 10-15 rakam kontrolü */}
                         <label className="block">
                             <span className={labelClass}>
                                 Telefon Numarası{" "}
@@ -655,15 +663,36 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                             </span>
                             <input
                                 type="tel"
+                                inputMode="tel"
                                 maxLength={20}
                                 autoComplete="tel"
-                                value={phone}
-                                onChange={(event) =>
-                                    setPhone(event.target.value)
+                                aria-invalid={
+                                    fieldErrors.phone
+                                        ? true
+                                        : undefined
                                 }
+                                value={phone}
+                                onChange={(event) => {
+                                    setPhone(event.target.value);
+
+                                    if (fieldErrors.phone) {
+                                        setFieldErrors(
+                                            (current) => {
+                                                const next = {
+                                                    ...current,
+                                                };
+                                                delete next.phone;
+                                                return next;
+                                            },
+                                        );
+                                    }
+                                }}
                                 placeholder="05XX XXX XX XX"
                                 className={inputClass}
                             />
+                            <FieldError>
+                                {fieldErrors.phone ?? null}
+                            </FieldError>
                         </label>
 
                         <div>

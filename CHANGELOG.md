@@ -2,6 +2,14 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-09-29 — UX / mobil düzeltmeler (commit bekliyor)
+
+- **Etkinlik kayıt mesajı:** `joinEvent()` artık yalnızca DB'de gerçekten aktif (pending/approved/waitlist) bir kayıt varsa `already` döndürür; başarılı ilk kayıtta `message: "Kaydınız tamamlanmıştır."` döner. İptal/ret sonrası başvurular `pending`'e çekilerek yeniden açılabilir (artık yanlış "zaten kayıtlısın" yok). `QuickJoinButton` "yeni kayıt" (`joined`) ve `existing` durumlarını ayrı ayrı görselleştiriyor; sunucu logu (`23505`/`mevcut kayıt`) teşhis için duruyor.
+- **Telefon validasyonu:** yeni `lib/validation/phone.ts` (`isValidPhone`, ayraçları temizleyip 10-15 rakam zorunlu; boş = opsiyonel). Kayıt formu (`fieldErrors.phone`, input hatalıkken temizlenir), profil düzenleme (`formError`) ve **sunucu tarafı** (`registerUser`, `saveProfile`) aynı kuralı uyguluyor.
+- **Profil mobil:** sekme adı "Ayarlar" → **"Düzenle"**; sekme barı `overflow-x-auto + whitespace-nowrap + shrink-0` (mobilde tamamen kaydırılabilir), profil kartı başlığı/avatır/aksiyon butonları `flex-wrap` + kırılabilir metin, sayfa iç dolgusu mobilde azaltıldı.
+- **Admin destekçiler:** başlığa "← Panele Dön" butonu (`/admin`).
+- **3D model etiketleri:** kas etiketleri `text-[11px] font-medium`, daha ince çerçeve/parlaklık, `pointer-events-none`; hata ve hover etiketleri de küçültüldü (tıklamayı bloklamıyor).
+
 ## 2026-09-29 (commit bekliyor)
 
 - **Profil kartı — doğum tarihi gizlendi:** karttaki "Doğum: …" rozeti arayüzden kaldırıldı (yaş `birth_date`'ten hesaplanmaya devam eder, tarih kendisi gösterilmez).

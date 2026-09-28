@@ -5,6 +5,10 @@ import "server-only";
 import { createClient as createJsClient } from "@supabase/supabase-js";
 
 import { verifyTurnstileToken } from "@/lib/security/turnstile";
+import {
+    isValidPhone,
+    PHONE_INVALID_MESSAGE,
+} from "@/lib/validation/phone";
 
 export type RegisterInput = {
     email: string;
@@ -58,6 +62,18 @@ export async function registerUser(
             return {
                 success: false,
                 error: "Sunucu yapılandırması eksik.",
+            };
+        }
+
+        // 0.5) Telefon doğrulaması (opsiyonel alan, doluysa zorunlu)
+        if (!isValidPhone(input.phone ?? "")) {
+            console.error(
+                "registerUser: geçersiz telefon numarası:",
+                JSON.stringify(input.phone ?? ""),
+            );
+            return {
+                success: false,
+                error: PHONE_INVALID_MESSAGE,
             };
         }
 

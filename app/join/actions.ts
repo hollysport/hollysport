@@ -4,11 +4,14 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { ACTIVE_REGISTRATION_STATUSES } from "@/lib/events/registration-status";
 
 export type JoinEventResult = {
     success: boolean;
-    /* Daha önce kayıt var */
+    /* Daha önce kayıt var (yalnızca gerçekten aktif bir satır) */
     already?: boolean;
+    /* Başarıda kullanıcıya gösterilecek metin */
+    message?: string;
     error?: string;
 };
 
@@ -163,26 +166,95 @@ export async function joinEvent(
         };
         const gender = genderMap[rawGender] ?? "";
 
-        // 4) Daha önce kayıt var mı? (kendi user_id'si veya e-postası)
-        const { data: byUser } = await supabaseAdmin
-            .from("event_registrations")
-            .select("id, status")
-            .eq("event_id", eventId)
-            .eq("user_id", user.id)
-            .maybeSingle();
+        // 4) Gerçekten var olan bir kayıt var mı?
+        //    (kendi user_id'si, yoksa aynı e-postayla yapılmış başvuru)
+        const { data: byUser, error: byUserError } =
+            await supabaseAdmin
+                .from("event_registrations")
+                .select("id, status")
+                .eq("event_id", eventId)
+                .eq("user_id", user.id)
+                .maybeSingle();
 
-        const existing =
-            byUser ??
-            (
+        if (byUserError) {
+            console.warn("joinEvent: user_id mükerrer kontrolü:", {
+                message: byUserError.message,
+                code: byUserError.code,
+            });
+        }
+
+        let existing = byUser;
+
+        if (!existing) {
+            const { data: byEmail, error: byEmailError } =
                 await supabaseAdmin
                     .from("event_registrations")
                     .select("id, status")
                     .eq("event_id", eventId)
                     .eq("email", email)
-                    .maybeSingle()
-            ).data;
+                    .maybeSingle();
+
+            if (byEmailError) {
+                console.warn("joinEvent: email mükerrer kontrolü:", {
+                    message: byEmailError.message,
+                    code: byEmailError.code,
+                });
+            }
+
+            existing = byEmail;
+        }
 
         if (existing) {
+            const existingStatus = (
+                existing.status ?? ""
+            ).toLowerCase();
+
+            // İptal/ret sonrası yeniden katılım: satırı pending'e çek
+            if (!ACTIVE_REGISTRATION_STATUSES.has(existingStatus)) {
+                const { error: reactivateError } =
+                    await supabaseAdmin
+                        .from("event_registrations")
+                        .update({
+                            status: "pending",
+                            user_id: user.id,
+                            full_name: fullName,
+                            email,
+                            phone,
+                            gender,
+                            notes: "Profil bilgileriyle tek tuşla katılım.",
+                        })
+                        .eq("id", existing.id);
+
+                if (reactivateError) {
+                    console.error(
+                        "joinEvent: yeniden kayıt güncellenemedi:",
+                        {
+                            message: reactivateError.message,
+                            code: reactivateError.code,
+                            registrationId: existing.id,
+                        },
+                    );
+
+                    return {
+                        success: false,
+                        error: `Başvuru oluşturulamadı: ${reactivateError.message}`,
+                    };
+                }
+
+                console.log(
+                    `joinEvent: yeniden katılım alındı (registration=${existing.id}, event=${eventId}, user=${user.id})`,
+                );
+
+                return {
+                    success: true,
+                    message: "Kaydınız tamamlanmıştır.",
+                };
+            }
+
+            console.log(
+                `joinEvent: zaten kayıtlı (registration=${existing.id}, status=${existingStatus}, user=${user.id})`,
+            );
+
             return {
                 success: false,
                 already: true,
@@ -216,7 +288,12 @@ export async function joinEvent(
                 payload: { full_name: fullName, email, phone, gender },
             });
 
+            /* UNIQUE ihlali = veritabanında gerçekten kayıt var */
             if (insertError.code === "23505") {
+                console.log(
+                    `joinEvent: 23505 → mevcut kayıt (event=${eventId}, user=${user.id})`,
+                );
+
                 return {
                     success: false,
                     already: true,
@@ -234,7 +311,10 @@ export async function joinEvent(
             `joinEvent: katılım alındı (event=${eventId}, user=${user.id}, email=${email}, phone=${phone || "yok"})`,
         );
 
-        return { success: true };
+        return {
+            success: true,
+            message: "Kaydınız tamamlanmıştır.",
+        };
     } catch (unexpectedError) {
         console.error("joinEvent beklenmeyen hata:", {
             message:

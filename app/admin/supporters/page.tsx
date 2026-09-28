@@ -102,7 +102,14 @@ export default async function SupportersAdminPage({
                         Admin Paneli
                     </p>
 
-                    <h1 className="mt-2 text-3xl font-bold text-zinc-950">
+                    <Link
+                        href="/admin"
+                        className="mt-2 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:border-zinc-950 hover:text-zinc-950"
+                    >
+                        ← Panele Dön
+                    </Link>
+
+                    <h1 className="mt-4 text-3xl font-bold text-zinc-950">
                         Yayınlanan Destekçiler
                     </h1>
 

@@ -2,7 +2,12 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { CheckCircle2, Loader2, UserCheck } from "lucide-react";
+import {
+    CheckCircle2,
+    Loader2,
+    TicketCheck,
+    UserCheck,
+} from "lucide-react";
 
 import { joinEvent } from "@/app/join/actions";
 
@@ -22,6 +27,10 @@ type QuickJoinButtonProps = {
  * Misafir kullanıcılar için uzun başvuru formu
  * (`registration-form.tsx`) bu bileşenle değişmez; yalnızca
  * oturum açılmışsa bu buton formun yerine gösterilir.
+ *
+ * Bildirim ayrımı:
+ * - "joined"  → bu tıklamada YENİ kayıt oluşturuldu → "Kaydınız tamamlanmıştır."
+ * - "existing" → veritabanında zaten vardı → "Bu etkinliğe zaten kayıtlısın."
  */
 export default function QuickJoinButton({
     eventId,
@@ -30,20 +39,34 @@ export default function QuickJoinButton({
     variant = "card",
 }: QuickJoinButtonProps) {
     const [isPending, startTransition] = useTransition();
-    const [joined, setJoined] = useState(alreadyRegistered);
+    const [state, setState] = useState<
+        "idle" | "joined" | "existing"
+    >(alreadyRegistered ? "existing" : "idle");
+    const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
     const isInline = variant === "inline";
 
     function handleJoin() {
-        if (isPending || joined) return;
+        if (isPending || state !== "idle") return;
 
         setErrorMessage("");
+        setSuccessMessage("");
+
         startTransition(async () => {
             const result = await joinEvent(eventId);
 
-            if (result.success || result.already) {
-                setJoined(true);
+            if (result.success) {
+                setState("joined");
+                setSuccessMessage(
+                    result.message ?? "Kaydınız tamamlanmıştır.",
+                );
+                return;
+            }
+
+            /* Yalnızca sunucu gerçekten mevcut bir satır bulduysa */
+            if (result.already) {
+                setState("existing");
                 return;
             }
 
@@ -54,11 +77,11 @@ export default function QuickJoinButton({
         });
     }
 
-    if (joined) {
+    if (state === "existing") {
         if (isInline) {
             return (
                 <div className="mt-8 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 p-5 text-center">
-                    <CheckCircle2 className="mx-auto h-8 w-8 text-[#27D66B]" />
+                    <TicketCheck className="mx-auto h-8 w-8 text-[#27D66B]" />
 
                     <p className="mt-3 text-sm font-semibold text-[#27D66B]">
                         Bu etkinliğe zaten kayıtlısın.
@@ -76,15 +99,68 @@ export default function QuickJoinButton({
 
         return (
             <div className="h-fit rounded-3xl border border-[#27D66B]/30 bg-[#111111] p-7 text-center md:p-10">
-                <CheckCircle2 className="mx-auto h-12 w-12 text-[#27D66B]" />
+                <TicketCheck className="mx-auto h-12 w-12 text-[#27D66B]" />
 
                 <h2 className="mt-5 text-2xl font-bold">
-                    Kaydın mevcut
+                    Bu etkinliğe zaten kayıtlısın
                 </h2>
 
                 <p className="mt-3 leading-7 text-white/50">
-                    &quot;{eventTitle}&quot; etkinliğine zaten kayıtlısın.
-                    Katılım durumunu profil sayfandan takip edebilirsin.
+                    &quot;{eventTitle}&quot; kaydın sistemde mevcut.
+                    Katılım durumunu profil sayfandan takip
+                    edebilirsin.
+                </p>
+
+                <Link
+                    href="/profile"
+                    className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                >
+                    <UserCheck className="h-4 w-4" />
+                    Etkinliklerimi Gör
+                </Link>
+            </div>
+        );
+    }
+
+    if (state === "joined") {
+        if (isInline) {
+            return (
+                <div
+                    role="status"
+                    className="mt-8 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 p-5 text-center"
+                >
+                    <CheckCircle2 className="mx-auto h-8 w-8 text-[#27D66B]" />
+
+                    <p className="mt-3 text-sm font-semibold text-[#27D66B]">
+                        {successMessage}
+                    </p>
+
+                    <Link
+                        href="/profile"
+                        className="mt-3 inline-block text-xs font-semibold uppercase tracking-wider text-white/50 transition hover:text-[#27D66B]"
+                    >
+                        Etkinliklerimi görüntüle →
+                    </Link>
+                </div>
+            );
+        }
+
+        return (
+            <div
+                role="status"
+                className="h-fit rounded-3xl border border-[#27D66B]/30 bg-[#111111] p-7 text-center md:p-10"
+            >
+                <CheckCircle2 className="mx-auto h-12 w-12 text-[#27D66B]" />
+
+                <h2 className="mt-5 text-2xl font-bold text-[#27D66B]">
+                    {successMessage}
+                </h2>
+
+                <p className="mt-3 leading-7 text-white/50">
+                    &quot;{eventTitle}&quot; etkinliğine başvurun
+                    alındı. Durumunu profil sayfandaki
+                    &quot;Etkinliklerim&quot; sekmesinden
+                    takip edebilirsin.
                 </p>
 
                 <Link

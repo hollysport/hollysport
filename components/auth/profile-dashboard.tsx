@@ -31,6 +31,10 @@ import {
     resolveDisplayName,
 } from "@/lib/auth/display";
 import { membershipBadge, resolveJoinDate } from "@/lib/auth/membership";
+import {
+    isValidPhone,
+    PHONE_INVALID_MESSAGE,
+} from "@/lib/validation/phone";
 
 type Profile = {
     id: string;
@@ -334,6 +338,13 @@ export default function ProfileDashboard({
         event.preventDefault();
         setFormError("");
         setSavedMessage("");
+
+        // Telefon: opsiyonel, doluysa 10-15 rakam formatı zorunlu
+        if (editPhone.trim() && !isValidPhone(editPhone.trim())) {
+            setFormError(PHONE_INVALID_MESSAGE);
+            return;
+        }
+
         setSaving(true);
 
         const result = await saveProfile({
@@ -441,21 +452,21 @@ export default function ProfileDashboard({
         <div className="mx-auto max-w-5xl">
             {/* Profil bilgi kartı */}
             <header className="overflow-hidden rounded-3xl border border-white/10 bg-[#111111]">
-                <div className="flex flex-wrap items-center justify-between gap-6 border-b border-white/10 p-7 md:p-9">
-                    <div className="flex items-center gap-5">
-                        <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 text-[#27D66B]">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 p-5 sm:gap-6 sm:p-7 md:p-9">
+                    <div className="flex min-w-0 flex-1 items-center gap-4 sm:gap-5">
+                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 text-[#27D66B] sm:h-20 sm:w-20">
                             <AvatarIcon
                                 avatar={editAvatar}
-                                className="h-10 w-10"
+                                className="h-8 w-8 sm:h-10 sm:w-10"
                             />
                         </div>
 
-                        <div>
+                        <div className="min-w-0">
                             <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
                                 Profilim
                             </span>
 
-                            <h1 className="mt-1 text-2xl font-bold sm:text-3xl">
+                            <h1 className="mt-1 break-words text-xl font-bold sm:text-2xl md:text-3xl">
                                 {resolveDisplayName({
                                     fullName:
                                         editName ||
@@ -466,7 +477,7 @@ export default function ProfileDashboard({
                                 })}
                             </h1>
 
-                            <p className="mt-1 text-sm text-white/45">
+                            <p className="mt-1 break-all text-sm text-white/45">
                                 {profile?.email || email}
                             </p>
 
@@ -528,7 +539,7 @@ export default function ProfileDashboard({
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                         <button
                             type="button"
                             onClick={() => setTab("settings")}
@@ -554,13 +565,13 @@ export default function ProfileDashboard({
                     </div>
                 </div>
 
-                {/* Sekme barı */}
-                <div className="flex gap-1 px-5 pt-4 sm:px-7">
+                {/* Sekme barı — mobilde yatay kaydırılabilir (sığmazsa kaydır) */}
+                <div className="flex gap-1 overflow-x-auto scroll-smooth px-5 pt-4 sm:px-7">
                     {(
                         [
                             ["workouts", "Antrenmanlarım", Dumbbell],
                             ["events", "Etkinliklerim", CalendarDays],
-                            ["settings", "Ayarlar", Settings2],
+                            ["settings", "Düzenle", Settings2],
                         ] as const
                     ).map(([key, label, Icon]) => (
                         <button
@@ -568,7 +579,7 @@ export default function ProfileDashboard({
                             type="button"
                             onClick={() => setTab(key)}
                             aria-pressed={tab === key}
-                            className={`relative inline-flex items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition ${
+                            className={`relative inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-t-xl px-4 py-3 text-sm font-semibold transition ${
                                 tab === key
                                     ? "bg-[#0a0a0a] text-[#27D66B] after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:bg-[#27D66B]"
                                     : "text-white/50 hover:text-white"
@@ -978,6 +989,7 @@ export default function ProfileDashboard({
                                 </span>
                                 <input
                                     type="tel"
+                                    inputMode="tel"
                                     maxLength={20}
                                     autoComplete="tel"
                                     value={editPhone}
@@ -989,6 +1001,10 @@ export default function ProfileDashboard({
                                     placeholder="05XX XXX XX XX"
                                     className={inputClass}
                                 />
+                                <p className="mt-2 text-xs leading-5 text-white/35">
+                                    10-15 rakam; örn. 0555 123 45 67
+                                    veya +90 555 123 45 67
+                                </p>
                             </label>
 
                             <div>

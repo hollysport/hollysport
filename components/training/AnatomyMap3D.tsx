@@ -146,7 +146,7 @@ function HitboxMesh({
 function ErrorFallback() {
     return (
         <Html center zIndexRange={LABEL_Z_INDEX_RANGE}>
-            <div className="whitespace-nowrap rounded-full border border-red-500/30 bg-[#0a0a0a]/90 px-5 py-2.5 text-sm font-medium text-red-300">
+            <div className="pointer-events-none whitespace-nowrap rounded-full border border-red-500/30 bg-[#0a0a0a]/90 px-3 py-1.5 text-xs font-medium leading-4 text-red-300">
                 3D model yüklenemedi.
             </div>
         </Html>
@@ -262,9 +262,9 @@ export default function AnatomyMap3D({
                                     transition: "opacity 0.2s ease",
                                 }}
                             >
-                                <div className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#27D66B]/60 bg-[#050505]/85 px-3.5 py-1.5 shadow-[0_0_18px_rgba(39,214,107,0.35)]">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-[#27D66B]" />
-                                    <span className="text-xs font-bold text-[#27D66B]">
+                                <div className="flex items-center gap-1 whitespace-nowrap rounded-full border border-[#27D66B]/50 bg-[#050505]/85 px-2.5 py-1 shadow-[0_0_10px_rgba(39,214,107,0.25)]">
+                                    <span className="h-1 w-1 rounded-full bg-[#27D66B]" />
+                                    <span className="text-[11px] font-medium leading-4 text-[#27D66B]">
                                         {group.label} Aktif
                                     </span>
                                 </div>
@@ -327,7 +327,7 @@ export default function AnatomyMap3D({
                 />
 
                 {hoveredLabel && (
-                    <div className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded-full border border-[#27D66B]/40 bg-[#050505]/80 px-4 py-1.5 text-xs font-semibold text-[#27D66B]">
+                    <div className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded-full border border-[#27D66B]/40 bg-[#050505]/80 px-3 py-1 text-[11px] font-medium leading-4 text-[#27D66B]">
                         {hoveredLabel}
                     </div>
                 )}
