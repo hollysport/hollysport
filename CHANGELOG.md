@@ -4,6 +4,15 @@
 
 ## 2026-09-29 (commit bekliyor)
 
+- **Profil kartı — doğum tarihi gizlendi:** karttaki "Doğum: …" rozeti arayüzden kaldırıldı (yaş `birth_date`'ten hesaplanmaya devam eder, tarih kendisi gösterilmez).
+- **Telefon numarası:** `profiles.phone` kolonu `database.types.ts`'e eklendi; kayıt formuna doğrulamasız, opsiyonel telefon alanı eklendi (`registerUser` → `user_metadata` + `profiles`), profil düzenleme formuna telefon input'u ve header'a telefon rozeti eklendi (`saveProfile`).
+- **Akıllı etkinlik kaydı:** `app/join/actions.ts` → `joinEvent()` server action (oturum + uygunluk kuralları public API ile aynı, `pending` başvuru, mükerrer kontrol). `/join?event=…` ve `/events/[slug]` sayfalarında **giriş yapmış üye** için uzun başvuru formu gizlenip tek tuşlu "Etkinliğe Katıl" butonu (`components/events/quick-join-button.tsx`, `card`/`inline` varyant) gösteriliyor; **misafir kullanıcıda uzun form olduğu gibi çalışıyor.**
+- **Katılımı iptal:** `cancelEventRegistration()` server action (sahiplik kontrolü, onaylı kayıtta önce RPC/`participant_count` düzeltmesi, sonra silme). Profil sayfası "Etkinliklerim" sekmesi artık gerçek başvuruları listeliyor ve "Katılımı İptal Et" butonu taşıyor.
+- **Admin katılımcı listesi:** adın hemen altında vurgulu **E-posta** ve **Telefon** bağlantıları (boşsa "belirtilmemiş" yedeğiyle).
+- **Admin destekçi filtresi:** `/admin/supporters` sayfasına "Tümü / Aktif / Pasif" filtre grubu (`?durum=` searchParams, sayı rozetleriyle).
+
+## 2026-09-29 — Şema/hizalama düzeltmeleri (commit bekliyor)
+
 - **Veri bütünlüğü — gerçek şema ile hizalama:** PostgREST openapi çıktısı üzerinden `saved_workouts` gerçek kolonları (`user_id, template_name, target_goal, exercises`) doğrulandı; kodun kullandığı `title/goal/environment/muscles` ve `profiles.age` kolonları tabloda yoktu (PGRST204). `app/training/actions.ts`, `app/profile/page.tsx`, `profile-dashboard.tsx` ve `database.types.ts` gerçek şemaya göre düzeltildi. `environment`/`muscles` bilgisi artık jsonb `exercises` içine gömülüyor.
 - **`saveWorkout` yeniden yazıldı:** whitelist payload + `JSON.parse(JSON.stringify())` JSONB normalizasyonu, `.select()`siz insert (RLS'te SELECT politikası yoksa oluşan PGRST116 sahte hatası önlenir), ilk hatada service-role fallback (`SUPABASE_SECRET_KEY ?? SUPABASE_SERVICE_ROLE_KEY`), arayüze gerçek `code + message` dönen hata metni.
 - **`registerUser` mühürleme + doğrulama:** upsert sonrası satır geri okunup `gender` / `interested_sports` / `join_date` gönderilen değerlerle karşılaştırılır; eşleşmezse bir kez daha yazılır, hâlâ eşleşmezse kayıt geri alınır (auth user + profil satırı silinir). Kayıt payload'ı hem istemcide (`[registerUser] gönderilen payload`) hem sunucuda loglanıyor.

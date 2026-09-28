@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import QuickJoinButton from "@/components/events/quick-join-button";
 import { getCurrentTimestamp } from "@/lib/time";
 
 type EventDetailPageProps = {
@@ -112,6 +114,49 @@ export default async function EventDetailPage({
         event.registration_open &&
         !deadlinePassed &&
         !isFull;
+
+    /*
+     * Akıllı etkinlik kaydı: giriş yapmış üye için uzun başvuru
+     * formuna yönlendirmek yerine tek tuşlu katılım butonu açılır;
+     * misafir kullanıcı `/join` formuna yönlendirilmeye devam eder.
+     */
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    let alreadyRegistered = false;
+
+    if (user && canRegister) {
+        try {
+            const supabaseAdmin = createAdminClient();
+
+            const { data: byUser } = await supabaseAdmin
+                .from("event_registrations")
+                .select("id")
+                .eq("event_id", event.id)
+                .eq("user_id", user.id)
+                .maybeSingle();
+
+            alreadyRegistered =
+                Boolean(byUser) ||
+                Boolean(
+                    user.email &&
+                        (
+                            await supabaseAdmin
+                                .from("event_registrations")
+                                .select("id")
+                                .eq("event_id", event.id)
+                                .eq("email", user.email)
+                                .maybeSingle()
+                        ).data,
+                );
+        } catch (lookupError) {
+            console.error(
+                "EventDetailPage: kayıt kontrolü başarısız:",
+                lookupError,
+            );
+        }
+    }
 
     return (
         <>
@@ -298,12 +343,25 @@ export default async function EventDetailPage({
                             </div>
 
                             {canRegister ? (
-                                <Link
-                                    href={`/join?event=${event.slug}`}
-                                    className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-black transition active:scale-[0.98] hover:bg-[#45e27f]"
-                                >
-                                    Etkinliğe katıl
-                                </Link>
+                                user ? (
+                                    <QuickJoinButton
+                                        eventId={event.id}
+                                        eventTitle={
+                                            event.title
+                                        }
+                                        alreadyRegistered={
+                                            alreadyRegistered
+                                        }
+                                        variant="inline"
+                                    />
+                                ) : (
+                                    <Link
+                                        href={`/join?event=${event.slug}`}
+                                        className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-black transition active:scale-[0.98] hover:bg-[#45e27f]"
+                                    >
+                                        Etkinliğe katıl
+                                    </Link>
+                                )
                             ) : (
                                 <div className="mt-8 rounded-2xl bg-white/5 px-5 py-4 text-center text-sm text-white/45">
                                     {isPast

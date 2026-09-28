@@ -128,31 +128,37 @@ function RegistrationList({
                                         {registration.full_name}
                                     </h3>
 
-                                    <div className="mt-4 space-y-2 text-sm text-white/45">
-                                        <p>
-                                            <span className="text-white/25">
-                                                E-posta:
-                                            </span>{" "}
-                                            <a
-                                                href={`mailto:${registration.email}`}
-                                                className="transition-colors hover:text-[#27D66B]"
-                                            >
-                                                {registration.email}
-                                            </a>
-                                        </p>
+                                    {/* İletişim bilgileri — adın hemen altında,
+                                        admin tek bakışta ulaşsın */}
+                                    <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                                        <a
+                                            href={`mailto:${registration.email}`}
+                                            className="font-semibold text-[#27D66B] transition-colors hover:underline"
+                                            title="E-posta gönder"
+                                        >
+                                            {registration.email ||
+                                                "E-posta belirtilmemiş"}
+                                        </a>
 
-                                        <p>
-                                            <span className="text-white/25">
-                                                Telefon:
-                                            </span>{" "}
+                                        {registration.phone ? (
                                             <a
                                                 href={`tel:${registration.phone}`}
-                                                className="transition-colors hover:text-[#27D66B]"
+                                                className="font-semibold text-white/75 transition-colors hover:text-[#27D66B]"
+                                                title="Telefon etkileşimi başlat"
                                             >
-                                                {registration.phone}
+                                                {
+                                                    registration.phone
+                                                }
                                             </a>
-                                        </p>
+                                        ) : (
+                                            <span className="text-white/30">
+                                                Telefon
+                                                belirtilmemiş
+                                            </span>
+                                        )}
+                                    </div>
 
+                                    <div className="mt-4 space-y-2 text-sm text-white/45">
                                         <p>
                                             <span className="text-white/25">
                                                 Cinsiyet:
@@ -160,9 +166,10 @@ function RegistrationList({
                                             <span className="font-semibold text-white/70">
                                                 {registration.gender
                                                     ? genderLabels[
-                                                    registration.gender
-                                                    ] ??
-                                                    registration.gender
+                                                      registration
+                                                          .gender
+                                                  ] ??
+                                                      registration.gender
                                                     : "Belirtilmedi"}
                                             </span>
                                         </p>

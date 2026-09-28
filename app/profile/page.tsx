@@ -3,8 +3,11 @@ import { redirect } from "next/navigation";
 
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-import ProfileDashboard from "@/components/auth/profile-dashboard";
+import ProfileDashboard, {
+    type MyRegistration,
+} from "@/components/auth/profile-dashboard";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const metadata: Metadata = {
     title: "Profilim",
@@ -28,7 +31,7 @@ export default async function ProfilePage() {
             supabase
                 .from("profiles")
                 .select(
-                    "id, email, full_name, gender, avatar_url, birth_date, join_date, interested_sports",
+                    "id, email, phone, full_name, gender, avatar_url, birth_date, join_date, interested_sports",
                 )
                 .eq("id", user.id)
                 .maybeSingle(),
@@ -41,6 +44,39 @@ export default async function ProfilePage() {
                 .order("created_at", { ascending: false }),
         ]);
 
+    /*
+     * "Etkinliklerim" listesi: RLS'ten bağımsız okunabilsin diye
+     * oturum doğrulandıktan sonra service-role client ile çekilir;
+     * sorgu daima kendi user_id'si ile sınırlıdır.
+     */
+    let registrations: MyRegistration[] = [];
+
+    try {
+        const supabaseAdmin = createAdminClient();
+
+        const { data, error } = await supabaseAdmin
+            .from("event_registrations")
+            .select(
+                "id, event_id, status, created_at, event:events ( id, title, slug, starts_at, location )",
+            )
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            console.error(
+                "ProfilePage: etkinlik kayıtları okunamadı:",
+                { message: error.message, code: error.code },
+            );
+        } else {
+            registrations = (data ?? []) as unknown as MyRegistration[];
+        }
+    } catch (lookupError) {
+        console.error(
+            "ProfilePage: etkinlik kayıtları hatası:",
+            lookupError,
+        );
+    }
+
     return (
         <>
             <Navbar />
@@ -50,6 +86,7 @@ export default async function ProfilePage() {
                     email={user.email ?? ""}
                     profile={profile}
                     workouts={workouts ?? []}
+                    registrations={registrations}
                     metadata={
                         (user.user_metadata as Record<
                             string,

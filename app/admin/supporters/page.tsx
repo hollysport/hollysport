@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import SupporterActions from "@/components/admin/supporter-actions";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { createClient } from "@/lib/supabase/server";
@@ -25,8 +27,27 @@ const supportTypeLabels: Record<string, string> = {
     other: "Diğer",
 };
 
-export default async function SupportersAdminPage() {
+type SupportersPageProps = {
+    searchParams: Promise<{
+        durum?: string;
+    }>;
+};
+
+type StatusFilter = "all" | "active" | "passive";
+
+export default async function SupportersAdminPage({
+    searchParams,
+}: SupportersPageProps) {
     await requireAdmin();
+
+    const parameters = await searchParams;
+
+    const statusFilter: StatusFilter =
+        parameters.durum === "active"
+            ? "active"
+            : parameters.durum === "passive"
+              ? "passive"
+              : "all";
 
     const supabase = await createClient();
 
@@ -46,6 +67,32 @@ export default async function SupportersAdminPage() {
     if (error) {
         console.error(error);
     }
+
+    const allSupporters = supporters ?? [];
+
+    const counts = {
+        all: allSupporters.length,
+        active: allSupporters.filter((item) => item.is_active)
+            .length,
+        passive: allSupporters.filter((item) => !item.is_active)
+            .length,
+    };
+
+    const filteredSupporters = allSupporters.filter((item) => {
+        if (statusFilter === "active") return item.is_active;
+        if (statusFilter === "passive") return !item.is_active;
+        return true;
+    });
+
+    const filterOptions: Array<{
+        key: StatusFilter;
+        label: string;
+        count: number;
+    }> = [
+        { key: "all", label: "Tümü", count: counts.all },
+        { key: "active", label: "Aktif", count: counts.active },
+        { key: "passive", label: "Pasif", count: counts.passive },
+    ];
 
     return (
         <main className="min-h-screen bg-zinc-50 px-4 py-10 sm:px-6 lg:px-8">
@@ -67,13 +114,67 @@ export default async function SupportersAdminPage() {
 
                 <AddSupporterForm />
 
-                {!supporters || supporters.length === 0 ? (
-                    <div className="mt-10 rounded-3xl border border-zinc-200 bg-white px-6 py-16 text-center text-zinc-500">
-                        Henüz yayınlanan destekçi bulunmuyor.
+                {/* Aktif / Pasif filtresi */}
+                <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+                    <div className="inline-flex rounded-full border border-zinc-200 bg-white p-1 shadow-sm">
+                        {filterOptions.map((option) => {
+                            const isActive =
+                                statusFilter === option.key;
+
+                            return (
+                                <Link
+                                    key={option.key}
+                                    href={`/admin/supporters${
+                                        option.key === "all"
+                                            ? ""
+                                            : `?durum=${option.key}`
+                                    }`}
+                                    aria-current={
+                                        isActive
+                                            ? "page"
+                                            : undefined
+                                    }
+                                    className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                                        isActive
+                                            ? "bg-zinc-950 text-white"
+                                            : "text-zinc-600 hover:text-zinc-950"
+                                    }`}
+                                >
+                                    {option.label}
+                                    <span
+                                        className={`ml-2 text-xs ${
+                                            isActive
+                                                ? "text-white/60"
+                                                : "text-zinc-400"
+                                        }`}
+                                    >
+                                        {option.count}
+                                    </span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    <p className="text-sm text-zinc-500">
+                        {statusFilter === "active"
+                            ? `${counts.active} aktif destekçi gösteriliyor.`
+                            : statusFilter === "passive"
+                              ? `${counts.passive} pasif destekçi gösteriliyor.`
+                              : `${counts.all} destekçi listeleniyor.`}
+                    </p>
+                </div>
+
+                {filteredSupporters.length === 0 ? (
+                    <div className="mt-6 rounded-3xl border border-zinc-200 bg-white px-6 py-16 text-center text-zinc-500">
+                        {statusFilter === "active"
+                            ? "Aktif destekçi bulunmuyor."
+                            : statusFilter === "passive"
+                              ? "Pasif destekçi bulunmuyor."
+                              : "Henüz yayınlanan destekçi bulunmuyor."}
                     </div>
                 ) : (
-                    <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                        {supporters.map((supporter) => (
+                    <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                        {filteredSupporters.map((supporter) => (
                             <article
                                 key={supporter.id}
                                 className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"

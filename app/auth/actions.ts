@@ -13,6 +13,8 @@ export type RegisterInput = {
     avatar: string;
     gender: string | null;
     birthDate: string | null;
+    /* Doğrulamasız, opsiyonel telefon */
+    phone: string | null;
     interestedSports: string[];
     /* Veteran üyeler için geçmişe dönük ISO string; yeni üyelerde null */
     joinDate: string | null;
@@ -126,6 +128,7 @@ export async function registerUser(
                     avatar_url: input.avatar,
                     gender: input.gender,
                     birth_date: input.birthDate,
+                    phone: input.phone,
                     interested_sports: input.interestedSports,
                     join_date: joinDate,
                 },
@@ -179,6 +182,7 @@ export async function registerUser(
             avatar_url: input.avatar,
             gender: input.gender,
             birth_date: input.birthDate,
+            phone: input.phone,
             interested_sports: input.interestedSports,
             join_date: joinDate,
         };
@@ -227,6 +231,7 @@ export async function registerUser(
                         avatar_url: input.avatar,
                         gender: input.gender,
                         birth_date: input.birthDate,
+                        phone: input.phone,
                         interested_sports:
                             input.interestedSports,
                         join_date: joinDate,

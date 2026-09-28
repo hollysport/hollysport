@@ -2,8 +2,10 @@ import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getCurrentTimestamp } from "@/lib/time";
 import RegistrationForm from "./registration-form";
+import QuickJoinButton from "@/components/events/quick-join-button";
 
 type JoinPageProps = {
     searchParams: Promise<{
@@ -252,6 +254,50 @@ export default async function JoinPage({
         !deadlinePassed &&
         !isFull;
 
+    /*
+     * Akıllı etkinlik kaydı:
+     * - Giriş YAPMAMIŞ misafir → uzun başvuru formu (olduğu gibi).
+     * - Giriş YAPMIŞ üye → uzun form gizlenir, tek tuşlu katılım
+     *   butonu gösterilir (üye verileri profilden okunur).
+     */
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    let alreadyRegistered = false;
+
+    if (user && canRegister) {
+        try {
+            const supabaseAdmin = createAdminClient();
+
+            const { data: byUser } = await supabaseAdmin
+                .from("event_registrations")
+                .select("id")
+                .eq("event_id", event.id)
+                .eq("user_id", user.id)
+                .maybeSingle();
+
+            alreadyRegistered =
+                Boolean(byUser) ||
+                Boolean(
+                    user.email &&
+                        (
+                            await supabaseAdmin
+                                .from("event_registrations")
+                                .select("id")
+                                .eq("event_id", event.id)
+                                .eq("email", user.email)
+                                .maybeSingle()
+                        ).data,
+                );
+        } catch (lookupError) {
+            console.error(
+                "JoinPage: kayıt kontrolü başarısız:",
+                lookupError,
+            );
+        }
+    }
+
     return (
         <>
             <Navbar />
@@ -316,11 +362,21 @@ export default async function JoinPage({
                         </div>
 
                         {canRegister ? (
-                            <RegistrationForm
-                                eventId={event.id}
-                                eventTitle={event.title}
-                                eventSlug={event.slug}
-                            />
+                            user ? (
+                                <QuickJoinButton
+                                    eventId={event.id}
+                                    eventTitle={event.title}
+                                    alreadyRegistered={
+                                        alreadyRegistered
+                                    }
+                                />
+                            ) : (
+                                <RegistrationForm
+                                    eventId={event.id}
+                                    eventTitle={event.title}
+                                    eventSlug={event.slug}
+                                />
+                            )
                         ) : (
                             <div className="h-fit rounded-3xl border border-white/10 bg-[#111111] p-8 text-center">
                                 <h2 className="text-3xl font-bold">Başvuru yapılamıyor</h2>

@@ -10,6 +10,7 @@ import {
     Dumbbell,
     Loader2,
     LogOut,
+    MapPin,
     Pencil,
     Settings2,
     Trash2,
@@ -20,6 +21,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.types";
 import { GOALS } from "@/lib/data/exercises";
 import {
+    cancelEventRegistration,
     deleteMyAccount,
     saveProfile,
 } from "@/app/profile/actions";
@@ -33,12 +35,28 @@ import { membershipBadge, resolveJoinDate } from "@/lib/auth/membership";
 type Profile = {
     id: string;
     email: string | null;
+    phone: string | null;
     full_name: string | null;
     gender: string | null;
     avatar_url: string | null;
     birth_date: string | null;
     join_date: string | null;
     interested_sports: string[] | null;
+};
+
+/* Profil sayfasının "Etkinliklerim" sekmesi için kayıt satırı */
+export type MyRegistration = {
+    id: string;
+    event_id: string;
+    status: string;
+    created_at: string;
+    event: {
+        id: string;
+        title: string;
+        slug: string;
+        starts_at: string;
+        location: string;
+    } | null;
 };
 
 type SavedExercise = {
@@ -101,6 +119,14 @@ const GENDER_LABELS: Record<string, string> = {
     kadin: "Kadın",
     erkek: "Erkek",
     "belirtmek-istemiyorum": "Belirtilmedi",
+};
+
+const REGISTRATION_STATUS_LABELS: Record<string, string> = {
+    pending: "Bekliyor",
+    approved: "Onaylandı",
+    rejected: "Reddedildi",
+    waitlist: "Bekleme listesi",
+    cancelled: "İptal edildi",
 };
 
 const GENDER_OPTIONS = [
@@ -167,11 +193,14 @@ export default function ProfileDashboard({
     email,
     profile,
     workouts,
+    registrations,
     metadata,
 }: {
     email: string;
     profile: Profile | null;
     workouts: SavedWorkout[];
+    /* Kullanıcının etkinlik başvuruları (profil sayfasından gelir) */
+    registrations?: MyRegistration[];
     /* auth.user_metadata — profiles satırı boşsa yedek kaynak */
     metadata?: Record<string, unknown> | null;
 }) {
@@ -193,6 +222,12 @@ export default function ProfileDashboard({
     const [editGender, setEditGender] = useState(
         profile?.gender ?? "",
     );
+    const [editPhone, setEditPhone] = useState(() => {
+        if (profile?.phone) return profile.phone;
+        return typeof metadata?.phone === "string"
+            ? metadata.phone
+            : "";
+    });
     const [editSports, setEditSports] = useState<string[]>(
         profile?.interested_sports ?? [],
     );
@@ -265,6 +300,36 @@ export default function ProfileDashboard({
         router.refresh();
     }
 
+    async function handleCancelRegistration(
+        registrationId: string,
+    ) {
+        setErrorMessage("");
+
+        const confirmed = window.confirm(
+            "Etkinlik katılımını iptal etmek istediğine emin misin? Kaydın listeden kaldırılacak.",
+        );
+
+        if (!confirmed) return;
+
+        setBusyId(registrationId);
+
+        const result = await cancelEventRegistration(
+            registrationId,
+        );
+
+        setBusyId(null);
+
+        if (!result.success) {
+            setErrorMessage(
+                result.error ??
+                    "Katılım iptal edilemedi. Lütfen tekrar deneyin.",
+            );
+            return;
+        }
+
+        router.refresh();
+    }
+
     async function handleSaveProfile(event: FormEvent) {
         event.preventDefault();
         setFormError("");
@@ -274,6 +339,7 @@ export default function ProfileDashboard({
         const result = await saveProfile({
             fullName: editName.trim(),
             gender: editGender || null,
+            phone: editPhone.trim() || null,
             sports: editSports,
             avatar: editAvatar,
         });
@@ -435,12 +501,14 @@ export default function ProfileDashboard({
                                     </span>
                                 )}
 
-                                {profile?.birth_date && (
-                                    <span className="rounded-full border border-white/10 px-3 py-1 text-white/50">
-                                        Doğum:{" "}
-                                        {new Date(
-                                            profile.birth_date,
-                                        ).toLocaleDateString("tr-TR")}
+                                {(editPhone ||
+                                    profile?.phone) && (
+                                    <span
+                                        title="Telefon numaran"
+                                        className="rounded-full border border-white/10 px-3 py-1 text-white/50"
+                                    >
+                                        {editPhone ||
+                                            profile?.phone}
                                     </span>
                                 )}
                             </div>
@@ -681,12 +749,166 @@ export default function ProfileDashboard({
 
             {/* ETKİNLİKLERİM */}
             {tab === "events" && (
-                <div className="mt-8 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
-                    <CalendarDays className="mx-auto h-10 w-10 text-white/20" />
-                    <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-white/45">
-                        Yaklaşan veya katıldığın etkinlikler yakında
-                        burada listelenecektir.
-                    </p>
+                <div className="mt-8">
+                    {(registrations ?? []).length === 0 ? (
+                        <div className="rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
+                            <CalendarDays className="mx-auto h-10 w-10 text-white/20" />
+                            <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-white/45">
+                                Henüz bir etkinliğe katılım
+                                başvurun yok.
+                            </p>
+                            <Link
+                                href="/events"
+                                className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                            >
+                                Etkinlikleri İncele
+                            </Link>
+                        </div>
+                    ) : (
+                        <ul className="space-y-4">
+                            {(registrations ?? []).map(
+                                (registration) => {
+                                    const statusKey =
+                                        registration.status as
+                                            | "pending"
+                                            | "approved"
+                                            | "rejected"
+                                            | "waitlist"
+                                            | "cancelled";
+                                    const canCancel =
+                                        statusKey !== "rejected" &&
+                                        statusKey !== "cancelled";
+                                    const isCancelling =
+                                        busyId === registration.id;
+
+                                    return (
+                                        <li
+                                            key={registration.id}
+                                            className="rounded-2xl border border-white/10 bg-[#111111] p-5 sm:p-6"
+                                        >
+                                            <div className="flex flex-wrap items-start justify-between gap-4">
+                                                <div className="min-w-0">
+                                                    <div className="flex flex-wrap items-center gap-2">
+                                                        <span
+                                                            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
+                                                                statusKey ===
+                                                                "approved"
+                                                                    ? "bg-[#27D66B]/15 text-[#27D66B]"
+                                                                    : statusKey ===
+                                                                        "pending"
+                                                                      ? "bg-blue-500/15 text-blue-300"
+                                                                      : statusKey ===
+                                                                          "waitlist"
+                                                                        ? "bg-yellow-500/15 text-yellow-300"
+                                                                        : "bg-white/10 text-white/45"
+                                                            }`}
+                                                        >
+                                                            {
+                                                                REGISTRATION_STATUS_LABELS[
+                                                                    statusKey
+                                                                ]
+                                                            }
+                                                        </span>
+
+                                                        <span className="text-xs text-white/30">
+                                                            Başvuru:{" "}
+                                                            {new Date(
+                                                                registration.created_at,
+                                                            ).toLocaleDateString(
+                                                                "tr-TR",
+                                                            )}
+                                                        </span>
+                                                    </div>
+
+                                                    <h3 className="mt-3 text-lg font-semibold sm:text-xl">
+                                                        {registration
+                                                            .event
+                                                            ?.title ??
+                                                            "Etkinlik"}
+                                                    </h3>
+
+                                                    <div className="mt-2 space-y-1 text-sm text-white/45">
+                                                        {registration
+                                                            .event && (
+                                                            <p className="text-[#27D66B]">
+                                                                {new Date(
+                                                                    registration
+                                                                        .event
+                                                                        .starts_at,
+                                                                ).toLocaleString(
+                                                                    "tr-TR",
+                                                                    {
+                                                                        dateStyle:
+                                                                            "long",
+                                                                        timeStyle:
+                                                                            "short",
+                                                                        timeZone:
+                                                                            "Europe/Istanbul",
+                                                                    },
+                                                                )}
+                                                            </p>
+                                                        )}
+
+                                                        {registration
+                                                            .event
+                                                            ?.location && (
+                                                            <p className="flex items-center gap-2">
+                                                                <MapPin className="h-4 w-4 shrink-0 text-white/25" />
+                                                                {
+                                                                    registration
+                                                                        .event
+                                                                        .location
+                                                                }
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex flex-col items-stretch gap-2 sm:items-end">
+                                                    {registration
+                                                        .event && (
+                                                        <Link
+                                                            href={`/events/${registration.event.slug}`}
+                                                            className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/15 px-5 text-xs font-semibold uppercase tracking-wider text-white/60 transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
+                                                        >
+                                                            Etkinliği
+                                                            Gör
+                                                        </Link>
+                                                    )}
+
+                                                    {canCancel && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                handleCancelRegistration(
+                                                                    registration.id,
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                isCancelling ||
+                                                                busyId !==
+                                                                    null
+                                                            }
+                                                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-red-500/30 px-5 text-xs font-semibold uppercase tracking-wider text-red-300 transition hover:bg-red-500/10 disabled:opacity-50"
+                                                        >
+                                                            {isCancelling ? (
+                                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                                            ) : (
+                                                                <X className="h-4 w-4" />
+                                                            )}
+                                                            {isCancelling
+                                                                ? "İptal ediliyor..."
+                                                                : "Katılımı İptal Et"}
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    );
+                                },
+                            )}
+                        </ul>
+                    )}
                 </div>
             )}
 
@@ -745,6 +967,28 @@ export default function ProfileDashboard({
                                         </option>
                                     ))}
                                 </select>
+                            </label>
+
+                            <label className="block">
+                                <span className={labelClass}>
+                                    Telefon Numarası{" "}
+                                    <span className="text-white/30">
+                                        (opsiyonel)
+                                    </span>
+                                </span>
+                                <input
+                                    type="tel"
+                                    maxLength={20}
+                                    autoComplete="tel"
+                                    value={editPhone}
+                                    onChange={(event) =>
+                                        setEditPhone(
+                                            event.target.value,
+                                        )
+                                    }
+                                    placeholder="05XX XXX XX XX"
+                                    className={inputClass}
+                                />
                             </label>
 
                             <div>

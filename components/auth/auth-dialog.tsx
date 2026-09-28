@@ -90,6 +90,8 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
     const [registerPasswordConfirm, setRegisterPasswordConfirm] =
         useState("");
     const [birthDate, setBirthDate] = useState("");
+    /* Telefon zorunlu/değrlendirmesiz — opsiyonel alan */
+    const [phone, setPhone] = useState("");
     const [gender, setGender] = useState("");
     const [avatar, setAvatar] = useState<string | null>(null);
     const [interestedSports, setInterestedSports] = useState<
@@ -233,6 +235,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
             avatar: avatar ?? "dumbbell",
             gender: gender || null,
             birthDate: birthDate || null,
+            phone: phone.trim() || null,
             interestedSports: sports,
             joinDate,
             captchaToken: turnstileToken,
@@ -246,6 +249,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
         console.log("[registerUser] gönderilen payload:", {
             gender: payload.gender,
             interestedSports: payload.interestedSports,
+            phone: payload.phone,
             joinDate: payload.joinDate,
             birthDate: payload.birthDate,
         });
@@ -640,6 +644,27 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                                 </select>
                             </label>
                         </div>
+
+                        {/* Telefon — zorunlu değil, doğrulamasız */}
+                        <label className="block">
+                            <span className={labelClass}>
+                                Telefon Numarası{" "}
+                                <span className="text-white/30">
+                                    (opsiyonel)
+                                </span>
+                            </span>
+                            <input
+                                type="tel"
+                                maxLength={20}
+                                autoComplete="tel"
+                                value={phone}
+                                onChange={(event) =>
+                                    setPhone(event.target.value)
+                                }
+                                placeholder="05XX XXX XX XX"
+                                className={inputClass}
+                            />
+                        </label>
 
                         <div>
                             <span className={labelClass}>
