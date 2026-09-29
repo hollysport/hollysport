@@ -2,6 +2,20 @@
 
 Son güncelleme: 2026-09-29
 
+## 2026-09-29: Admin — özel antrenman talebi silme
+
+- `app/admin/custom-training-requests/actions.ts` → **`deleteProgramRequest(requestId)`**: `requireAdmin()` → service-role `delete().eq("id", …).select("id")` (kalıcı; RLS'e takılmaz, silinen satır yoksa ayrı hata döner) → **`revalidatePath("/admin/custom-training-requests")`**. Loglar `message/code/details/hint`; action throw atmaz.
+- Yeni `delete-button.tsx`: kartın sağ üstünde kırmızı **Sil** (`Trash2`) butonu, iki adımlı onay (Evet, sil / Vazgeç), `useTransition` kilitli spinner, kart içi `role="alert"` hata; başarıda `router.refresh()`.
+- `page.tsx`: buton mevcut `justify-between` üst satırına eklendi (rozet/tarihin sağında).
+- tsc / eslint / build temiz.
+
+## 2026-09-29: Profil kartı üst alan sadeleştirmesi
+
+- `components/auth/profile-dashboard.tsx` kart başlığından **"Düzenle" butonu** (alt sekmede zaten var), **e-posta satırı** ve **telefon rozeti** kaldırıldı; sağ üstte yalnızca **Çıkış** butonu kaldı (`Pencil` import'u ve `displayEmail` değişkeni silindi).
+- Kartta görünen veriler: avatar, **tam ad**, **Üyelik Süresi** rozeti, **yaş** rozeti, **cinsiyet** rozeti, **ilgili sporlar**.
+- İsim satırı tek satır: `truncate + whitespace-nowrap` + `title` (kesilirse "…", imleçte tam metin); kapsayıcı `min-w-0 flex-1`, buton bloğu `shrink-0`.
+- tsc / eslint / build temiz.
+
 ## 2026-09-29: Antrenman — 3 hedefte kas grubu adımı atlanıyor
 
 - `components/training/WorkoutGenerator.tsx` içinde `MUSCLE_STEP_SKIPPED_GOALS = ["esneklik", "postur", "sicrama"]` (Esneklik / Mobilite, Postür Düzeltme, Dikey Sıçrama Geliştirme).

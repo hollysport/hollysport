@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { GOALS } from "@/lib/data/exercises";
 import ProgramRequestStatusActions from "./status-buttons";
+import ProgramRequestDeleteButton from "./delete-button";
 import type { ProgramRequestStatus } from "./actions";
 
 type ProgramRequestRow = {
@@ -141,7 +142,8 @@ export default async function CustomTrainingRequestsPage() {
                     <p className="mt-4 max-w-2xl leading-7 text-white/40">
                         &quot;Kişisel Antrenman Programı İstiyorum&quot;
                         formundan gelen talepleri görüntüle; bilgileri
-                        inceleyip durumunu güncelle.
+                        inceleyip durumunu güncelle veya gerekiyorsa
+                        sil.
                     </p>
                 </header>
 
@@ -292,6 +294,15 @@ export default async function CustomTrainingRequestsPage() {
                                                 )}
                                             </div>
                                         </div>
+
+                                        <ProgramRequestDeleteButton
+                                            requestId={
+                                                request.id
+                                            }
+                                            fullName={
+                                                request.full_name
+                                            }
+                                        />
                                     </div>
 
                                     {request.notes && (

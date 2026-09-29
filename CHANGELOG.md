@@ -13,11 +13,20 @@
 - `app/training/page.tsx`: bölüm metnine "Esneklik, postür ve sıçrama hedeflerinde bölge seçimi gerekmez" eklendi.
 - Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
 
-## 2026-09-29 — Profil isim/e-posta sarma düzeltmesi (commit bekliyor)
+## 2026-09-29 — Admin: özel antrenman talebi silme (commit bekliyor)
 
-- `components/auth/profile-dashboard.tsx` profil başlığındaki `truncate` kaldırıldı (çok erken kesip "u…" gibi gösteriyordu):
-  - İsim (`displayName`) → **`break-words`**, e-posta (`displayEmail`) → **`break-all`**: metin sığabildiği kadar yan yana yazılır (15-20+ karakter), sığmayan kısım doğal olarak alt satıra kırılır; `...` ile kesme yok. `title` korundu (imleçte tam metin).
-  - Metni saran kapsayıcı `min-w-0` → **`min-w-0 flex-1`** (avatarın yanındaki kalan tüm genişliği kullanır) ve yanındaki Düzenle/Çıkış buton bloğuna **`shrink-0`** eklendi; butonlar artık metin alanını daraltmıyor, satıra sığmazsa altta sarılıyor (`flex-wrap`).
+- `app/admin/custom-training-requests/actions.ts`: **`deleteProgramRequest(requestId)`** server action eklendi — `requireAdmin()` → boş ID kontrolü → **service-role** `delete().eq("id", …).select("id")` (kalıcı silme; tabloda DELETE politikası olmasa da engellenmez) → silinen satır 0 ise "kayıt zaten silinmiş olabilir" hatası → hata `message/code/details/hint` loglanır → başarılıysa **`revalidatePath("/admin/custom-training-requests")`** ile liste anında yenilenir (silinen öğe ekrandan kaybolur). Beklenmeyen tüm hatalar try-catch ile döner, action throw atmaz.
+- Yeni `delete-button.tsx` (client): her talep kartının sağ üstünde kırmızı **Sil** butonu (`Trash2` ikonu, `border-red-500/30 bg-red-500/10 text-red-300`), **iki adımlı onay** ("Silinsin mi?" → **Evet, sil** / **Vazgeç**), `useTransition` ile pending spinner + buton kilidi, hata mesajı kartta `role="alert"`; başarılı olunca `router.refresh()` ile görünüm tazelenir (sunucuda `revalidatePath` zaten çalışıyor). Butonun `aria-label`'ında silinen kişinin adı geçer.
+- `page.tsx`: buton kartın üst satırındaki mevcut `justify-between` flex yapısına eklendi (rozet + tarihin sağında, `shrink-0`); sayfa açıklamasına "veya gerekiyorsa sil" eklendi.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
+
+## 2026-09-29 — Profil kartı üst alan sadeleştirmesi (commit bekliyor)
+
+- `components/auth/profile-dashboard.tsx` profil kartı başlığı sadeleştirildi:
+  - **"Düzenle" butonu kaldırıldı** (düzenleme zaten alttaki "Düzenle" sekmesinde); sağ üstte yalnızca **Çıkış** butonu kaldı, artık kullanılmayan `Pencil` import'u da silindi.
+  - İsim altındaki **e-posta satırı** ve rozetler arasındaki **telefon rozeti** arayüzden tamamen silindi (`displayEmail` değişkeni kaldırıldı).
+  - Kartta kalan veriler: avatar + **tam ad**, **Üyelik Süresi** rozeti, **yaş** rozeti, **cinsiyet** rozeti ve **ilgili sporlar** (yaş `birth_date`'ten, rozet metni `membershipBadge`).
+  - **İsim tek satır:** `truncate + whitespace-nowrap` (önceki `break-words`/`break-all` sarma yaklaşımının yerine) — isim asla alt alta kırılmaz, sığmazsa "…" ile kesilir; `title` imleçte tam metni gösterir. Kapsayıcı `min-w-0 flex-1`, buton bloğu `shrink-0` olduğundan isim için kalan tüm genişlik kullanılır.
 - Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
 
 ## 2026-09-29 — Global form alanı okunabilirlik düzeltmesi (commit bekliyor)

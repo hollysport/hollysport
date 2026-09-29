@@ -11,7 +11,6 @@ import {
     Loader2,
     LogOut,
     MapPin,
-    Pencil,
     Settings2,
     Trash2,
     X,
@@ -449,18 +448,17 @@ export default function ProfileDashboard({
     });
 
     /*
-     * İsim/e-posta metni: `truncate` ile erken kesme ("u…") YOK.
-     * İsim `break-words`, e-posta `break-all` ile sığabildiği kadar
-     * yan yana yazılır, sığmayan kısım doğal olarak alt satıra kırılır.
-     * `title` metni imleçte tam haliyle gösterir.
+     * İsim satırı tek satır: e-posta/telefon ve "Düzenle" butonu
+     * kartın üstünden kaldırıldığı için genişlik bol; isim
+     * `whitespace-nowrap + truncate` ile asla alt alta kırılmaz,
+     * sığmazsa "…" ile kesilir ve `title` tam metni gösterir.
+     * (E-posta/telefon arayüzde hiç gösterilmiyor.)
      */
     const displayName = resolveDisplayName({
         fullName: editName || profile?.full_name,
         email: profile?.email ?? email,
         metadata,
     });
-
-    const displayEmail = profile?.email || email;
 
     return (
         <div className="mx-auto max-w-5xl">
@@ -481,24 +479,16 @@ export default function ProfileDashboard({
                             </span>
 
                             {/*
-                              truncate YOK: "u…" gibi erken kesme olmasın.
-                              break-words → uzun/boşluksuz isim sığdığı
-                              kadar satırda kalır, sığmayan kısım doğal
-                              olarak alt satıra kırılır.
+                              Tek satır: nowrap + truncate → isim asla
+                              alt alta kırılmaz; sığmazsa "…" ile
+                              kesilir, `title` tam metni gösterir.
                             */}
                             <h1
                                 title={displayName}
-                                className="mt-1 break-words text-xl font-bold sm:text-2xl md:text-3xl"
+                                className="mt-1 truncate whitespace-nowrap text-xl font-bold sm:text-2xl md:text-3xl"
                             >
                                 {displayName}
                             </h1>
-
-                            <p
-                                title={displayEmail}
-                                className="mt-1 break-all text-sm text-white/45"
-                            >
-                                {displayEmail}
-                            </p>
 
                             <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold">
                                 <span
@@ -530,17 +520,6 @@ export default function ProfileDashboard({
                                             editGender}
                                     </span>
                                 )}
-
-                                {(editPhone ||
-                                    profile?.phone) && (
-                                    <span
-                                        title="Telefon numaran"
-                                        className="rounded-full border border-white/10 px-3 py-1 text-white/50"
-                                    >
-                                        {editPhone ||
-                                            profile?.phone}
-                                    </span>
-                                )}
                             </div>
 
                             {editSports.length > 0 && (
@@ -558,16 +537,12 @@ export default function ProfileDashboard({
                         </div>
                     </div>
 
-                    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
-                        <button
-                            type="button"
-                            onClick={() => setTab("settings")}
-                            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/15 px-4 text-sm font-semibold text-white/70 transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
-                        >
-                            <Pencil className="h-4 w-4" />
-                            Düzenle
-                        </button>
-
+                    {/*
+                      "Düzenle" butonu kaldırıldı: düzenleme zaten
+                      alttaki "Düzenle" sekmesinde. Sağ üstte yalnızca
+                      "Çıkış" kaldı.
+                    */}
+                    <div className="flex shrink-0 items-center">
                         <button
                             type="button"
                             onClick={handleLogout}

@@ -16,6 +16,11 @@ export type SetProgramRequestStatusResult = {
     error?: string;
 };
 
+export type DeleteProgramRequestResult = {
+    success: boolean;
+    error?: string;
+};
+
 const ALLOWED_STATUSES: ProgramRequestStatus[] = [
     "pending",
     "reviewed",
@@ -109,6 +114,96 @@ export async function setProgramRequestStatus(
         return {
             success: false,
             error: `Durum güncellenemedi: ${message}`,
+        };
+    }
+}
+
+/*
+ * Admin: özel antrenman talebini kalıcı olarak siler.
+ * Silme service-role ile yapılır (admin oturumu requireAdmin ile
+ * doğrulanır), böylece tabloda DELETE politikası olmasa da engellenmez.
+ * Silinen kayıt yoksa (zaten silinmiş) bu ayrı bir hata olarak döner.
+ */
+export async function deleteProgramRequest(
+    requestId: string,
+): Promise<DeleteProgramRequestResult> {
+    try {
+        await requireAdmin();
+
+        if (!requestId) {
+            return {
+                success: false,
+                error: "Talep bulunamadı.",
+            };
+        }
+
+        const supabaseAdmin = createAdminClient();
+
+        const { data, error } = await supabaseAdmin
+            .from("custom_program_requests")
+            .delete()
+            .eq("id", requestId)
+            .select("id");
+
+        if (error) {
+            console.error(
+                "deleteProgramRequest: silme hatası:",
+                {
+                    message: error.message,
+                    code: error.code,
+                    details: error.details,
+                    hint: error.hint,
+                    requestId,
+                },
+            );
+
+            return {
+                success: false,
+                error: `Talep silinemedi (${error.code ?? "?"}): ${error.message}`,
+            };
+        }
+
+        if (!data || data.length === 0) {
+            console.warn(
+                "deleteProgramRequest: silinecek kayıt bulunamadı:",
+                { requestId },
+            );
+
+            return {
+                success: false,
+                error: "Talep bulunamadı (kayıt zaten silinmiş olabilir).",
+            };
+        }
+
+        console.log(
+            `deleteProgramRequest: talep silindi (request=${requestId})`,
+        );
+
+        // Liste anında tazelensin (silinen öğe ekrandan kaybolsun)
+        revalidatePath("/admin/custom-training-requests");
+
+        return { success: true };
+    } catch (unexpectedError) {
+        const message =
+            unexpectedError instanceof Error
+                ? unexpectedError.message
+                : String(unexpectedError);
+
+        console.error(
+            "deleteProgramRequest beklenmeyen hata:",
+            {
+                message,
+                stack:
+                    unexpectedError instanceof Error
+                        ? unexpectedError.stack
+                        : undefined,
+                requestId,
+            },
+        );
+
+        return {
+            success: false,
+            error: `Talep silinemedi: ${message}`,
         };
     }
 }
