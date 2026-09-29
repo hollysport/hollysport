@@ -449,9 +449,10 @@ export default function ProfileDashboard({
     });
 
     /*
-     * İsim/e-posta tek satırda kalsın: boşluksuz uzun isimler
-     * ("aaaa…") alt alta dizilip kartı bozmasın. Üst satır `truncate`
-     * ile kesilir, `title` ile tam metin imleçte görünür.
+     * İsim/e-posta metni: `truncate` ile erken kesme ("u…") YOK.
+     * İsim `break-words`, e-posta `break-all` ile sığabildiği kadar
+     * yan yana yazılır, sığmayan kısım doğal olarak alt satıra kırılır.
+     * `title` metni imleçte tam haliyle gösterir.
      */
     const displayName = resolveDisplayName({
         fullName: editName || profile?.full_name,
@@ -474,21 +475,27 @@ export default function ProfileDashboard({
                             />
                         </div>
 
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                             <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
                                 Profilim
                             </span>
 
+                            {/*
+                              truncate YOK: "u…" gibi erken kesme olmasın.
+                              break-words → uzun/boşluksuz isim sığdığı
+                              kadar satırda kalır, sığmayan kısım doğal
+                              olarak alt satıra kırılır.
+                            */}
                             <h1
                                 title={displayName}
-                                className="mt-1 truncate text-xl font-bold sm:text-2xl md:text-3xl"
+                                className="mt-1 break-words text-xl font-bold sm:text-2xl md:text-3xl"
                             >
                                 {displayName}
                             </h1>
 
                             <p
                                 title={displayEmail}
-                                className="mt-1 truncate text-sm text-white/45"
+                                className="mt-1 break-all text-sm text-white/45"
                             >
                                 {displayEmail}
                             </p>
@@ -551,7 +558,7 @@ export default function ProfileDashboard({
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-3">
                         <button
                             type="button"
                             onClick={() => setTab("settings")}

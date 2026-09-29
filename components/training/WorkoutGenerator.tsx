@@ -34,6 +34,24 @@ const AnatomyMap3D = dynamic(() => import("./AnatomyMap3D"), {
     ),
 });
 
+/*
+ * Adım atlama mantığı: bu hedefler (Esneklik, Postür, Sıçrama)
+ * seçilen bölgeye değil tüm vücuda çalıştığı için 3D kas grubu
+ * adımı tamamen atlanır. Ortam seçildikten/hedef belirlendikten
+ * sonra program doğrudan üretilir; arka planda kas grubu
+ * "tam vücut" varsayılanı (tüm bölgeler) olarak alınır.
+ * Diğer hedeflerde (Hacim, Kuvvet) 3D seçim normal akışta kalır.
+ */
+const MUSCLE_STEP_SKIPPED_GOALS: TrainingGoal[] = [
+    "esneklik",
+    "postur",
+    "sicrama",
+];
+
+const FULL_BODY_MUSCLES: MuscleGroup[] = MUSCLE_GROUPS.map(
+    (group) => group.key,
+);
+
 export default function WorkoutGenerator() {
     const supabase = useMemo(() => createClient(), []);
 
@@ -77,14 +95,34 @@ export default function WorkoutGenerator() {
     const hasSelection = selectedMuscles.length > 0;
 
     /*
+     * Kas grubu adımı bu hedeflerde atlanır: sorgu ve gruplama
+     * "tam vücut" varsayılanıyla çalışır, 3D harita + şablon/kas
+     * filtreleri gizlenir, program ortam ve hedef ile otomatik
+     * üretilir. readyToGenerate kullanıcının "Programı Oluştur"
+     * demesini beklemez (mevcut canlı üretim akışı korunur).
+     */
+    const muscleStepSkipped =
+        MUSCLE_STEP_SKIPPED_GOALS.includes(goal);
+    const effectiveMuscles = muscleStepSkipped
+        ? FULL_BODY_MUSCLES
+        : selectedMuscles;
+    const readyToGenerate = muscleStepSkipped || hasSelection;
+
+    // Not: atlanan hedefte eldeki `selectedMuscles`/`template`
+    // değeri sessizce yok sayılır (sorgu, arayüz ve kayıt hep
+    // `effectiveMuscles`/hedefe göre çalışır); kullanıcı normal
+    // bir hedefe döndüğünde önceki seçimi kaldığı yerden sürer.
+
+    /*
      * Canlı veri: seçim/ortam/hedef değişiminde exercises tablosu
      * sorgulanır. Hedef uyumluluğu `goals text[]` üzerinde
      * contains filtresiyle sunucuda çözülür; bölge başı limit
      * ve set/tekrar eşlemesi istemcide groupExercises ile yapılır.
      */
     useEffect(() => {
-        // Seçim yoksa liste arayüzde zaten boş durumda; sorgu yapma
-        if (selectedMuscles.length === 0) return;
+        // Kas adımı atlanıyorsa tam vücut listesiyle, normal
+        // hedefte seçim yoksa hiç sorgu yapma.
+        if (!readyToGenerate) return;
 
         let cancelled = false;
 
@@ -100,7 +138,7 @@ export default function WorkoutGenerator() {
                 .select(
                     "id, name, target_muscle, environment, sets, reps, description, goals, created_at",
                 )
-                .in("target_muscle", selectedMuscles)
+                .in("target_muscle", effectiveMuscles)
                 .eq("environment", environment)
                 .contains("goals", [goal])
                 .order("name", { ascending: true });
@@ -114,12 +152,23 @@ export default function WorkoutGenerator() {
                 return;
             }
 
+            const grouped = groupExercises(
+                (data ?? []) as Exercise[],
+                effectiveMuscles,
+                goal,
+            );
+
+            /*
+             * Atlanan hedefte boş bölgeler gizlenir: tam vücut
+             * programında "Bu bölge için hareket bulunmuyor"
+             * blokları gerekli değil (diğer hedeflerde aynen kalır).
+             */
             setProgram(
-                groupExercises(
-                    (data ?? []) as Exercise[],
-                    selectedMuscles,
-                    goal,
-                ),
+                muscleStepSkipped
+                    ? grouped.filter(
+                          (group) => group.exercises.length > 0,
+                      )
+                    : grouped,
             );
             setLoading(false);
         })();
@@ -127,7 +176,14 @@ export default function WorkoutGenerator() {
         return () => {
             cancelled = true;
         };
-    }, [supabase, selectedMuscles, environment, goal]);
+    }, [
+        supabase,
+        effectiveMuscles,
+        environment,
+        goal,
+        readyToGenerate,
+        muscleStepSkipped,
+    ]);
 
     function handleToggle(muscle: MuscleGroup) {
         setTemplate("custom");
@@ -166,18 +222,32 @@ export default function WorkoutGenerator() {
         );
 
         /*
+         * Kaydedilecek kas grubu: normal hedefte kullanıcının
+         * seçimi, adımı atlanan hedefte üretilen programın gerçek
+         * bölgeleri (tam vücut varsayılanı). Liste asla boş
+         * gönderilmez — sunucu "Kaydedilecek program boş" der.
+         */
+        const savedMuscles = muscleStepSkipped
+            ? Array.from(
+                  new Set(program.map((group) => group.muscle)),
+              )
+            : selectedMuscles;
+
+        /*
          * Kayıt sunucuda yapılır: user_id SSR oturumundan gelir,
          * RLS/şema engelleri server action içinde ayrıştırılır ve
          * gerçek hata (message/code/details) terminale yazılır.
          */
         const result = await saveWorkout({
             templateName:
-                template !== "custom" && templateInfo
-                    ? `${templateInfo.label} Programı`
-                    : "Antrenman Programı",
+                muscleStepSkipped && currentGoal
+                    ? `${currentGoal.label} Programı`
+                    : template !== "custom" && templateInfo
+                      ? `${templateInfo.label} Programı`
+                      : "Antrenman Programı",
             targetGoal: goal,
             environment,
-            muscles: selectedMuscles,
+            muscles: savedMuscles,
             exercises: flatExercises,
         });
 
@@ -187,7 +257,7 @@ export default function WorkoutGenerator() {
                 {
                     message: result.error,
                     userId,
-                    muscles: selectedMuscles,
+                    muscles: savedMuscles,
                     exerciseCount: flatExercises.length,
                     goal,
                     environment,
@@ -212,52 +282,79 @@ export default function WorkoutGenerator() {
     return (
         <div className="grid gap-12 lg:grid-cols-[420px_1fr]">
             <div className="h-fit rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-9">
-                <div
-                    role="group"
-                    aria-label="Cinsiyet seçimi"
-                    className="mb-5 flex rounded-full border border-white/15 p-1"
-                >
-                    {(
-                        [
-                            ["male", "Erkek"],
-                            ["female", "Kadın"],
-                        ] as const
-                    ).map(([value, label]) => (
-                        <button
-                            key={value}
-                            type="button"
-                            onClick={() => setGender(value)}
-                            aria-pressed={gender === value}
-                            className={`h-10 flex-1 rounded-full text-sm font-semibold transition ${
-                                gender === value
-                                    ? "bg-[#27D66B] text-black"
-                                    : "text-white/55 hover:text-white"
-                            }`}
+                {muscleStepSkipped ? (
+                    /*
+                     * Adım atlandı: cinsiyet seçimi ve 3D kas haritası
+                     * gösterilmez; kullanıcıdan bölge istenmez.
+                     */
+                    <div className="mb-5 rounded-2xl border border-dashed border-[#27D66B]/35 bg-[#27D66B]/5 p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                            Kas grubu adımı atlandı
+                        </p>
+
+                        <p className="mt-2 text-sm leading-6 text-white/55">
+                            <span className="font-semibold text-white">
+                                {currentGoal?.label ?? "Bu hedef"}
+                            </span>{" "}
+                            tüm vücudu kapsadığı için seçim gerekmiyor.
+                            Program,{" "}
+                            {environment === "home"
+                                ? "Ev"
+                                : "Spor Salonu"}{" "}
+                            ortamı ve hedefine göre otomatik
+                            oluşturuldu.
+                        </p>
+                    </div>
+                ) : (
+                    <>
+                        <div
+                            role="group"
+                            aria-label="Cinsiyet seçimi"
+                            className="mb-5 flex rounded-full border border-white/15 p-1"
                         >
-                            {label}
-                        </button>
-                    ))}
-                </div>
+                            {(
+                                [
+                                    ["male", "Erkek"],
+                                    ["female", "Kadın"],
+                                ] as const
+                            ).map(([value, label]) => (
+                                <button
+                                    key={value}
+                                    type="button"
+                                    onClick={() => setGender(value)}
+                                    aria-pressed={gender === value}
+                                    className={`h-10 flex-1 rounded-full text-sm font-semibold transition ${
+                                        gender === value
+                                            ? "bg-[#27D66B] text-black"
+                                            : "text-white/55 hover:text-white"
+                                    }`}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
 
-                <AnatomyMap3D
-                    gender={gender}
-                    selected={selectedMuscles}
-                    onToggle={handleToggle}
-                    labelsHidden={dialogOpen || authOpen}
-                />
+                        <AnatomyMap3D
+                            gender={gender}
+                            selected={selectedMuscles}
+                            onToggle={handleToggle}
+                            labelsHidden={dialogOpen || authOpen}
+                        />
 
-                {hasSelection && (
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSelectedMuscles([]);
-                            setTemplate("custom");
-                        }}
-                        className="mt-5 w-full rounded-full border border-white/15 py-2.5 text-xs font-semibold uppercase tracking-wider text-white/50 transition hover:border-white/30 hover:text-white"
-                    >
-                        Seçimi temizle ({selectedMuscles.length}{" "}
-                        bölge)
-                    </button>
+                        {hasSelection && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setSelectedMuscles([]);
+                                    setTemplate("custom");
+                                }}
+                                className="mt-5 w-full rounded-full border border-white/15 py-2.5 text-xs font-semibold uppercase tracking-wider text-white/50 transition hover:border-white/30 hover:text-white"
+                            >
+                                Seçimi temizle (
+                                {selectedMuscles.length} bölge)
+                            </button>
+                        )}
+                    </>
                 )}
 
                 <button
@@ -273,9 +370,11 @@ export default function WorkoutGenerator() {
             <div className="rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-9">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <h2 className="text-2xl font-bold">
-                        {hasSelection
-                            ? `${selectedMuscles.length} bölgelik programın`
-                            : "Antrenman programın"}
+                        {muscleStepSkipped
+                            ? "Tam vücut programın"
+                            : hasSelection
+                              ? `${selectedMuscles.length} bölgelik programın`
+                              : "Antrenman programın"}
                     </h2>
 
                     <div
@@ -314,31 +413,56 @@ export default function WorkoutGenerator() {
                     </div>
 
                     <div className="mt-3 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                        <SingleSelect
-                            label="Antrenman Şablonu"
-                            options={TRAINING_TEMPLATES.map(
-                                (item) => ({
-                                    value: item.key,
-                                    label: item.label,
-                                }),
-                            )}
-                            value={template}
-                            onChange={(value) =>
-                                handleTemplate(value as TemplateKey)
-                            }
-                        />
+                        {muscleStepSkipped ? (
+                            /*
+                             * Şablon ve kas grubu filtresi bu hedeflerde
+                             * adımla birlikte gizlenir; yerine bilgi
+                             * notu konur (hedef seçimi yerinde kalır).
+                             */
+                            <div className="rounded-xl border border-dashed border-white/15 px-4 py-3 text-xs leading-5 text-white/45 sm:col-span-1 xl:col-span-2">
+                                Bu hedefte şablon ve kas grubu seçimi
+                                gerekmiyor. Program{" "}
+                                {environment === "home"
+                                    ? "Ev"
+                                    : "Spor Salonu"}{" "}
+                                ortamında tam vücut üzerinden otomatik
+                                oluşturulur.
+                            </div>
+                        ) : (
+                            <>
+                                <SingleSelect
+                                    label="Antrenman Şablonu"
+                                    options={TRAINING_TEMPLATES.map(
+                                        (item) => ({
+                                            value: item.key,
+                                            label: item.label,
+                                        }),
+                                    )}
+                                    value={template}
+                                    onChange={(value) =>
+                                        handleTemplate(
+                                            value as TemplateKey,
+                                        )
+                                    }
+                                />
 
-                        <MultiSelect
-                            label="Kas Grupları"
-                            options={MUSCLE_GROUPS.map((group) => ({
-                                value: group.key,
-                                label: group.label,
-                            }))}
-                            values={selectedMuscles}
-                            onToggle={(value) =>
-                                handleToggle(value as MuscleGroup)
-                            }
-                        />
+                                <MultiSelect
+                                    label="Kas Grupları"
+                                    options={MUSCLE_GROUPS.map(
+                                        (group) => ({
+                                            value: group.key,
+                                            label: group.label,
+                                        }),
+                                    )}
+                                    values={selectedMuscles}
+                                    onToggle={(value) =>
+                                        handleToggle(
+                                            value as MuscleGroup,
+                                        )
+                                    }
+                                />
+                            </>
+                        )}
 
                         <SingleSelect
                             label="Antrenman Hedefi"
@@ -363,7 +487,7 @@ export default function WorkoutGenerator() {
                     )}
                 </div>
 
-                {!hasSelection ? (
+                {!readyToGenerate ? (
                     <div className="mt-8 rounded-2xl border border-dashed border-white/15 px-6 py-14 text-center">
                         <p className="mx-auto max-w-md text-lg leading-8 text-white/45">
                             Antrenman programını görmek için 3D
@@ -383,7 +507,7 @@ export default function WorkoutGenerator() {
                         aria-label="Program yükleniyor"
                         className="mt-8 space-y-8"
                     >
-                        {selectedMuscles.map((muscle) => (
+                        {effectiveMuscles.map((muscle) => (
                             <div key={muscle} className="animate-pulse">
                                 <div className="h-4 w-28 rounded-full bg-white/10" />
                                 <div className="mt-3 space-y-3 border-y border-white/10 py-4">
@@ -408,6 +532,21 @@ export default function WorkoutGenerator() {
                     <div className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-5 text-red-300">
                         Egzersizler yüklenemedi. Lütfen daha sonra
                         tekrar dene.
+                    </div>
+                ) : program.length === 0 ? (
+                    /* Sadece atlanan hedeflerde görünebilir (seçimli
+                     * hedeflerde en az bir bölge grubu döner). */
+                    <div className="mt-8 rounded-2xl border border-dashed border-white/15 px-6 py-14 text-center">
+                        <p className="mx-auto max-w-md text-lg leading-8 text-white/45">
+                            Seçilen ortam ve hedef için uygun
+                            egzersiz bulunamadı.
+                        </p>
+
+                        <p className="mt-3 text-sm text-white/30">
+                            Farklı bir ortam (Ev / Spor Salonu)
+                            deneyebilir ya da koç ekibimizden
+                            kişiye özel program isteyebilirsin.
+                        </p>
                     </div>
                 ) : (
                     <div className="mt-8 space-y-8">

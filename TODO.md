@@ -62,8 +62,9 @@
 - [ ] Telefon validasyonu: kayıt formu + profil (9 haneli, 16 haneli, harf içeren numaralar reddedilmeli; boş bırakılabilir).
 - [ ] Mobil görünüm: profil sekme barı (Antrenmanlarım / Etkinliklerim / **Düzenle**) dar ekranda yatay kaydırılabilmeli; 3D model etiketleri kas seçiminin tıklamasını engellememeli.
 - [ ] Kişiye özel program talebi uçtan uca: modal → "Talebin alındı!" → `/admin/custom-training-requests` listesinde görünmeli; 10 dakikada 4. gönderimde rate-limit hatası; honeypot dolduğunda kayıt yazılmamalı. `status` SQL'i sonrası Bekliyor/İncelendi değişimi çalışmalı.
-- [ ] Profil: boşluksuz uzun isim ("aaaa…") başlıkta tek satır kalmalı (üzerine gelince `title` ile tam metin görünmeli).
+- [ ] Profil: boşluksuz uzun isim ("aaaa…") ve uzun e-posta başlıkta **kesilmeden** ("u…" gibi kısaltma olmadan) sığdığı kadar yazılıp alt satıra kırılmalı; Düzenle/Çıkış butonları sıkışmamalı, mobilde kart taşmamalı.
 - [ ] **Form alanı okunabilirlik (global düzeltme sonrası):** koyu zeminde yazılan metin beyaz olmalı — admin girişi, profil düzenleme, kişiye özel antrenman modalı, etkinlik başvurusu, iletişim/destek formları, metabolizma hesaplayıcı; açık admin panellerinde (`/admin/sponsors`, `/admin/supporters`, `/admin/exercises`) metin koyu kalmalı; placeholder her yerde okunabilir ama yazılan metinden ayrık görünmeli. Ayrıca tarayıcı otomatik doldurma (autofill) ile girilen yazıları da kontrol et.
+- [ ] **Antrenman → hedefe göre adım atlama:** "Esneklik / Mobilite", "Postür Düzeltme" ve "Dikey Sıçrama Geliştirme" seçilince cinsiyet+3D harita ve şablon/kas filtreleri gizlenmeli, ortam (Ev/Spor Salonu) seçiminden hemen sonra program otomatik üretilmeli ("Tam vücut programın" başlığı); "Hacim" ve "Maksimum Kuvvet" hedeflerinde 3D kas seçimi normal akışta kalmalı. Atlanan hedefte "Bu bölge için hareket bulunmuyor" blokları sıfırlanmamalı, hiç egzersiz yoksa "uygun egzersiz bulunamadı" boş durumu görünmeli; Profilime Kaydet → `Esneklik / Mobilite Programı` adıyla ve üretilen bölgelerle kaydedilmeli, profilde `N bölge` doğru görünmeli.
 
 ## Özellik geliştirme
 

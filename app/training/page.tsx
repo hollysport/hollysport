@@ -57,6 +57,9 @@ export default function TrainingPage() {
                             3D haritadan birden fazla kas grubu seç,
                             hedefini ve ortamını belirle; programın
                             set ve tekrarlarıyla otomatik hazırlansın.
+                            Esneklik, postür ve sıçrama hedeflerinde
+                            bölge seçimi gerekmez; program doğrudan
+                            üretilir.
                         </p>
 
                         <div className="mt-12">

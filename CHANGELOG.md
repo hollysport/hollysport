@@ -2,6 +2,24 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-09-29 — Antrenman: 3 hedefte kas grubu adımı atlama (commit bekliyor)
+
+- `components/training/WorkoutGenerator.tsx`:
+  - **Adım atlama mantığı:** `MUSCLE_STEP_SKIPPED_GOALS = ["esneklik", "postur", "sicrama"]` (Esneklik/Mobilite, Postür Düzeltme, Dikey Sıçrama Geliştirme). Bu hedeflerde cinsiyet seçimi + **3D kas haritası + "Seçimi temizle"** ve filtrelerdeki **Antrenman Şablonu / Kas Grupları** seçicileri tamamen gizlenir; yerlerine "kas grubu adımı atlandı / tam vücut otomatik oluşturuldu" bilgi notları gelir. `Antrenman Hedefi` ve ortam (Ev/Spor Salonu) seçimi her zaman yerinde.
+  - **Doğrudan üretim:** `readyToGenerate = muscleStepSkipped || hasSelection` — bu 3 hedefte ortam/hedef değiştiği anda mevcut canlı üretim akışı sorguyu çalıştırır (ayrı bir butona gerek yok). Başlık "Tam vücut programın" olur.
+  - **Arka plan verisi:** `FULL_BODY_MUSCLES` = `MUSCLE_GROUPS` tamamı (9 bölge) sorgu ve gruplama için kullanılır; bu yüzden `[]` gönderilmez (sunucudaki `saveWorkout` bölge listesi boşsa kayıt yapmaz). Kayıtta `savedMuscles` normal hedefte kullanıcı seçimi, atlanan hedefte **üretilen programın gerçek bölgeleri** olarak yazılır; `templateName` atlanan hedefte `${Hedef} Programı` olur.
+  - **Görsel temizlik:** atlanan hedefte boş bölge blokları filtrelenir (tam vücutta "Bu bölge için hareket bulunmuyor" yığını çıkmaz) ve hiç egzersiz yoksa "ortam/hedef için uygun egzersiz bulunamadı" boş durumu gösterilir. Yükleme iskeleti `effectiveMuscles` ile çizilir.
+  - **Diğer hedefler (Hacim, Kuvvet)** için 3D seçim, şablon/kas filtreleri ve mevcut grup/bölge davranışı **değişmedi**.
+- `app/training/page.tsx`: bölüm metnine "Esneklik, postür ve sıçrama hedeflerinde bölge seçimi gerekmez" eklendi.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
+
+## 2026-09-29 — Profil isim/e-posta sarma düzeltmesi (commit bekliyor)
+
+- `components/auth/profile-dashboard.tsx` profil başlığındaki `truncate` kaldırıldı (çok erken kesip "u…" gibi gösteriyordu):
+  - İsim (`displayName`) → **`break-words`**, e-posta (`displayEmail`) → **`break-all`**: metin sığabildiği kadar yan yana yazılır (15-20+ karakter), sığmayan kısım doğal olarak alt satıra kırılır; `...` ile kesme yok. `title` korundu (imleçte tam metin).
+  - Metni saran kapsayıcı `min-w-0` → **`min-w-0 flex-1`** (avatarın yanındaki kalan tüm genişliği kullanır) ve yanındaki Düzenle/Çıkış buton bloğuna **`shrink-0`** eklendi; butonlar artık metin alanını daraltmıyor, satıra sığmazsa altta sarılıyor (`flex-wrap`).
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
+
 ## 2026-09-29 — Global form alanı okunabilirlik düzeltmesi (commit bekliyor)
 
 - **Kök neden:** `app/globals.css` içinde `input/textarea/select { color: #18181b }` vardı — tüm veri giriş alanlarına **zorla koyu metin** veriyordu. Koyu zeminli formlarda (giriş, profil düzenleme, özel antrenman, etkinlik başvurusu, admin girişi, antrenman hesaplayıcı…) yazılan yazı okunmazdı. Kural `color: inherit` yapıldı; renk artık bileşenin kendi sınıfından gelir, hiçbir yerde koyu zorlaması yok.

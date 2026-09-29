@@ -2,6 +2,15 @@
 
 Son güncelleme: 2026-09-29
 
+## 2026-09-29: Antrenman — 3 hedefte kas grubu adımı atlanıyor
+
+- `components/training/WorkoutGenerator.tsx` içinde `MUSCLE_STEP_SKIPPED_GOALS = ["esneklik", "postur", "sicrama"]` (Esneklik / Mobilite, Postür Düzeltme, Dikey Sıçrama Geliştirme).
+- **Atlanan hedeflerde:** cinsiyet seçimi + 3D kas haritası + "Seçimi temizle" ve filtrelerdeki **Antrenman Şablonu / Kas Grupları** gizlenir; yerine "kas grubu adımı atlandı" ve "tam vücut otomatik oluşturuldu" notları gelir. `readyToGenerate = muscleStepSkipped || hasSelection` sayesinde ortam/hedef seçilir seçilmez program üretilir (başlık: "Tam vücut programın").
+- **Arka planda:** `FULL_BODY_MUSCLES` (9 bölgenin tamamı) sorgu/gruplama için kullanılır → boş `[]` gönderilmez; kayıtta `savedMuscles` üretilen programın gerçek bölgeleri, `templateName` `${Hedef} Programı` olur. Boş bölge blokları filtrelenir, hiç egzersiz yoksa "uygun egzersiz bulunamadı" boş durumu.
+- **Korunan davranış:** Hacim ve Maksimum Kuvvet'te 3D seçim, şablon/kas filtreleri, bölge başı limit algoritması ve "Bu bölge için hareket bulunmuyor" blokları aynen çalışır.
+- `app/training/page.tsx` bölüm metnine bu hedeflerde bölge seçimi gerekmediği eklendi.
+- tsc / eslint / build temiz.
+
 ## 2026-09-29: Global form alanı okunabilirlik kuralı
 
 - `app/globals.css`: `input/textarea/select { color: #18181b }` kuralı **kaldırıldı**, yerine `color: inherit` (Tailwind preflight). Eski kural koyu zeminli tüm formlarda yazılan metni koyulaştırıp okunmaz hale getiriyordu.
