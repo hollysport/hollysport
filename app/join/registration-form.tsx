@@ -202,6 +202,7 @@ export default function RegistrationForm({
                     id="registration-website"
                     name="website"
                     type="text"
+                    className="text-white"
                     tabIndex={-1}
                     autoComplete="off"
                     value={honeypot}

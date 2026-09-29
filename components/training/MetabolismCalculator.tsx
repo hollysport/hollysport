@@ -95,7 +95,7 @@ const PROTEIN_PER_KG = 2;
 const FAT_PER_KG = 0.9;
 
 const inputClassName =
-    "w-full rounded-2xl border border-white/15 bg-[#050505] px-5 py-4 text-lg font-semibold text-white outline-none transition placeholder:text-white/25 focus:border-[#27D66B]";
+    "w-full rounded-2xl border border-white/15 bg-[#050505] px-5 py-4 text-lg font-semibold text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
 
 const STEP_TITLES = [
     "Önce seni tanıyalım",

@@ -6,6 +6,7 @@ import {
     Dumbbell,
     ExternalLink,
     Lightbulb,
+    ListChecks,
     LogOut,
     MessageCircleQuestion,
     MessageSquareQuote,
@@ -374,6 +375,31 @@ export default async function AdminPage() {
                                     Antrenman Merkezi&apos;ndeki
                                     bölgesel egzersizleri ekle,
                                     düzenle veya sil.
+                                </p>
+                            </div>
+                        </Link>
+
+                        <Link
+                            href="/admin/custom-training-requests"
+                            className="group flex min-h-56 flex-col justify-between rounded-[2rem] border border-white/10 bg-[#111111] p-7 transition duration-300 hover:-translate-y-1 hover:border-sky-400/45 sm:p-8"
+                        >
+                            <div className="flex items-start justify-between gap-5">
+                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-400/10 text-sky-300">
+                                    <ListChecks className="h-7 w-7" />
+                                </div>
+
+                                <ArrowUpRight className="h-6 w-6 text-white/25 transition group-hover:text-sky-300" />
+                            </div>
+
+                            <div className="mt-8">
+                                <h3 className="text-2xl font-bold">
+                                    Özel Antrenman Talepleri
+                                </h3>
+
+                                <p className="mt-3 text-sm leading-6 text-white/40">
+                                    Kişiye özel program formundan gelen
+                                    talepleri görüntüle ve durumlarını
+                                    güncelle.
                                 </p>
                             </div>
                         </Link>

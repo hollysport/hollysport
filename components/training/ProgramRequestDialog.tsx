@@ -1,10 +1,10 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 
-import { createClient } from "@/lib/supabase/client";
+import { submitProgramRequest } from "@/app/training/actions";
 import { GOALS } from "@/lib/data/exercises";
 
 type ProgramRequestDialogProps = {
@@ -14,13 +14,15 @@ type ProgramRequestDialogProps = {
 
 /*
  * "Kişisel Antrenman Programı İstiyorum" modal formu.
- * Gönderimler Supabase `custom_program_requests` tablosuna yazılır.
+ * Gönderimler doğrudan Supabase'e değil, sunucu action'ına gider:
+ *   app/training/actions.ts → submitProgramRequest()
+ * (alan doğrulaması + rate limit + service-role insert; gerçek
+ * error.code/message loglanıp kullanıcıya döner.)
  */
 export default function ProgramRequestDialog({
     open,
     onClose,
 }: ProgramRequestDialogProps) {
-    const supabase = useMemo(() => createClient(), []);
     const [fullName, setFullName] = useState("");
     const [contact, setContact] = useState("");
     const [age, setAge] = useState("");
@@ -28,6 +30,7 @@ export default function ProgramRequestDialog({
     const [weight, setWeight] = useState("");
     const [goal, setGoal] = useState(GOALS[0].key);
     const [notes, setNotes] = useState("");
+    const [honeypot, setHoneypot] = useState("");
 
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
@@ -64,29 +67,47 @@ export default function ProgramRequestDialog({
 
         setSubmitting(true);
 
-        const { error } = await supabase
-            .from("custom_program_requests")
-            .insert({
-                full_name: fullName.trim(),
+        /*
+         * Yazma işlemi sunucuda yapılır (service-role): tarayıcıdan
+         * doğrudan insert şema hatasına düşüyordu (`contact_info`).
+         * Action beklenmedik bir şekilde düşerse de buton kilitlenmez.
+         */
+        try {
+            const result = await submitProgramRequest({
+                fullName: fullName.trim(),
                 contact: contact.trim(),
                 age: age ? Number(age) : null,
                 height: height ? Number(height) : null,
                 weight: weight ? Number(weight) : null,
                 goal,
                 notes: notes.trim() || null,
+                honeypot,
             });
 
-        setSubmitting(false);
+            if (!result.success) {
+                console.error(
+                    "[submitProgramRequest] hata:",
+                    result.error,
+                );
+                setErrorMessage(
+                    result.error ??
+                        "Talebin gönderilemedi. Lütfen tekrar dene.",
+                );
+                return;
+            }
 
-        if (error) {
-            console.error(error);
+            setSubmitted(true);
+        } catch (actionError) {
+            console.error(
+                "[submitProgramRequest] action hatası:",
+                actionError,
+            );
             setErrorMessage(
                 "Talebin gönderilemedi. Lütfen tekrar dene.",
             );
-            return;
+        } finally {
+            setSubmitting(false);
         }
-
-        setSubmitted(true);
     }
 
     function handleClose() {
@@ -100,11 +121,12 @@ export default function ProgramRequestDialog({
             setHeight("");
             setWeight("");
             setNotes("");
+            setHoneypot("");
         }
     }
 
     const inputClass =
-        "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/25 focus:border-[#27D66B]";
+        "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
 
     const labelClass =
         "text-xs font-semibold uppercase tracking-wider text-white/40";
@@ -169,6 +191,31 @@ export default function ProgramRequestDialog({
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                        {/* Bot tuzağı — kullanıcıya görünmez, bot doldurursa kayıt atlanır */}
+                        <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute -left-[9999px] top-auto h-px w-px overflow-hidden"
+                        >
+                            <label htmlFor="program-request-website">
+                                İnternet sitesi
+                            </label>
+
+                            <input
+                                id="program-request-website"
+                                name="website"
+                                type="text"
+                                className="text-white"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                value={honeypot}
+                                onChange={(event) =>
+                                    setHoneypot(
+                                        event.target.value,
+                                    )
+                                }
+                            />
+                        </div>
+
                         <label className="block">
                             <span className={labelClass}>Ad Soyad *</span>
                             <input

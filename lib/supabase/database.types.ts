@@ -529,34 +529,39 @@ export type Database = {
                 Row: {
                     id: string;
                     full_name: string;
-                    contact: string;
+                    /* Gerçek kolon `contact_info` (eski `contact` PGRST204 üretiyordu) */
+                    contact_info: string;
                     age: number | null;
                     height: number | null;
                     weight: number | null;
                     goal: string;
                     notes: string | null;
+                    /* Bekliyor / İncelendi — tabloya eklenmesi için TODO'daki SQL gerekir */
+                    status: string;
                     created_at: string;
                 };
                 Insert: {
                     id?: string;
                     full_name: string;
-                    contact: string;
+                    contact_info: string;
                     age?: number | null;
                     height?: number | null;
                     weight?: number | null;
                     goal: string;
                     notes?: string | null;
+                    status?: string;
                     created_at?: string;
                 };
                 Update: {
                     id?: string;
                     full_name?: string;
-                    contact?: string;
+                    contact_info?: string;
                     age?: number | null;
                     height?: number | null;
                     weight?: number | null;
                     goal?: string;
                     notes?: string | null;
+                    status?: string;
                     created_at?: string;
                 };
                 Relationships: [];

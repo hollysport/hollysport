@@ -2,6 +2,20 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-09-29 — Global form alanı okunabilirlik düzeltmesi (commit bekliyor)
+
+- **Kök neden:** `app/globals.css` içinde `input/textarea/select { color: #18181b }` vardı — tüm veri giriş alanlarına **zorla koyu metin** veriyordu. Koyu zeminli formlarda (giriş, profil düzenleme, özel antrenman, etkinlik başvurusu, admin girişi, antrenman hesaplayıcı…) yazılan yazı okunmazdı. Kural `color: inherit` yapıldı; renk artık bileşenin kendi sınıfından gelir, hiçbir yerde koyu zorlaması yok.
+- **Alan taraması:** 113 alan (input/textarea/select) tek tek denetlendi; paylaşılan sabitler (`inputClass`, `fieldClass`, `normalFieldClass` …) çözülerek doğrulandı — **111 alan renk/tema sınıfına sahip**, 2 alan `sr-only` (gizli file input). Koyu zemindekiler `text-white`; açık paneller (`/admin/sponsors`, `/admin/supporters`, `/admin/exercises`, `/destek-ol`, `/contact`, `/gallery`) `text-zinc-950`. Renk sınıfı **eksik olan tek yerler** eklendi: `app/admin/login` (2 input → `text-white`), `sponsor-manager` (6), `supporter-actions` (2); ayrıca `text-white/45` olan etkinlik kapak dosya input'u `text-white`, honeypot alanları da sınıflandırıldı.
+- **Placeholder:** global ton `#a1a1aa` → `#767680` (koyu zeminde ≈4.2:1, beyazda ≈4.8:1 — yazılan metinden net ayrışır). Okunmayan `placeholder:text-white/20` (admin girişi, etkinlik formu) ve `placeholder:text-white/25` (auth, profil, şifre, hesaplayıcı, program talebi) değerleri `/45`'e; `.form-field-dark`/`.admin-event-field`/`.registration-field` placeholder opaklığı `0.28`–`0.35` → `0.45`; açık panellerde `placeholder:text-zinc-400` → `placeholder:text-zinc-500`.
+- `components/ui/input.tsx` yok; `components/ui/Input.tsx` **boş ve kullanılmıyor** (gerçek mekanizma global CSS + bileşen sınıfları). `textarea.tsx`/`select.tsx` hiç yok.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
+
+## 2026-09-29 — Program talebi + admin + profil ismi (commit bekliyor)
+
+- **Özel antrenman formu düzeltendi (kök neden):** gerçek kolon `contact_info` imiş (`contact` → `PGRST204`), tarayıcı insert'i doğrudan tabloya gidiyordu. Artık **server action `submitProgramRequest()`** (`app/training/actions.ts`): honeypot → alan doğrulaması (ad 2-100, iletişim 5-120, hedef GOALS içinde, yaş 10-99 / boy 100-230 / kilo 30-250, not ≤500) → rate limit (`program_request`, 3 istek/10 dk) → **service-role insert** (env yoksa oturum client'ına düşer). `catch`/insert hatalarında `error.message` + `error.code` + `details`/`hint` loglanıyor, kullanıcıya `Talebin gönderilemedi. … (CODE) message` dönüyor. `database.types.ts` `contact_info` ile hizalandı.
+- **Admin sayfası:** `/admin/custom-training-requests` — talep sahibi (ad, iletişim linki), form detayları (hedef/yaş/boy/kilo/notlar), tarih ve **Bekliyor / İncelendi** durumu; durum değiştirme server action'ı (`setProgramRequestStatus`, requireAdmin + service-role). `status` kolonu DB'de yoksa sayfa kolonsuz sarımla açılır ve SQL bandı gösterir. Ana admin menüsüne "Özel Antrenman Talepleri" kartı eklendi.
+- **Profil isim UI:** başlık `displayName` değişkenine alındı; `<h1>` ve e-posta satırı `truncate` + `title` → boşluksuz uzun isimler ("aaaa…") tek satırda kalır, kartı bozmaz.
+
 ## 2026-09-29 — UX / mobil düzeltmeler (commit bekliyor)
 
 - **Etkinlik kayıt mesajı:** `joinEvent()` artık yalnızca DB'de gerçekten aktif (pending/approved/waitlist) bir kayıt varsa `already` döndürür; başarılı ilk kayıtta `message: "Kaydınız tamamlanmıştır."` döner. İptal/ret sonrası başvurular `pending`'e çekilerek yeniden açılabilir (artık yanlış "zaten kayıtlısın" yok). `QuickJoinButton` "yeni kayıt" (`joined`) ve `existing` durumlarını ayrı ayrı görselleştiriyor; sunucu logu (`23505`/`mevcut kayıt`) teşhis için duruyor.

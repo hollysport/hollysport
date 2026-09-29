@@ -259,10 +259,10 @@ export default function EventForm({
     }
 
     const inputClass =
-        "mt-2 h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/20 focus:border-[#27D66B]";
+        "mt-2 h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]";
 
     const textareaClass =
-        "mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-white outline-none transition-colors placeholder:text-white/20 focus:border-[#27D66B]";
+        "mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]";
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -1107,7 +1107,7 @@ export default function EventForm({
                             name="cover_image"
                             type="file"
                             accept="image/jpeg,image/png,image/webp,image/avif"
-                            className="mt-5 block w-full text-sm text-white/45 file:mr-4 file:rounded-full file:border-0 file:bg-[#27D66B] file:px-5 file:py-3 file:font-semibold file:text-black"
+                            className="mt-5 block w-full text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-[#27D66B] file:px-5 file:py-3 file:font-semibold file:text-black"
                         />
                     </label>
 

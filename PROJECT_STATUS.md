@@ -1,6 +1,12 @@
 # Proje Durumu — Holly Sport
 
-Son güncelleme: 2026-09-23
+Son güncelleme: 2026-09-29
+
+## 2026-09-29: Global form alanı okunabilirlik kuralı
+
+- `app/globals.css`: `input/textarea/select { color: #18181b }` kuralı **kaldırıldı**, yerine `color: inherit` (Tailwind preflight). Eski kural koyu zeminli tüm formlarda yazılan metni koyulaştırıp okunmaz hale getiriyordu.
+- **Renk kuralı (yeni):** her veri giriş alanı kendi sınıfını taşır → koyu zeminde `text-white`, açık (beyaz / `bg-zinc-50`) zeminde `text-zinc-950`. 113 alan taranıp doğrulandı; eksik renkli alanlar (`/admin/login`, `sponsor-manager`, `supporter-actions`) tamamlandı.
+- **Placeholder kuralı:** global `#767680` (her iki zeminde ≈4.5:1, yazılan metinden ayrık); bileşen içi `placeholder:text-white/45` (koyu) / `placeholder:text-zinc-500` (açık) kullanılır. Tema sınıfları (`.form-field-dark`, `.admin-event-field`, `.registration-field`) placeholder opaklığı `0.45`.
 
 ## 2026-09-27 (devam): Kayıt artık Server Action + admin upsert
 
@@ -63,7 +69,7 @@ Son güncelleme: 2026-09-23
 
 - **WorkoutGenerator**: `lib/data/exercises.ts` mock havuzu tamamen silindi (≈90 kayıt POOL + MOCK_EXERCISES); `buildProgram` yerini saf `groupExercises` aldı (bölge başı limit + hedef set/tekrar eşlemesi). Sorgu canlı: `exercises.in("target_muscle", …).eq("environment", …).contains("goals", [goal])`. Skeleton yükleme durumu (bölge başına pulse satırları) + hata durumu eklendi.
 - **Admin egzersiz formu**: "Hedefler" checkbox grubu (5 hedef, en az biri zorunlu), `goals text[]` olarak insert; listede hedef rozetleri görünüyor.
-- **ProgramRequestDialog**: canlı INSERT → `custom_program_requests` (full_name, contact, age, height, weight, goal, notes); loading + editoryal başarı ekranı + hata mesajı. ⚠️ Veritabanı kolon adları `full_name/contact/age/height/weight/goal/notes` olarak VARSAYILDI — Supabase'deki gerçek kolonlar farklıysa eşleştirilir. Not: Bu form AGENTS.md'deki service-role route deseninin dışında (client insert); Turnstile/rate-limit ile sertleştirme önerilir.
+- **ProgramRequestDialog**: form gönderimi artık sunucu action'ı üzerinden (`app/training/actions.ts` → `submitProgramRequest`): alan doğrulaması → honeypot → rate limit (`program_request`, 3/10 dk) → **service-role insert**. ✅ Gerçek kolon `contact_info` (PostgREST openapi ile doğrulandı); eski `contact` yazımı `PGRST204` üretip jenerik "Talebin gönderilemedi" hatasına yol açıyordu. Hatalarda `error.message`/`error.code` hem console'a loglanır hem kullanıcıya döner. Admin listesi: `/admin/custom-training-requests` (durum kolonu için SQL bkz. TODO).
 - `database.types.ts`: `exercises.goals: string[]` + `custom_program_requests` tablosu eklendi.
 - tsc / eslint / build temiz.
 

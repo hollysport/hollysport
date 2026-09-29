@@ -2,6 +2,19 @@
 
 ## Kritik güvenlik
 
+- [ ] `custom_program_requests` durum kolonu (Supabase dashboard — SQL'i sen çalıştır, bana gösterme):
+  ```sql
+  -- Mevcut kolonları kontrol:
+  select column_name from information_schema.columns
+  where table_schema = 'public' and table_name = 'custom_program_requests';
+
+  -- Durum kolonu (Bekliyor / İncelendi):
+  alter table public.custom_program_requests
+    add column if not exists status text not null default 'pending';
+  ```
+  Not: SQL çalışana kadar admin sayfası (`/admin/custom-training-requests`) kolonsuz sarmalayla açılır ve SQL bandını gösterir; durum değiştirme butonları `PGRST204` hatasını aynen döner.
+- [ ] Özel antrenman talebi formuna Turnstile da ekle (şu an honeypot + rate limit var; kayıt formundaki `TurnstileWidget` deseni `action="program_request"` ile kopyalanabilir).
+
 - [ ] RLS gözden geçirme (Supabase dashboard): kayıt formu service-role'a taşındığı için `event_registrations` tablosundaki anon/authenticated INSERT politikası artık gerekli değil. İlgili policy adlarını kontrol edip kaldır:
   ```sql
   -- Önce mevcut politikaları listele:
@@ -48,6 +61,9 @@
 - [ ] Tek tuşla etkinlik katılım uçtan uca (üye): ilk kayıtta **"Kaydınız tamamlanmıştır"**, ikinci denemede yalnızca gerçek kayıt varsa "zaten kayıtlısın"; iptal/ret sonrası yeniden katılım `pending` olarak açılmalı.
 - [ ] Telefon validasyonu: kayıt formu + profil (9 haneli, 16 haneli, harf içeren numaralar reddedilmeli; boş bırakılabilir).
 - [ ] Mobil görünüm: profil sekme barı (Antrenmanlarım / Etkinliklerim / **Düzenle**) dar ekranda yatay kaydırılabilmeli; 3D model etiketleri kas seçiminin tıklamasını engellememeli.
+- [ ] Kişiye özel program talebi uçtan uca: modal → "Talebin alındı!" → `/admin/custom-training-requests` listesinde görünmeli; 10 dakikada 4. gönderimde rate-limit hatası; honeypot dolduğunda kayıt yazılmamalı. `status` SQL'i sonrası Bekliyor/İncelendi değişimi çalışmalı.
+- [ ] Profil: boşluksuz uzun isim ("aaaa…") başlıkta tek satır kalmalı (üzerine gelince `title` ile tam metin görünmeli).
+- [ ] **Form alanı okunabilirlik (global düzeltme sonrası):** koyu zeminde yazılan metin beyaz olmalı — admin girişi, profil düzenleme, kişiye özel antrenman modalı, etkinlik başvurusu, iletişim/destek formları, metabolizma hesaplayıcı; açık admin panellerinde (`/admin/sponsors`, `/admin/supporters`, `/admin/exercises`) metin koyu kalmalı; placeholder her yerde okunabilir ama yazılan metinden ayrık görünmeli. Ayrıca tarayıcı otomatik doldurma (autofill) ile girilen yazıları da kontrol et.
 
 ## Özellik geliştirme
 

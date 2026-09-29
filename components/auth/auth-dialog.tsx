@@ -65,7 +65,7 @@ function computeJoinDate(monthsBack: number): string {
 }
 
 const inputClass =
-    "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/25 focus:border-[#27D66B]";
+    "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
 
 const labelClass =
     "text-xs font-semibold uppercase tracking-wider text-white/40";

@@ -64,7 +64,7 @@ export default async function AdminLoginPage({
                                 autoComplete="email"
                                 required
                                 placeholder="admin@hollysport.com"
-                                className="h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 outline-none transition-colors placeholder:text-white/20 focus:border-[#27D66B]"
+                                className="h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]"
                             />
                         </div>
 
@@ -83,7 +83,7 @@ export default async function AdminLoginPage({
                                 autoComplete="current-password"
                                 required
                                 placeholder="••••••••"
-                                className="h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 outline-none transition-colors placeholder:text-white/20 focus:border-[#27D66B]"
+                                className="h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]"
                             />
                         </div>
 

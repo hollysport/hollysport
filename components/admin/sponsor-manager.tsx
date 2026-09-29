@@ -220,7 +220,7 @@ export default function SponsorManager({
                             required
                             value={name}
                             onChange={(event) => setName(event.target.value)}
-                            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-orange-500"
+                            className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-950 placeholder:text-zinc-500 outline-none focus:border-orange-500"
                         />
                     </label>
 
@@ -234,7 +234,7 @@ export default function SponsorManager({
                             value={website}
                             onChange={(event) => setWebsite(event.target.value)}
                             placeholder="https://"
-                            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-orange-500"
+                            className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-950 placeholder:text-zinc-500 outline-none focus:border-orange-500"
                         />
                     </label>
 
@@ -246,7 +246,7 @@ export default function SponsorManager({
                         <select
                             value={category}
                             onChange={(event) => setCategory(event.target.value)}
-                            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 outline-none focus:border-orange-500"
+                            className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 outline-none focus:border-orange-500"
                         >
                             {categories.map((item) => (
                                 <option key={item.value} value={item.value}>
@@ -266,7 +266,7 @@ export default function SponsorManager({
                             min="0"
                             value={sortOrder}
                             onChange={(event) => setSortOrder(event.target.value)}
-                            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none focus:border-orange-500"
+                            className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-zinc-950 placeholder:text-zinc-500 outline-none focus:border-orange-500"
                         />
                     </label>
 
@@ -376,7 +376,7 @@ export default function SponsorManager({
                                             category: event.target.value,
                                         })
                                     }
-                                    className="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-orange-500"
+                                    className="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-950 outline-none focus:border-orange-500"
                                 >
                                     {categories.map((item) => (
                                         <option key={item.value} value={item.value}>
@@ -400,7 +400,7 @@ export default function SponsorManager({
                                             sort_order: Number(event.target.value) || 0,
                                         })
                                     }
-                                    className="w-full rounded-xl border border-zinc-300 px-3 py-2.5 text-sm outline-none focus:border-orange-500"
+                                    className="w-full rounded-xl border border-zinc-300 px-3 py-2.5 text-sm text-zinc-950 outline-none focus:border-orange-500"
                                 />
                             </label>
                         </div>

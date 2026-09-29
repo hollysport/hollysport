@@ -673,10 +673,10 @@ export default function SupportForm() {
     }
 
     const fieldClass =
-        "w-full rounded-2xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10";
+        "w-full rounded-2xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 outline-none transition placeholder:text-zinc-500 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10";
 
     const fieldErrorClass =
-        "w-full rounded-2xl border border-red-500 bg-white px-4 py-3 text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
+        "w-full rounded-2xl border border-red-500 bg-white px-4 py-3 text-zinc-950 outline-none transition placeholder:text-zinc-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
 
     return (
         <form
@@ -696,6 +696,7 @@ export default function SupportForm() {
                     id="support-company-fax"
                     name="companyFax"
                     type="text"
+                    className="text-zinc-950"
                     tabIndex={-1}
                     autoComplete="off"
                     value={companyFax}

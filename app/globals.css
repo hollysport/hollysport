@@ -164,15 +164,35 @@ video {
 /* GENEL FORM ALANLARI */
 /* ------------------------------------------------ */
 
+/*
+ * Yazılan metin rengi: alan, bulunduğu yüzeyin metin rengini devralır
+ * (Tailwind preflight `color: inherit`).
+ *
+ * DÜZELTME: Bu kural eskiden tüm input/textarea/select alanlarına zorla
+ * `#18181b` (koyu) veriyordu; koyu zeminli formlarda (giriş, profil,
+ * özel antrenman, etkinlik başvurusu, admin girişi…) yazılan yazı
+ * okunmaz hale geliyordu.
+ *
+ * Renk artık bileşende belirtilir:
+ *   - koyu zeminde  → `text-white`
+ *   - açık zeminde  → `text-zinc-950` (ör. /admin/sponsors, /admin/supporters)
+ * Sınıf yoksa devir alma (inherit) geçerlidir; hiçbir yerde koyu zorlaması yoktur.
+ */
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
-  color: #18181b;
+  color: inherit;
 }
 
+/*
+ * Placeholder: yazılan metinden (beyaz / neredeyse siyah) net biçimde
+ * ayrışan, hem koyu (#050505–#1a1a1a) hem açık (beyaz) zeminde ≈4.5:1
+ * kontrast sunan orta gri ton. Bileşen içi `placeholder:text-*`
+ * sınıfları bu varsayılanın üzerine yazabilir.
+ */
 input::placeholder,
 textarea::placeholder {
-  color: #a1a1aa;
+  color: #767680;
   opacity: 1;
 }
 
@@ -193,8 +213,8 @@ select option {
 }
 
 .admin-event-field::placeholder {
-  color: rgba(255, 255, 255, 0.35) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .admin-event-field option {
@@ -223,8 +243,8 @@ select option {
 }
 
 .registration-field::placeholder {
-  color: rgba(255, 255, 255, 0.35) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .registration-field option {
@@ -252,8 +272,8 @@ select option {
 }
 
 .form-field-dark::placeholder {
-  color: rgba(255, 255, 255, 0.28) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.28) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.45) !important;
 }
 
 .form-field-dark:-webkit-autofill,

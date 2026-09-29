@@ -260,7 +260,7 @@ export default function ProfileDashboard({
     const [deleteError, setDeleteError] = useState("");
 
     const inputClass =
-        "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/25 focus:border-[#27D66B]";
+        "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
 
     const labelClass =
         "text-xs font-semibold uppercase tracking-wider text-white/40";
@@ -448,6 +448,19 @@ export default function ProfileDashboard({
         metadata,
     });
 
+    /*
+     * İsim/e-posta tek satırda kalsın: boşluksuz uzun isimler
+     * ("aaaa…") alt alta dizilip kartı bozmasın. Üst satır `truncate`
+     * ile kesilir, `title` ile tam metin imleçte görünür.
+     */
+    const displayName = resolveDisplayName({
+        fullName: editName || profile?.full_name,
+        email: profile?.email ?? email,
+        metadata,
+    });
+
+    const displayEmail = profile?.email || email;
+
     return (
         <div className="mx-auto max-w-5xl">
             {/* Profil bilgi kartı */}
@@ -466,19 +479,18 @@ export default function ProfileDashboard({
                                 Profilim
                             </span>
 
-                            <h1 className="mt-1 break-words text-xl font-bold sm:text-2xl md:text-3xl">
-                                {resolveDisplayName({
-                                    fullName:
-                                        editName ||
-                                        profile?.full_name,
-                                    email:
-                                        profile?.email ?? email,
-                                    metadata,
-                                })}
+                            <h1
+                                title={displayName}
+                                className="mt-1 truncate text-xl font-bold sm:text-2xl md:text-3xl"
+                            >
+                                {displayName}
                             </h1>
 
-                            <p className="mt-1 break-all text-sm text-white/45">
-                                {profile?.email || email}
+                            <p
+                                title={displayEmail}
+                                className="mt-1 truncate text-sm text-white/45"
+                            >
+                                {displayEmail}
                             </p>
 
                             <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold">

@@ -331,6 +331,7 @@ export default function DreamForm() {
                     id="dream-website"
                     name="website"
                     type="text"
+                    className="text-white"
                     tabIndex={-1}
                     autoComplete="off"
                     value={website}

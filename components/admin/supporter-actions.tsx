@@ -94,7 +94,7 @@ export default function SupporterActions({
                     <select
                         value={category}
                         onChange={(event) => setCategory(event.target.value)}
-                        className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm outline-none focus:border-orange-500"
+                        className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-950 outline-none focus:border-orange-500"
                     >
                         <option value="individual">
                             Bireysel destekçi
@@ -120,7 +120,7 @@ export default function SupporterActions({
                         onChange={(event) =>
                             setIsActive(event.target.value === "active")
                         }
-                        className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm outline-none focus:border-orange-500"
+                        className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-950 outline-none focus:border-orange-500"
                     >
                         <option value="active">
                             Ana sayfada göster
