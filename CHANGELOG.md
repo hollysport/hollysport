@@ -2,6 +2,47 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-09-29 — Navbar: kenarlıksız (borderless) yumuşatma (commit bekliyor)
+
+- `components/layout/navbar.tsx` içindeki **tüm** kenarlık sınıfları (`border`, `border-white/20`, `border-gray-*`, `border-t/b`, `hover:border-*`, `ring`, `outline`, `divide-x`) kaldırıldı — grep ile 0 eşleşme doğrulandı.
+  - **Header:** `border-b border-white/10` + `md:border-transparent` silindi. Mobilde alttaki ayracın yerine yumuşak **`shadow-lg`** kondu, masaüstünde `md:shadow-none` ile kapatıldı (şeffaf başlıkta kutu gölgesi çizgi gibi görünürdü).
+  - **Orta link kapsülü:** `border border-white/20` silindi → **`bg-black/30` + `shadow-lg` + `backdrop-blur-md`**. "Yüzen" his artık zemin + gölge + bulanıklıkla veriliyor.
+  - **Sağ blok (profil avatarı · Giriş Yap · Topluluğa Katıl · Destek Ol · hamburger):** border ve `hover:border-*` yok; hepsi `bg-white/5` (Destek Ol `bg-[#27D66B]`) + `shadow-lg` + `backdrop-blur-md`. Hover geçişleri yalnızca zemin/metin rengiyle (`hover:bg-white/10`, `hover:text-[#27D66B]`, Destek Ol `hover:bg-[#45e27f]`).
+  - **Mobil menü paneli:** dış `border-t` ayracı, kart `border border-white/10` ve buton `border`'ları da kaldırıldı → kart `shadow-2xl` kaldı, butonlar `bg-white/5` / `bg-[#27D66B]/10` zeminine geçti.
+- Sonuç: navbar'da hiçbir elemanın etrafında sert çizgi kalmadı; hiçbir `outline`/`ring` kullanılmıyor.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓; üretilen CSS'te `shadow-lg` ve `md:shadow-none` sınıflarının gerçekten üretildiği doğrulandı.
+
+## 2026-09-29 — Ana sayfa: Hero navbar'ın altına giriyor (top-0) (commit bekliyor)
+
+Sorun: navbar `fixed` yapıldıktan sonra arkasındaki eş yükseklik boşluğu (`h-24 bg-[#050505]`) yüzünden Hero 96px aşağıda başlıyor, navbar'ın arkası siyah kalıyordu.
+
+- `components/layout/navbar.tsx`:
+  - Header **her kırılma noktasında `fixed inset-x-0 top-0 z-50`** (eski `sticky` kaldırıldı) → navbar artık hiçbir sayfada içerik akışını itmez.
+  - Yeni **`overlay`** prop'u (`overlay?: boolean`, varsayılan `false`): true verilince altındaki eş yükseklik boşluğu hiç render edilmez. Varsayılanda boşluk korunur (mobil `h-20`, md+ `h-24`, `bg-[#050505]`) → diğer 18 sayfada düzen hiç değişmiyor.
+- `app/page.tsx`: `<Navbar overlay />` → Hero **0'dan** (top-0) başlıyor; siyah bant yok, navbar doğrudan hero görselinin üzerine biniyor.
+- `components/sections/Hero.tsx`:
+  - `<section ... min-h-[100svh]>` zaten tam ekran (100svh, `items-end` ile içerik alt hizalı) — kaldırılan boşluk sayesinde bölüm artık viewport'un tepesinden başlıyor.
+  - Navbar'a ayrılan üst dolgu **`pt-40` kaldırıldı** (içerik alt hizalı olduğu için normal ekranlarda zaten görünmüyordu). Bunun yerine sadece alçak ekranlarda (yatay telefon/pencere, `max-height:560px`) `pt-28` güvenlik dolgusu eklendi — içerik hero görselindeki koyu degrade + navbar scrim'inin altında kaybolmasın diye.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓; üretilen CSS'te `.fixed{position:fixed}`, `@media (max-height:560px){…pt-28}`, `md:top-4`, `md:h-24`, `min-h-[100svh]` doğrulandı.
+
+## 2026-09-29 — Ana sayfa: 3D antrenman tanıtım bölümü kaldırıldı (commit bekliyor)
+
+- `app/page.tsx`: `<TrainingShowcase />` ve import'u tamamen silindi — Hero'nun hemen altındaki **"YENİ NESİL ANTRENMAN"** üst başlığı, **"3D Anatomi Destekli Antrenman Merkezi."** ana başlığı, **"Hemen Ücretsiz Başla"** yeşil CTA butonu ve altındaki **3 özellik kartı** (İnteraktif 3D Anatomi / Bilimsel Algoritma / Kişisel Kütüphane) artık sayfada yok.
+- `components/home/training-showcase.tsx` dosyası (bileşenin tamamı) ve boşalan `components/home/` klasörü silindi; proje genelinde başka kullanım yoktu.
+- **Boşluk ayarı:** bölüm kendi `border-t border-white/10 bg-[#0a0a0a] py-24` kabuğunu taşıdığı için silinmesiyle boşluk da kalktı; Hero → doğrudan `About` (`bg-[#050505] py-20 sm:py-28`) geçiyor, kendi üst dolgusuyla hizalı — ekstra margin/padding gerekmedi.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓.
+
+## 2026-09-29 — Navbar: floating pill (yüzen kapsül) düzeni (commit bekliyor)
+
+- `components/layout/navbar.tsx`:
+  - **Yüzen kapsül düzeni:** header `sticky inset-x-0 top-0` → **`fixed` (tüm kırılma noktalarında) + `md:top-4`** (`z-50`); header akıştan çıktığı için hemen ardına **eş yükseklik boşluk** kondu → yüzen kapsülün alt kenarı (mobil 80px / md+ 16+80 = 96px) içerikle çakışmaz, sayfa içeriği yukarı kaymaz. (Sonraki adımda ana sayfada `overlay` prop'u ile bu boşluk kaldırıldı → bkz. "Hero navbar'ın altına giriyor".)
+  - **Mobil (md altı) korundu:** koyu cam zemin (`bg-[#050505]/95 backdrop-blur-xl border-b`) + tam genişlik + hamburger menü aynen. Masaüstünde header şeffaflaşır (`md:bg-transparent md:border-transparent md:backdrop-blur-none`) ve **yumuşak koyu degrade scrim** eklenir (`md:bg-gradient-to-b from-black/70 via-black/30 to-transparent`); böylece beyaz bölümler (Hakkımızda / Sporlar / Galeri / SSS) altından geçerken logo ve kapsül okunur kalır.
+  - **Merkezi link kapsülü:** 9 link tek bir kapsülde — `rounded-full border border-white/20 bg-black/30 backdrop-blur-md`; dış kapsayıcı `hidden min-w-0 flex-1 items-center justify-center xl:flex` ile **tam ortalanır**, `max-w-full + overflow-x-auto` (scrollbar gizli) taşmayı engeller. Linkler `rounded-full px-2.5 py-2` pill, **aktif** hedef `bg-[#27D66B]/15 text-[#27D66B]` (eski alt çizgi kaldırıldı), hover `bg-white/10`.
+  - **Kırılma noktaları:** kapsül **`xl:flex` (1280px+)** — 9 link ~680px yer kaplıyor, altında logo + 3 aksiyon + kapsül sığmadığı için hamburger menü korunur (`xl:hidden`); aksiyonlar **`md:`'den itibaren** görünür (768px'te logo + aksiyonlar + hamburger sığıyor). Mobil menü paneli `lg:hidden` → `xl:hidden`.
+  - **Sağ blok:** profil avatarı / Giriş Yap / **Topluluğa Katıl** / **Destek Ol** hepsi `rounded-full`; ince `border-white/20` + `bg-white/5 backdrop-blur-md` cam detay, Destek Ol yeşil dolu + `border-[#27D66B]/60`; hamburger `border-white/20 bg-white/5 backdrop-blur-md`. Logo serbest (sadece masaüstünde `drop-shadow` ile okunabilirlik).
+  - `components/sections/{Faq,Gallery,Sports}.tsx`: `scroll-mt-20` → + **`md:scroll-mt-28`** (yüzen kapsül kadar kaydırma payı; `/#faq` linki başlığı örtmüyor).
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata, `npm run build` ✓; üretilen CSS'te `fixed`, `md:top-4`, `md:bg-transparent`, `md:bg-gradient-to-b`, `md:from-black/70`, `xl:flex`, `scrollbar-width:none` sınıflarının gerçekten üretildiği doğrulandı.
+
 ## 2026-09-29 — Antrenman: 3 hedefte kas grubu adımı atlama (commit bekliyor)
 
 - `components/training/WorkoutGenerator.tsx`:

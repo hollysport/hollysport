@@ -30,7 +30,7 @@ const faqs = [
 
 export default function Faq() {
     return (
-        <section id="faq" className="scroll-mt-20 bg-[#050505] py-20 sm:py-24">
+        <section id="faq" className="scroll-mt-20 bg-[#050505] py-20 sm:py-24 md:scroll-mt-28">
             <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
                 <div>
                     <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">

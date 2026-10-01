@@ -19,7 +19,7 @@ export default function Sports() {
   return (
     <section
       id="sports"
-      className="scroll-mt-20 overflow-hidden bg-[#050505] px-6 py-16 sm:py-20 lg:px-8"
+      className="scroll-mt-20 overflow-hidden bg-[#050505] px-6 py-16 sm:py-20 lg:px-8 md:scroll-mt-28"
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">

@@ -2,6 +2,36 @@
 
 Son güncelleme: 2026-09-29
 
+## 2026-09-29: Navbar — kenarlıksız (borderless) yumuşatma
+
+- `components/layout/navbar.tsx` içindeki **tüm** `border*` / `ring` / `outline` / `divide-*` sınıfları kaldırıldı (grep ile 0 eşleşme doğrulandı).
+  - **Header:** `border-b border-white/10` + `md:border-transparent` silindi; mobilde alt ayracın yerine yumuşak `shadow-lg` (`md:shadow-none` — masaüstünde şeffaf başlıkta kutu gölgesi çizgi gibi görünürdü).
+  - **Link kapsülü:** `border border-white/20` silindi → `bg-black/30 + shadow-lg + backdrop-blur-md`.
+  - **Sağ blok (avatar · Giriş Yap · Topluluğa Katıl · Destek Ol · hamburger):** border yok; `bg-white/5` (Destek Ol `bg-[#27D66B]`) + `shadow-lg + backdrop-blur-md`, hover yalnızca zemin/metin rengiyle.
+  - **Mobil menü paneli:** `border-t` ayraçları, kart `border`'ı ve buton `border`'ları kaldırıldı → `shadow-2xl` kart, `bg-white/5` / `bg-[#27D66B]/10` zeminli butonlar.
+- tsc / eslint / build temiz; üretilen CSS'te `shadow-lg` ve `md:shadow-none` doğrulandı.
+
+## 2026-09-29: Ana sayfa — Hero top-0'a alındı (navbar overlay)
+
+- Navbar header'ı **tüm kırılma noktalarında `fixed inset-x-0 top-0 z-50`** (eski `sticky` kaldırıldı) → navbar hiçbir sayfada içerik akışını itmiyor. Yeni **`overlay`** prop'u (`overlay?: boolean`, varsayılan `false`) header'ın altındaki eş yükseklik boşluğunu basıyor.
+- `app/page.tsx` → `<Navbar overlay />`: Hero **0'dan** başlıyor, siyah bant yok, navbar doğrudan hero görselinin üzerine biniyor.
+- `components/sections/Hero.tsx`: `min-h-[100svh]` + `items-end` ile bölüm tam ekran; navbar'a ayrılan **`pt-40` kaldırıldı** — yerine sadece alçak ekranlarda (`@media(max-height:560px)`) `pt-28` güvenlik dolgusu kondu (içerik navbar'ın altında kaybolmasın diye).
+- Diğer sayfalarda `overlay` yok → boşluk korunur (mobil `h-20`, md+ `h-24`, `bg-[#050505]`), düzenleri değişmedi.
+- tsc / eslint / build temiz; üretilen CSS sınıfları (`.fixed`, `@media (max-height:560px)…pt-28`, `md:top-4`, `md:h-24`, `min-h-[100svh]`) doğrulandı.
+
+## 2026-09-29: Ana sayfa — 3D tanıtım bölümü kaldırıldı
+
+- `app/page.tsx` içindeki `<TrainingShowcase />` (ve import'u) silindi; `components/home/training-showcase.tsx` dosyası + boş klasörü tamamen kaldırıldı (başka kullanım yoktu). Hero → `About` bölümüne doğrudan geçiyor; bölüm kendi `border-t + bg-[#0a0a0a] + py-24` kabuğunu taşıdığı için ek boşluk gerekmedi.
+- tsc / eslint / build temiz.
+
+## 2026-09-29: Navbar → floating pill (yüzen kapsül) düzen
+
+- `components/layout/navbar.tsx`: header **`fixed top-0 z-50`** (md+ `top-4`) — sonra tüm sayfalara eş yükseklik boşluğu, ana sayfaya `overlay` prop'u eklendi (bkz. yukarıdaki Hero maddesi). Masaüstünde header şeffaf + üstten yumuşak koyu degrade scrim (beyaz bölümlerde okunabilirlik).
+- Orta: 9 link **tek cam kapsülde** (`rounded-full border-white/20 bg-black/30 backdrop-blur-md`), `flex-1 justify-center` ile tam ortalanır, `overflow-x-auto` ile taşmaz; aktif link yeşil pill. Kapsül `xl:flex` (1280px+), altında hamburger (`xl:hidden`) korunur; aksiyonlar `md:`'den itibaren görünür.
+- Sağ blok: profil/Giriş Yap, Topluluğa Katıl, Destek Ol — hepsi `rounded-full` + `border-white/20 bg-white/5 backdrop-blur-md` (Destek Ol yeşil dolu + yeşil border).
+- `Faq/Gallery/Sports`: `md:scroll-mt-28` eklendi (yüzen başlık payı).
+- tsc / eslint / build temiz; üretilen CSS sınıfları doğrulandı.
+
 ## 2026-09-29: Admin — özel antrenman talebi silme
 
 - `app/admin/custom-training-requests/actions.ts` → **`deleteProgramRequest(requestId)`**: `requireAdmin()` → service-role `delete().eq("id", …).select("id")` (kalıcı; RLS'e takılmaz, silinen satır yoksa ayrı hata döner) → **`revalidatePath("/admin/custom-training-requests")`**. Loglar `message/code/details/hint`; action throw atmaz.

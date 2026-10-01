@@ -92,7 +92,7 @@ export default function Hero() {
                 variants={containerVariants}
                 initial={shouldReduceMotion ? false : "hidden"}
                 animate="visible"
-                className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-40 sm:pb-20 lg:px-8 lg:pb-24"
+                className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 sm:pb-20 lg:px-8 lg:pb-24 [@media(max-height:560px)]:pt-28"
             >
                 <motion.p
                     variants={itemVariants}

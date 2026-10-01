@@ -25,7 +25,7 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-20 overflow-hidden bg-[#050505] py-16 sm:py-20"
+      className="scroll-mt-20 overflow-hidden bg-[#050505] py-16 sm:py-20 md:scroll-mt-28"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
