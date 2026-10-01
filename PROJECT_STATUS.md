@@ -1,6 +1,16 @@
 # Proje Durumu — Holly Sport
 
-Son güncelleme: 2026-09-29
+Son güncelleme: 2026-10-01
+
+## 2026-10-01: Admin — Bildirim Merkezi (Son Aktiviteler) + Üye Yönetimi
+
+- `app/admin/page.tsx` → **Bildirim Merkezi** kartı: `custom_program_requests` (pending + son), `support_requests`, `individual_supporters`, `profiles` kayıtları paralel okunup `created_at`/`join_date` azalan sırayla tek zaman akışında birleştirilir (max 10 satır).
+  - Satır: tür ikonu + başlık + kişi + detay + göreli zaman (`Intl.RelativeTimeFormat("tr")`), bekleyenlerde **Bekliyor** rozeti; başlıkta bekleyen talep/başvuru sayaçları.
+  - Tüm satır linkli → `/admin/custom-training-requests`, `/admin/support-requests`, `/admin/supporters`, `/admin/users`.
+  - Okuma service-role (`createAdminClient`); `PGRST204` (status kolonu yok) fallback'i mevcut sayfayla aynı; hatalar loglanır, kart hata mesajıyla görünür.
+  - "Yönetim Araçları" gridine **Üyeler** kartı eklendi.
+- `app/admin/users/page.tsx` → **yeni** üye listesi sayfası: `profiles` (son 500, `join_date` azalan), `?q=` ad/e-posta araması, üye/son 7 gün/yönetici sayaçları, kartlarda ad · e-posta · rol · üyelik tarihi · telefon · ilgi alanları (silme yok).
+- tsc / eslint (0 hata) / build temiz; `/admin/users` dinamik route olarak üretildi.
 
 ## 2026-09-29: Navbar — kenarlıksız (borderless) yumuşatma
 

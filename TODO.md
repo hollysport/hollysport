@@ -76,3 +76,5 @@
 
 - [ ] `<img>` kullanımlarını `next/image`'e taşımayı değerlendir (performans; düşük öncelik).
 - [ ] Admin paneli için route-seviyesinde `loading.tsx` / `error.tsx` eklenebilir (şu an kök seviye dosyalar yeterli).
+- [ ] `/admin/users` sayfası için silme / rol değiştirme aksiyonları (şu an salt liste + arama; silme bilinçli olarak eklenmedi).
+- [ ] Bildirim Merkezi'ne "son X gün" filtresi veya temizleme aksiyonu (şu an sabit son 10 kayıt, kaynak başına limitli sorgular).

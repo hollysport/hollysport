@@ -2,6 +2,17 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-10-01 — Admin: Bildirim Merkezi (Son Aktiviteler) + Üye Yönetimi sayfası (commit bekliyor)
+
+- `app/admin/page.tsx` — **Bildirim Merkezi** kartı eklendi (istatistik bloğunun hemen altında, "Yönetim Araçları" bölümünden önce):
+  - **Aggregation:** `custom_program_requests` (önce `status='pending'` olanlar + son talepler), `support_requests`, `individual_supporters` ve `profiles` (son kayıtlar) paralel okunur; `created_at` / `join_date` azalan sırayla birleştirilir, `id` ile dedupe edilir ve en yeni en üstte 10 satırlık tek akışa indirgenir.
+  - **Zaman akışı (timeline) UI:** her satırda tür ikonu + başlık + kişi + detay + göreli zaman (`Intl.RelativeTimeFormat("tr")` → "2 saat önce"); bekleyen taleplerde sarı **Bekliyor** rozeti. Kart başlığında "N bekleyen özel antrenman talebi" / "N bekleyen destek başvurusu" rozetleri.
+  - **Hızlı yönlendirme:** satırın tamamı tıklanabilir → özel antrenman talepleri `/admin/custom-training-requests`, destek başvuruları `/admin/support-requests`, destekçiler `/admin/supporters`, yeni kullanıcılar `/admin/users`.
+  - `status` kolonu henüz yoksa (`PGRST204`) kolonsuz fallback ile devam eder (mevcut `/admin/custom-training-requests` deseni); bir kaynak okunamazsa kart hata mesajıyla görünür, sayfa çökmez. Okuma service-role ile (`createAdminClient`) — `requireAdmin` oturumu doğrular.
+  - Aynı dosyada "Yönetim Araçları" gridine **Üyeler** kartı eklendi (`/admin/users`).
+- `app/admin/users/page.tsx` — **yeni** Üye Yönetimi sayfası: `profiles` tablosundan son 500 profil (`join_date` azalan), `?q=` ile sunucu tarafında ad/e-posta araması, toplam üye / son 7 günde kayıt / yönetici sayaçları, kartlarda görünen ad, e-posta (mailto), rol rozeti, üyelik tarihi, telefon (tel) ve ilgi alanları. Silme işlemi yok.
+- Doğrulama: `npx tsc --noEmit` ✓, `npm run lint` 0 hata (mevcut 6 uyarı dosyada değişiklik yok), `npm run build` ✓ (`/admin/users` route'u dinamik olarak üretildi).
+
 ## 2026-09-29 — Navbar: kenarlıksız (borderless) yumuşatma (commit bekliyor)
 
 - `components/layout/navbar.tsx` içindeki **tüm** kenarlık sınıfları (`border`, `border-white/20`, `border-gray-*`, `border-t/b`, `hover:border-*`, `ring`, `outline`, `divide-x`) kaldırıldı — grep ile 0 eşleşme doğrulandı.
