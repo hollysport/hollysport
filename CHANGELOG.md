@@ -2,7 +2,14 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
-## 2026-10-16 — Genel bağlantı renkleri: `a { color: inherit }` katman sorunu küresel olarak giderildi (commit bekliyor)
+## 2026-10-16 — Production yayını: 9 mantıklı commit push edildi, Vercel'e canlı alındı
+
+- **Git:** `main` branch'ine, `origin` (github.com/hollysport/hollysport) üzerinden **9 mantıklı commit** push edildi (taban `bb26148` → `f5b68c9`). 198 dosya / +3817 / −2516. Çalışma ağacı push sonrası temiz. Gruplar: (1) görseller + `next/image`, (2) beyaz tema + global bağlantı renk katmanı, (3) admin paneli (sol menü/logo/aktivite akışı), (4) sayfa sadeleştirmeleri, (5) destek formu seçeneği, (6) navbar/footer/kimlik beyaz tema, (7) SEO metadata/manifest/sitemap/ikon, (8) kullanılmayan bölüm silmeleri, (9) dokümanlar + `.gitignore`. `.env*`, `.next/`, `.vercel`, derleme çıktıları ve geçici dosyalar commit edilmedi (önceden ignore).
+- **Vercel:** push, Vercel'in Git entegrasyonuyla `main`'e otomatik production deployment tetikledi. Canlı kanıt: yeni CSS chunk'ı (`/_next/static/chunks/34d661z8w7whi.css`) ve `a{color:inherit;text-decoration:none}` kuralının `@layer base`'e taşındığı (index 12895 → `.text-white` index 55512'den önce → utilities kazanır). Geçici `.holly-hero-secondary-link` canlı CSS'te yok.
+- **Canlı sayfa kontrolleri (HTTP 200):** `/`, `/faq`, `/events`, `/gallery`, `/admin/login`. Ana sayfa hero butonu "Etkinlikleri Keşfet" canlıda `<a href="/events">` içinde `text-white` + `border-white` + `bg-transparent` + `focus-visible:ring-white`, ok `stroke="currentColor"` olarak render ediliyor.
+- **Doğrulama sınırı:** masaüstü tarayıcı oturumu bağlı değildi → ekran görüntülü/görsel kontrast teyidi yapılamadı; kontroller HTTP + servis edilen CSS kaskad kanıtı + render edilen HTML üzerinden. `npm run build` push'tan önce exit 0 (dev durdurularak alındı); Vercel kendi build'ini de başarıyla tamamlayıp yayına aldı (canlı sayfalar yeni chunk ile 200).
+
+## 2026-10-16 — Genel bağlantı renkleri: `a { color: inherit }` katman sorunu küresel olarak giderildi
 
 - **Kök neden (küresel düzeltme):** `app/globals.css` içindeki `a { color: inherit; text-decoration: none; }` kuralı **katmansız (unlayered)** yazıldığı için CSS katman önceliği gereği `@layer utilities`'taki `.text-white`, `.text-holly-ink`, `hover:text-*` gibi **tüm** renk yardımcı sınıflarını eziyordu → bağlantılarda renk sınıfları hiç uygulanmıyordu (bağlantılar daima `body`/üst rengi devralıyordu). Bu, tek bir hero butonunu değil, sitedeki bağlantı renk sistemini etkiliyordu.
 - **Düzeltme:** kural `@layer base` katmanına taşındı (Tailwind preflight'inin yanına). `text-decoration: none` aynı katmanda korundu; `text-white`/`text-holly-ink`/diğer metin renkleri artık `utilities > base` önceliğiyle bağlantıları doğru şekilde etkiliyor. `!important`/inline style **kullanılmadı**. `button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }` dokunma kuralı ve diğer tüm globals kuralları değişmedi.

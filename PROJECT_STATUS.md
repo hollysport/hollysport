@@ -2,6 +2,14 @@
 
 Son güncelleme: 2026-10-16
 
+## 2026-10-16: Production yayını — 9 commit push edildi, Vercel canlıda
+
+- `main` → `origin` **9 mantıklı commit** push edildi (`bb26148` → `f5b68c9`), 198 dosya. Çalışma ağacı temiz; `.env*`/`.next/`/`.vercel`/geçici dosyalar commit edilmedi.
+- Push, Vercel Git entegrasyonuyla otomatik production deployment tetikledi. **Canlı kanıt:** yeni CSS chunk'ı + `a{color:inherit;text-decoration:none}` kuralı artık `@layer base`'te (utilities kazanır); geçici `.holly-hero-secondary-link` canlı CSS'te yok.
+- **Canlı sayfa 200:** `/`, `/faq`, `/events`, `/gallery`, `/admin/login`. Hero "Etkinlikleri Keşfet" butonu canlıda `text-white`+`border-white`+`bg-transparent`, hedef `/events`.
+- **Sınır:** tarayıcı bağlı olmadığından ekran görüntülü teyit yapılamadı (HTTP + CSS kaskad kanıtı + render HTML üzerinden doğrulandı).
+- **Devam eden elle kontrol (TODO'da):** ana sayfa hero kontrastı, `/events` kare geçmiş kartlar, `/about` fotoğrafı, mobil hizalama, admin sidebar/logo — tarayıcı bağlanınca görüntülü teyit.
+
 ## 2026-10-16: Global bağlantı renk katmanı düzeltmesi (kalıcı) + gereksiz hero sınıfının kaldırılması
 
 - **Sorun (küresel):** `app/globals.css` içindeki `a { color: inherit; text-decoration: none; }` kuralı **katmansız**ydı → CSS katman önceliği gereği `@layer utilities`'teki `.text-white`, `.text-holly-ink`, `hover:text-*` gibi **tüm** bağlantı renk sınıflarını eziyordu; bağlantılarda renk sınıfları hiç uygulanmıyordu (daima üst/`body` rengi devralınıyordu). Önceki iki hero düzeltmesi bu yüzden metni beyaz yapamamıştı.
