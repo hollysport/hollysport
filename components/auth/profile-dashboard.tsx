@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
@@ -259,10 +259,10 @@ export default function ProfileDashboard({
     const [deleteError, setDeleteError] = useState("");
 
     const inputClass =
-        "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
+        "mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink outline-none transition placeholder:text-ink-soft focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15";
 
     const labelClass =
-        "text-xs font-semibold uppercase tracking-wider text-white/40";
+        "text-xs font-semibold uppercase tracking-wider text-ink-soft";
 
     function toggleSport(sport: string) {
         setEditSports((current) =>
@@ -463,10 +463,10 @@ export default function ProfileDashboard({
     return (
         <div className="mx-auto max-w-5xl">
             {/* Profil bilgi kartı */}
-            <header className="overflow-hidden rounded-3xl border border-white/10 bg-[#111111]">
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 p-5 sm:gap-6 sm:p-7 md:p-9">
+            <header className="overflow-hidden rounded-3xl border border-line bg-shell">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line p-5 sm:gap-6 sm:p-7 md:p-9">
                     <div className="flex min-w-0 flex-1 items-center gap-4 sm:gap-5">
-                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 text-[#27D66B] sm:h-20 sm:w-20">
+                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 text-holly-ink sm:h-20 sm:w-20">
                             <AvatarIcon
                                 avatar={editAvatar}
                                 className="h-8 w-8 sm:h-10 sm:w-10"
@@ -474,12 +474,12 @@ export default function ProfileDashboard({
                         </div>
 
                         <div className="min-w-0 flex-1">
-                            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+                            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                                 Profilim
                             </span>
 
                             {/*
-                              Tek satır: nowrap + truncate → isim asla
+                              Tek satır: nowrap + truncate › isim asla
                               alt alta kırılmaz; sığmazsa "…" ile
                               kesilir, `title` tam metni gösterir.
                             */}
@@ -499,7 +499,7 @@ export default function ProfileDashboard({
                                               ).toLocaleDateString("tr-TR")}`
                                             : undefined
                                     }
-                                    className="rounded-full border border-[#27D66B]/40 bg-[#27D66B]/10 px-3 py-1 text-[#27D66B]"
+                                    className="rounded-full border border-[#27D66B]/40 bg-[#27D66B]/10 px-3 py-1 text-holly-ink"
                                 >
                                     {membershipBadge({
                                         joinDate:
@@ -509,13 +509,13 @@ export default function ProfileDashboard({
                                 </span>
 
                                 {age !== null && (
-                                    <span className="rounded-full border border-white/10 px-3 py-1 text-white/50">
+                                    <span className="rounded-full border border-line bg-white px-3 py-1 text-ink-soft">
                                         {age} yaş
                                     </span>
                                 )}
 
                                 {editGender && (
-                                    <span className="rounded-full border border-white/10 px-3 py-1 text-white/50">
+                                    <span className="rounded-full border border-line bg-white px-3 py-1 text-ink-soft">
                                         {GENDER_LABELS[editGender] ??
                                             editGender}
                                     </span>
@@ -527,7 +527,7 @@ export default function ProfileDashboard({
                                     {editSports.map((sport) => (
                                         <span
                                             key={sport}
-                                            className="rounded-full border border-[#27D66B]/25 px-3 py-1 text-xs font-medium text-white/60"
+                                            className="rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-ink/70"
                                         >
                                             {sport}
                                         </span>
@@ -547,7 +547,7 @@ export default function ProfileDashboard({
                             type="button"
                             onClick={handleLogout}
                             disabled={busyId !== null}
-                            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/15 px-5 text-sm font-semibold text-white/70 transition hover:border-red-400/40 hover:text-red-300 disabled:opacity-50"
+                            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-5 text-sm font-semibold text-ink/70 transition hover:border-red-300 hover:text-red-700 disabled:opacity-50"
                         >
                             {busyId === "logout" ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -575,8 +575,8 @@ export default function ProfileDashboard({
                             aria-pressed={tab === key}
                             className={`relative inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-t-xl px-4 py-3 text-sm font-semibold transition ${
                                 tab === key
-                                    ? "bg-[#0a0a0a] text-[#27D66B] after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:bg-[#27D66B]"
-                                    : "text-white/50 hover:text-white"
+                                    ? "bg-white text-holly-ink after:absolute after:inset-x-4 after:-bottom-px after:h-0.5 after:bg-[#27D66B]"
+                                    : "text-ink-soft hover:text-ink"
                             }`}
                         >
                             <Icon className="h-4 w-4" />
@@ -587,7 +587,7 @@ export default function ProfileDashboard({
             </header>
 
             {errorMessage && (
-                <p className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {errorMessage}
                 </p>
             )}
@@ -596,15 +596,15 @@ export default function ProfileDashboard({
             {tab === "workouts" && (
                 <div className="mt-8">
                     {workouts.length === 0 ? (
-                        <div className="rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
-                            <Dumbbell className="mx-auto h-10 w-10 text-white/20" />
-                            <p className="mx-auto mt-4 max-w-md text-lg leading-8 text-white/45">
+                        <div className="rounded-3xl border border-dashed border-line bg-shell px-6 py-16 text-center">
+                            <Dumbbell className="mx-auto h-10 w-10 text-ink-soft/50" />
+                            <p className="mx-auto mt-4 max-w-md text-lg leading-8 text-ink-soft">
                                 Henüz kayıtlı bir antrenman programın
                                 yok.
                             </p>
                             <Link
                                 href="/training"
-                                className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                                className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                             >
                                 Antrenman Merkezi&apos;ne Git
                             </Link>
@@ -631,7 +631,7 @@ export default function ProfileDashboard({
                                 return (
                                     <li
                                         key={workout.id}
-                                        className="overflow-hidden rounded-2xl border border-white/10 bg-[#111111]"
+                                        className="overflow-hidden rounded-2xl border border-line bg-white"
                                     >
                                         <div className="flex items-center gap-3 p-5">
                                             <button
@@ -652,7 +652,7 @@ export default function ProfileDashboard({
                                                             workout.template_name
                                                         }
                                                     </h3>
-                                                    <p className="mt-1 text-xs text-white/40">
+                                                    <p className="mt-1 text-xs text-ink-soft">
                                                         {[
                                                             goalLabel,
                                                             meta.environment
@@ -677,9 +677,9 @@ export default function ProfileDashboard({
                                                     </p>
                                                 </div>
                                                 <ChevronDown
-                                                    className={`h-5 w-5 shrink-0 text-white/40 transition-transform ${
+                                                    className={`h-5 w-5 shrink-0 text-ink-soft transition-transform ${
                                                         isOpen
-                                                            ? "rotate-180 text-[#27D66B]"
+                                                            ? "rotate-180 text-holly-ink"
                                                             : ""
                                                     }`}
                                                 />
@@ -694,7 +694,7 @@ export default function ProfileDashboard({
                                                 }
                                                 disabled={busyId !== null}
                                                 aria-label="Programı sil"
-                                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-white/30 transition hover:border-red-400/40 hover:text-red-300 disabled:opacity-50"
+                                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition hover:border-red-300 hover:text-red-700 disabled:opacity-50"
                                             >
                                                 {busyId === workout.id ? (
                                                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -705,8 +705,8 @@ export default function ProfileDashboard({
                                         </div>
 
                                         {isOpen && (
-                                            <div className="border-t border-white/10 px-5 py-4">
-                                                <ul className="divide-y divide-white/5">
+                                            <div className="border-t border-line bg-shell px-5 py-4">
+                                                <ul className="divide-y divide-line">
                                                     {exercises.map(
                                                         (
                                                             exercise,
@@ -716,12 +716,12 @@ export default function ProfileDashboard({
                                                                 key={`${workout.id}-${index}`}
                                                                 className="flex items-center justify-between gap-4 py-3 text-sm"
                                                             >
-                                                                <span className="font-medium text-white/85">
+                                                                <span className="font-medium text-ink">
                                                                     {
                                                                         exercise.name
                                                                     }
                                                                 </span>
-                                                                <span className="shrink-0 font-bold tabular-nums text-[#27D66B]">
+                                                                <span className="shrink-0 font-bold tabular-nums text-holly-ink">
                                                                     {
                                                                         exercise.sets
                                                                     }{" "}
@@ -736,7 +736,7 @@ export default function ProfileDashboard({
 
                                                     {exercises.length ===
                                                         0 && (
-                                                        <li className="py-3 text-sm text-white/40">
+                                                        <li className="py-3 text-sm text-ink-soft">
                                                             Program detayı
                                                             okunamadı.
                                                         </li>
@@ -756,15 +756,15 @@ export default function ProfileDashboard({
             {tab === "events" && (
                 <div className="mt-8">
                     {(registrations ?? []).length === 0 ? (
-                        <div className="rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
-                            <CalendarDays className="mx-auto h-10 w-10 text-white/20" />
-                            <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-white/45">
+                        <div className="rounded-3xl border border-dashed border-line bg-shell px-6 py-16 text-center">
+                            <CalendarDays className="mx-auto h-10 w-10 text-ink-soft/50" />
+                            <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-ink-soft">
                                 Henüz bir etkinliğe katılım
                                 başvurun yok.
                             </p>
                             <Link
                                 href="/events"
-                                className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                                className="mt-6 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                             >
                                 Etkinlikleri İncele
                             </Link>
@@ -789,7 +789,7 @@ export default function ProfileDashboard({
                                     return (
                                         <li
                                             key={registration.id}
-                                            className="rounded-2xl border border-white/10 bg-[#111111] p-5 sm:p-6"
+                                            className="rounded-2xl border border-line bg-white p-5 sm:p-6"
                                         >
                                             <div className="flex flex-wrap items-start justify-between gap-4">
                                                 <div className="min-w-0">
@@ -798,14 +798,14 @@ export default function ProfileDashboard({
                                                             className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
                                                                 statusKey ===
                                                                 "approved"
-                                                                    ? "bg-[#27D66B]/15 text-[#27D66B]"
+                                                                    ? "bg-[#27D66B]/15 text-holly-ink"
                                                                     : statusKey ===
                                                                         "pending"
-                                                                      ? "bg-blue-500/15 text-blue-300"
+                                                                      ? "bg-blue-50 text-blue-700"
                                                                       : statusKey ===
                                                                           "waitlist"
-                                                                        ? "bg-yellow-500/15 text-yellow-300"
-                                                                        : "bg-white/10 text-white/45"
+                                                                        ? "bg-yellow-50 text-yellow-700"
+                                                                        : "bg-shell text-ink-soft"
                                                             }`}
                                                         >
                                                             {
@@ -815,7 +815,7 @@ export default function ProfileDashboard({
                                                             }
                                                         </span>
 
-                                                        <span className="text-xs text-white/30">
+                                                        <span className="text-xs text-ink-soft">
                                                             Başvuru:{" "}
                                                             {new Date(
                                                                 registration.created_at,
@@ -832,10 +832,10 @@ export default function ProfileDashboard({
                                                             "Etkinlik"}
                                                     </h3>
 
-                                                    <div className="mt-2 space-y-1 text-sm text-white/45">
+                                                    <div className="mt-2 space-y-1 text-sm text-ink-soft">
                                                         {registration
                                                             .event && (
-                                                            <p className="text-[#27D66B]">
+                                                            <p className="text-holly-ink">
                                                                 {new Date(
                                                                     registration
                                                                         .event
@@ -858,7 +858,7 @@ export default function ProfileDashboard({
                                                             .event
                                                             ?.location && (
                                                             <p className="flex items-center gap-2">
-                                                                <MapPin className="h-4 w-4 shrink-0 text-white/25" />
+                                                                <MapPin className="h-4 w-4 shrink-0 text-ink-soft/60" />
                                                                 {
                                                                     registration
                                                                         .event
@@ -874,7 +874,7 @@ export default function ProfileDashboard({
                                                         .event && (
                                                         <Link
                                                             href={`/events/${registration.event.slug}`}
-                                                            className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/15 px-5 text-xs font-semibold uppercase tracking-wider text-white/60 transition hover:border-[#27D66B]/50 hover:text-[#27D66B]"
+                                                            className="inline-flex min-h-10 items-center justify-center rounded-full border border-line bg-white px-5 text-xs font-semibold uppercase tracking-wider text-ink/70 transition hover:border-[#27D66B]/50 hover:text-holly-ink"
                                                         >
                                                             Etkinliği
                                                             Gör
@@ -894,7 +894,7 @@ export default function ProfileDashboard({
                                                                 busyId !==
                                                                     null
                                                             }
-                                                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-red-500/30 px-5 text-xs font-semibold uppercase tracking-wider text-red-300 transition hover:bg-red-500/10 disabled:opacity-50"
+                                                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-red-200 bg-white px-5 text-xs font-semibold uppercase tracking-wider text-red-700 transition hover:bg-red-50 disabled:opacity-50"
                                                         >
                                                             {isCancelling ? (
                                                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -923,10 +923,10 @@ export default function ProfileDashboard({
                     {/* Profil düzenleme */}
                     <form
                         onSubmit={handleSaveProfile}
-                        className="rounded-3xl border border-white/10 bg-[#111111] p-7 sm:p-9"
+                        className="rounded-3xl border border-line bg-white p-7 sm:p-9"
                     >
                         <h2 className="flex items-center gap-2 text-xl font-bold">
-                            <Camera className="h-5 w-5 text-[#27D66B]" />
+                            <Camera className="h-5 w-5 text-holly-ink" />
                             Profilimi Düzenle
                         </h2>
 
@@ -960,7 +960,7 @@ export default function ProfileDashboard({
                                             event.target.value,
                                         )
                                     }
-                                    className={`${inputClass} bg-[#050505]`}
+                                    className={inputClass}
                                 >
                                     <option value="">Seçilmedi</option>
                                     {GENDER_OPTIONS.map((option) => (
@@ -977,7 +977,7 @@ export default function ProfileDashboard({
                             <label className="block">
                                 <span className={labelClass}>
                                     Telefon Numarası{" "}
-                                    <span className="text-white/30">
+                                    <span className="text-ink-soft">
                                         (opsiyonel)
                                     </span>
                                 </span>
@@ -995,7 +995,7 @@ export default function ProfileDashboard({
                                     placeholder="05XX XXX XX XX"
                                     className={inputClass}
                                 />
-                                <p className="mt-2 text-xs leading-5 text-white/35">
+                                <p className="mt-2 text-xs leading-5 text-ink-soft">
                                     10-15 rakam; örn. 0555 123 45 67
                                     veya +90 555 123 45 67
                                 </p>
@@ -1004,7 +1004,7 @@ export default function ProfileDashboard({
                             <div>
                                 <span className={labelClass}>
                                     İlgilendiğin Sporlar{" "}
-                                    <span className="text-white/30">
+                                    <span className="text-ink-soft">
                                         (en fazla 3)
                                     </span>
                                 </span>
@@ -1025,8 +1025,8 @@ export default function ProfileDashboard({
                                                 aria-pressed={isSelected}
                                                 className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
                                                     isSelected
-                                                        ? "border-[#27D66B] bg-[#27D66B]/10 text-[#27D66B]"
-                                                        : "border-white/10 text-white/50 hover:border-white/25 hover:text-white"
+                                                        ? "border-[#27D66B] bg-[#27D66B]/10 text-holly-ink"
+                                                        : "border-line bg-white text-ink/70 hover:border-ink-soft hover:text-ink"
                                                 }`}
                                             >
                                                 {sport}
@@ -1049,7 +1049,7 @@ export default function ProfileDashboard({
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                             >
                                 {saving && (
                                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -1058,13 +1058,13 @@ export default function ProfileDashboard({
                             </button>
 
                             {formError && (
-                                <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                     {formError}
                                 </p>
                             )}
 
                             {savedMessage && (
-                                <p className="rounded-xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-3 text-sm text-[#159447]">
+                                <p className="rounded-xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-3 text-sm text-holly-ink">
                                     {savedMessage}
                                 </p>
                             )}
@@ -1075,7 +1075,7 @@ export default function ProfileDashboard({
                         {/* Şifre değiştirme */}
                         <form
                             onSubmit={handleChangePassword}
-                            className="rounded-3xl border border-white/10 bg-[#111111] p-7 sm:p-9"
+                            className="rounded-3xl border border-line bg-shell p-7 sm:p-9"
                         >
                             <h2 className="text-xl font-bold">
                                 Şifre Değiştir
@@ -1123,7 +1123,7 @@ export default function ProfileDashboard({
                                 <button
                                     type="submit"
                                     disabled={passwordBusy}
-                                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                                 >
                                     {passwordBusy && (
                                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -1132,13 +1132,13 @@ export default function ProfileDashboard({
                                 </button>
 
                                 {passwordMessage && (
-                                    <p className="rounded-xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-3 text-sm text-[#27D66B]">
+                                    <p className="rounded-xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-3 text-sm text-holly-ink">
                                         {passwordMessage}
                                     </p>
                                 )}
 
                                 {passwordError && (
-                                    <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                         {passwordError}
                                     </p>
                                 )}
@@ -1146,12 +1146,12 @@ export default function ProfileDashboard({
                         </form>
 
                         {/* Tehlike bölgesi */}
-                        <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-7 sm:p-9">
-                            <h2 className="text-xl font-bold text-red-400">
+                        <div className="rounded-3xl border border-red-200 bg-red-50 p-7 sm:p-9">
+                            <h2 className="text-xl font-bold text-red-700">
                                 Tehlike Bölgesi
                             </h2>
 
-                            <p className="mt-4 text-sm leading-6 text-white/40">
+                            <p className="mt-4 text-sm leading-6 text-ink-soft">
                                 Hesabını ve tüm verilerini kalıcı
                                 olarak sil. Bu işlem geri alınamaz.
                             </p>
@@ -1163,7 +1163,7 @@ export default function ProfileDashboard({
                                     setDeleteError("");
                                     setDeleteOpen(true);
                                 }}
-                                className="mt-6 inline-flex h-11 items-center gap-2 rounded-full border border-red-500/40 px-5 text-sm font-semibold text-red-300 transition hover:border-red-500 hover:text-red-200"
+                                className="mt-6 inline-flex h-11 items-center gap-2 rounded-full border border-red-200 bg-white px-5 text-sm font-semibold text-red-700 transition hover:bg-red-50"
                             >
                                 <Trash2 className="h-4 w-4" />
                                 Hesabımı Sil
@@ -1179,24 +1179,24 @@ export default function ProfileDashboard({
                     role="dialog"
                     aria-modal="true"
                     aria-label="Hesap silme onayı"
-                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
                     onClick={() => {
                         if (!deleteBusy) setDeleteOpen(false);
                     }}
                 >
                     <div
-                        className="w-full max-w-md rounded-3xl border border-red-500/25 bg-[#0a0a0a] p-7 sm:p-9"
+                        className="w-full max-w-md rounded-3xl border border-line bg-white p-7 shadow-sm sm:p-9"
                         onClick={(event) => event.stopPropagation()}
                     >
                         <div className="flex items-start justify-between gap-4">
                             <div>
-                                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-red-400">
+                                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-red-700">
                                     Tehlike Bölgesi
                                 </span>
-                                <h2 className="mt-2 text-2xl font-bold text-white">
+                                <h2 className="mt-2 text-2xl font-bold text-ink">
                                     Hesabını Sil
                                 </h2>
-                                <p className="mt-2 text-sm leading-6 text-white/45">
+                                <p className="mt-2 text-sm leading-6 text-ink-soft">
                                     Bu işlem geri alınamaz. Güvenlik
                                     için mevcut şifreni gir.
                                 </p>
@@ -1207,7 +1207,7 @@ export default function ProfileDashboard({
                                 onClick={() => setDeleteOpen(false)}
                                 disabled={deleteBusy}
                                 aria-label="Kapat"
-                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/50 transition hover:border-white/40 hover:text-white disabled:opacity-50"
+                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition hover:border-ink-soft hover:text-ink disabled:opacity-50"
                             >
                                 <X className="h-4 w-4" />
                             </button>
@@ -1240,7 +1240,7 @@ export default function ProfileDashboard({
                                     deleteBusy ||
                                     deletePassword.length === 0
                                 }
-                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-red-500 text-sm font-bold text-white transition hover:bg-red-400 disabled:opacity-50"
+                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-red-600 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-50"
                             >
                                 {deleteBusy && (
                                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -1249,7 +1249,7 @@ export default function ProfileDashboard({
                             </button>
 
                             {deleteError && (
-                                <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                     {deleteError}
                                 </p>
                             )}

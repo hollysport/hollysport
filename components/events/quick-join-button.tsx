@@ -80,16 +80,16 @@ export default function QuickJoinButton({
     if (state === "existing") {
         if (isInline) {
             return (
-                <div className="mt-8 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 p-5 text-center">
-                    <TicketCheck className="mx-auto h-8 w-8 text-[#27D66B]" />
+                <div className="mt-8 rounded-2xl border border-holly-ink/25 bg-holly/10 p-5 text-center">
+                    <TicketCheck className="mx-auto h-8 w-8 text-holly-ink" />
 
-                    <p className="mt-3 text-sm font-semibold text-[#27D66B]">
+                    <p className="mt-3 text-sm font-semibold text-holly-ink">
                         Bu etkinliğe zaten kayıtlısın.
                     </p>
 
                     <Link
                         href="/profile"
-                        className="mt-3 inline-block text-xs font-semibold uppercase tracking-wider text-white/50 transition hover:text-[#27D66B]"
+                        className="mt-3 inline-block text-xs font-semibold uppercase tracking-wider text-ink-soft transition hover:text-holly-ink"
                     >
                         Etkinliklerimi görüntüle →
                     </Link>
@@ -98,14 +98,14 @@ export default function QuickJoinButton({
         }
 
         return (
-            <div className="h-fit rounded-3xl border border-[#27D66B]/30 bg-[#111111] p-7 text-center md:p-10">
-                <TicketCheck className="mx-auto h-12 w-12 text-[#27D66B]" />
+            <div className="h-fit rounded-3xl border border-line bg-shell p-7 text-center md:p-10">
+                <TicketCheck className="mx-auto h-12 w-12 text-holly-ink" />
 
-                <h2 className="mt-5 text-2xl font-bold">
+                <h2 className="mt-5 text-2xl font-bold text-ink">
                     Bu etkinliğe zaten kayıtlısın
                 </h2>
 
-                <p className="mt-3 leading-7 text-white/50">
+                <p className="mt-3 leading-7 text-ink-soft">
                     &quot;{eventTitle}&quot; kaydın sistemde mevcut.
                     Katılım durumunu profil sayfandan takip
                     edebilirsin.
@@ -113,7 +113,7 @@ export default function QuickJoinButton({
 
                 <Link
                     href="/profile"
-                    className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                    className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-holly px-8 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                 >
                     <UserCheck className="h-4 w-4" />
                     Etkinliklerimi Gör
@@ -127,17 +127,17 @@ export default function QuickJoinButton({
             return (
                 <div
                     role="status"
-                    className="mt-8 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 p-5 text-center"
+                    className="mt-8 rounded-2xl border border-holly-ink/25 bg-holly/10 p-5 text-center"
                 >
-                    <CheckCircle2 className="mx-auto h-8 w-8 text-[#27D66B]" />
+                    <CheckCircle2 className="mx-auto h-8 w-8 text-holly-ink" />
 
-                    <p className="mt-3 text-sm font-semibold text-[#27D66B]">
+                    <p className="mt-3 text-sm font-semibold text-holly-ink">
                         {successMessage}
                     </p>
 
                     <Link
                         href="/profile"
-                        className="mt-3 inline-block text-xs font-semibold uppercase tracking-wider text-white/50 transition hover:text-[#27D66B]"
+                        className="mt-3 inline-block text-xs font-semibold uppercase tracking-wider text-ink-soft transition hover:text-holly-ink"
                     >
                         Etkinliklerimi görüntüle →
                     </Link>
@@ -148,15 +148,15 @@ export default function QuickJoinButton({
         return (
             <div
                 role="status"
-                className="h-fit rounded-3xl border border-[#27D66B]/30 bg-[#111111] p-7 text-center md:p-10"
+                className="h-fit rounded-3xl border border-line bg-shell p-7 text-center md:p-10"
             >
-                <CheckCircle2 className="mx-auto h-12 w-12 text-[#27D66B]" />
+                <CheckCircle2 className="mx-auto h-12 w-12 text-holly-ink" />
 
-                <h2 className="mt-5 text-2xl font-bold text-[#27D66B]">
+                <h2 className="mt-5 text-2xl font-bold text-holly-ink">
                     {successMessage}
                 </h2>
 
-                <p className="mt-3 leading-7 text-white/50">
+                <p className="mt-3 leading-7 text-ink-soft">
                     &quot;{eventTitle}&quot; etkinliğine başvurun
                     alındı. Durumunu profil sayfandaki
                     &quot;Etkinliklerim&quot; sekmesinden
@@ -165,7 +165,7 @@ export default function QuickJoinButton({
 
                 <Link
                     href="/profile"
-                    className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                    className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-holly px-8 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                 >
                     <UserCheck className="h-4 w-4" />
                     Etkinliklerimi Gör
@@ -181,7 +181,7 @@ export default function QuickJoinButton({
                     type="button"
                     onClick={handleJoin}
                     disabled={isPending}
-                    className="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold uppercase tracking-wider text-[#050505] transition hover:bg-[#45e27f] active:scale-[0.98] disabled:opacity-60"
+                    className="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-holly text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-[#1fc461] active:scale-[0.98] disabled:opacity-60"
                 >
                     {isPending && (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -191,14 +191,14 @@ export default function QuickJoinButton({
                         : "Etkinliğe Katıl"}
                 </button>
 
-                <p className="mt-3 text-center text-xs leading-5 text-white/35">
+                <p className="mt-3 text-center text-xs leading-5 text-ink-soft">
                     Profilindeki bilgilerinle anında başvurun alınır.
                 </p>
 
                 {errorMessage && (
                     <p
                         role="alert"
-                        className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-center text-xs leading-5 text-red-300"
+                        className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-xs leading-5 text-red-700"
                     >
                         {errorMessage}
                     </p>
@@ -208,16 +208,16 @@ export default function QuickJoinButton({
     }
 
     return (
-        <div className="h-fit rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-10">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#27D66B]">
+        <div className="h-fit rounded-3xl border border-line bg-shell p-7 md:p-10">
+            <span className="text-xs font-semibold uppercase tracking-wider text-holly-ink">
                 Üye katılımı
             </span>
 
-            <h2 className="mt-4 text-2xl font-bold">
+            <h2 className="mt-4 text-2xl font-bold text-ink">
                 Tek tuşla etkinliğe katıl
             </h2>
 
-            <p className="mt-3 leading-7 text-white/50">
+            <p className="mt-3 leading-7 text-ink-soft">
                 Profilindeki bilgilerin (ad soyad, e-posta, telefon,
                 cinsiyet) ile &quot;{eventTitle}&quot; etkinliğine
                 başvurun hemen alınır. Başvurun admin onayından sonra
@@ -228,7 +228,7 @@ export default function QuickJoinButton({
                 type="button"
                 onClick={handleJoin}
                 disabled={isPending}
-                className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold uppercase tracking-wider text-[#050505] transition hover:bg-[#45e27f] active:scale-[0.98] disabled:opacity-60"
+                className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-holly text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-[#1fc461] active:scale-[0.98] disabled:opacity-60"
             >
                 {isPending && (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -239,7 +239,7 @@ export default function QuickJoinButton({
             {errorMessage && (
                 <p
                     role="alert"
-                    className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"
+                    className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700"
                 >
                     {errorMessage}
                 </p>
@@ -247,7 +247,7 @@ export default function QuickJoinButton({
 
             <Link
                 href="/profile"
-                className="mt-4 block text-center text-xs font-semibold uppercase tracking-wider text-white/35 transition hover:text-[#27D66B]"
+                className="mt-4 block text-center text-xs font-semibold uppercase tracking-wider text-ink-soft transition hover:text-holly-ink"
             >
                 Profilimi görüntüle
             </Link>

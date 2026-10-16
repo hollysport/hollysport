@@ -1,16 +1,19 @@
 import Link from "next/link";
 
+/*
+ * Ana navigasyonla aynı sıra (Ana Sayfa ve aksiyon bağlantıları hariç).
+ * Navbar'dan çıkarılan "Branşlar" (/sports) bu menüde de yer almıyor;
+ * sayfa varlığını korur.
+ */
 const navigationLinks = [
-    { label: "Ana Sayfa", href: "/" },
     { label: "Hakkımızda", href: "/about" },
-    { label: "Ekibimiz", href: "/team" },
     { label: "Etkinlikler", href: "/events" },
-    { label: "Branşlar", href: "/sports" },
+    { label: "Antrenman", href: "/training" },
     { label: "Galeri", href: "/gallery" },
-    { label: "Sıkça Sorulan Sorular", href: "/#faq" },
+    { label: "Ekibimiz", href: "/team" },
+    { label: "Sıkça Sorulan Sorular", href: "/faq" },
     { label: "İletişim", href: "/contact" },
-    { label: "Topluluğa Katıl", href: "/join" },
-    { label: "Destek Ol", href: "/destek-ol" },
+    { label: "Bir Hayalim Var", href: "/bir-hayalim-var" },
 ];
 
 const socialLinks = [
@@ -18,6 +21,11 @@ const socialLinks = [
         label: "Instagram",
         href: "https://www.instagram.com/hollysprt",
     },
+];
+
+const actionLinks = [
+    { label: "Topluluğa Katıl", href: "/join" },
+    { label: "Destek Ol", href: "/destek-ol" },
 ];
 
 const legalLinks = [
@@ -28,21 +36,21 @@ const legalLinks = [
 
 export default function Footer() {
     return (
-        <footer className="bg-[#050505] px-6 pb-8 pt-20 text-white md:px-10 lg:px-16">
+        <footer className="border-t border-[#E5E8E3] bg-[#F7F8F6] px-6 pb-8 pt-20 text-[#171917] md:px-10 lg:px-16">
             <div className="mx-auto max-w-7xl">
-                <div className="grid gap-14 border-b border-white/10 pb-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+                <div className="grid gap-14 border-b border-[#E5E8E3] pb-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
                     <div>
                         <Link
                             href="/"
                             className="inline-block text-3xl font-bold uppercase tracking-tight"
                         >
                             Holly
-                            <span className="text-[#27D66B]">
+                            <span className="text-[#0E7C3D]">
                                 Sport
                             </span>
                         </Link>
 
-                        <p className="mt-6 max-w-sm text-base leading-7 text-white/50">
+                        <p className="mt-6 max-w-sm text-base leading-7 text-[#626862]">
                             Sporun birleştirici gücüyle insanları aynı
                             sahada buluşturan bağımsız ve gönüllülük
                             esaslı spor topluluğu.
@@ -50,14 +58,14 @@ export default function Footer() {
 
                         <a
                             href="mailto:iletisim@hollysport.net"
-                            className="mt-6 inline-block text-sm font-semibold text-[#27D66B] transition hover:text-[#45e27f]"
+                            className="mt-6 inline-block text-sm font-semibold text-[#0E7C3D] transition hover:text-[#0b6531]"
                         >
                             iletisim@hollysport.net
                         </a>
                     </div>
 
                     <div>
-                        <h3 className="mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-white/35">
+                        <h3 className="mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-[#626862]">
                             Menü
                         </h3>
 
@@ -66,7 +74,7 @@ export default function Footer() {
                                 <Link
                                     key={link.label}
                                     href={link.href}
-                                    className="text-sm text-white/65 transition-colors hover:text-[#27D66B]"
+                                    className="text-sm text-[#626862] transition-colors hover:text-[#0E7C3D]"
                                 >
                                     {link.label}
                                 </Link>
@@ -75,8 +83,8 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h3 className="mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-white/35">
-                            Sosyal
+                        <h3 className="mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-[#626862]">
+                            Bağlan
                         </h3>
 
                         <div className="flex flex-col items-start gap-4">
@@ -86,7 +94,7 @@ export default function Footer() {
                                     href={link.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex items-center gap-2 text-base text-white/65 transition-colors hover:text-[#27D66B]"
+                                    className="group flex items-center gap-2 text-base text-[#626862] transition-colors hover:text-[#0E7C3D]"
                                 >
                                     {link.label}
 
@@ -95,11 +103,21 @@ export default function Footer() {
                                     </span>
                                 </a>
                             ))}
+
+                            {actionLinks.map((link) => (
+                                <Link
+                                    key={link.label}
+                                    href={link.href}
+                                    className="text-base font-medium text-[#171917] transition-colors hover:text-[#0E7C3D]"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-5 pt-8 text-sm text-white/30 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-5 pt-8 text-sm text-[#626862] lg:flex-row lg:items-center lg:justify-between">
                     <p>
                         © {new Date().getFullYear()} Holly Sport. Tüm
                         hakları saklıdır.
@@ -110,7 +128,7 @@ export default function Footer() {
                             <Link
                                 key={link.label}
                                 href={link.href}
-                                className="transition-colors hover:text-white"
+                                className="transition-colors hover:text-[#171917]"
                             >
                                 {link.label}
                             </Link>

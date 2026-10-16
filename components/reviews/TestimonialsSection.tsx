@@ -35,25 +35,30 @@ export default async function TestimonialsSection() {
 
     const reviewRows = (data ?? []) as ReviewRow[];
 
-    const reviews: Review[] = await Promise.all(
-        reviewRows.map(async (review) => {
-            if (!review.photo_path) {
-                return {
-                    ...review,
-                    photo_url: null,
-                };
+    const photoPaths = reviewRows
+        .map((review) => review.photo_path)
+        .filter((path): path is string => Boolean(path));
+
+    const signedUrlByPath = new Map<string, string>();
+
+    if (photoPaths.length > 0) {
+        const { data: signedPhotos } = await supabase.storage
+            .from("review-photos")
+            .createSignedUrls(photoPaths, 60 * 60);
+
+        for (const signed of signedPhotos ?? []) {
+            if (signed.path && signed.signedUrl) {
+                signedUrlByPath.set(signed.path, signed.signedUrl);
             }
+        }
+    }
 
-            const { data: signedPhoto } = await supabase.storage
-                .from("review-photos")
-                .createSignedUrl(review.photo_path, 60 * 60);
-
-            return {
-                ...review,
-                photo_url: signedPhoto?.signedUrl ?? null,
-            };
-        }),
-    );
+    const reviews: Review[] = reviewRows.map((review) => ({
+        ...review,
+        photo_url: review.photo_path
+            ? (signedUrlByPath.get(review.photo_path) ?? null)
+            : null,
+    }));
 
     const totalRating = reviews.reduce(
         (sum, review) => sum + review.rating,

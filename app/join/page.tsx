@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
@@ -7,6 +8,12 @@ import { isActiveRegistrationStatus } from "@/lib/events/registration-status";
 import { getCurrentTimestamp } from "@/lib/time";
 import RegistrationForm from "./registration-form";
 import QuickJoinButton from "@/components/events/quick-join-button";
+
+export const metadata: Metadata = {
+    title: "Kayıt Ol | Holly Sport",
+    description:
+        "Holly Sport etkinliklerine ve topluluğa katılım kaydını oluştur.",
+};
 
 type JoinPageProps = {
     searchParams: Promise<{
@@ -94,41 +101,41 @@ export default async function JoinPage({
             <>
                 <Navbar />
 
-                <main className="min-h-screen bg-[#050505] px-6 pb-24 pt-36 text-white md:px-10 lg:px-16">
+                <main className="min-h-screen bg-white px-6 pb-24 pt-36 text-ink md:px-10 lg:px-16">
                     <div className="mx-auto max-w-7xl">
-                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Holly Sport
                         </span>
 
                         <h1 className="mt-6 max-w-5xl text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl lg:text-8xl">
                             Bir etkinlik seç,
-                            <span className="text-[#27D66B]"> aramıza katıl.</span>
+                            <span className="text-holly-ink"> aramıza katıl.</span>
                         </h1>
 
-                        <p className="mt-8 max-w-2xl text-lg leading-8 text-white/50">
+                        <p className="mt-8 max-w-2xl text-lg leading-8 text-ink-soft">
                             Katılmak istediğin etkinliği seç. Etkinlik sayfasındaki başvuru
                             butonu da seni doğrudan ilgili forma yönlendirir.
                         </p>
 
                         {error && (
-                            <div className="mt-10 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-red-300">
+                            <div className="mt-10 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-red-700">
                                 Etkinlikler yüklenemedi: {error.message}
                             </div>
                         )}
 
                         {selectableEvents.length === 0 ? (
-                            <div className="mt-16 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
+                            <div className="mt-16 rounded-3xl border border-dashed border-line bg-shell px-6 py-16 text-center">
                                 <h2 className="text-2xl font-semibold">
                                     Şu anda başvuruya açık etkinlik bulunmuyor.
                                 </h2>
 
-                                <p className="mt-3 text-white/40">
+                                <p className="mt-3 text-ink-soft">
                                     Yeni etkinlikler yayınlandığında burada görünecek.
                                 </p>
 
                                 <Link
                                     href="/events"
-                                    className="mt-8 inline-flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-black"
+                                    className="mt-8 inline-flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-ink"
                                 >
                                     Etkinlikleri incele
                                 </Link>
@@ -139,14 +146,14 @@ export default async function JoinPage({
                                     <Link
                                         key={event.id}
                                         href={`/join?event=${event.slug}`}
-                                        className="group rounded-3xl border border-white/10 bg-[#111111] p-7 transition-colors hover:border-[#27D66B]/50"
+                                        className="group rounded-3xl border border-line bg-shell p-7 transition-colors hover:border-[#27D66B]/50"
                                     >
                                         <div className="flex flex-wrap gap-2">
-                                            <span className="rounded-full border border-white/15 px-3 py-1 text-xs uppercase tracking-wider text-white/50">
+                                            <span className="rounded-full border border-line bg-white px-3 py-1 text-xs uppercase tracking-wider text-ink-soft">
                                                 {event.category}
                                             </span>
 
-                                            <span className="rounded-full bg-[#27D66B]/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[#27D66B]">
+                                            <span className="rounded-full bg-[#27D66B]/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-holly-ink">
                                                 Kayıt açık
                                             </span>
                                         </div>
@@ -155,22 +162,22 @@ export default async function JoinPage({
                                             {event.title}
                                         </h2>
 
-                                        <p className="mt-3 line-clamp-2 leading-7 text-white/45">
+                                        <p className="mt-3 line-clamp-2 leading-7 text-ink-soft">
                                             {event.short_description}
                                         </p>
 
-                                        <div className="mt-8 flex items-end justify-between gap-5 border-t border-white/10 pt-5">
+                                        <div className="mt-8 flex items-end justify-between gap-5 border-t border-line pt-5">
                                             <div>
-                                                <p className="text-sm font-semibold text-[#27D66B]">
+                                                <p className="text-sm font-semibold text-holly-ink">
                                                     {formatDate(event.starts_at)}
                                                 </p>
 
-                                                <p className="mt-2 text-sm text-white/40">
+                                                <p className="mt-2 text-sm text-ink-soft">
                                                     {event.location}
                                                 </p>
                                             </div>
 
-                                            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#27D66B] text-xl text-black transition-transform group-hover:translate-x-1">
+                                            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#27D66B] text-xl text-ink transition-transform group-hover:translate-x-1">
                                                 →
                                             </span>
                                         </div>
@@ -211,19 +218,19 @@ export default async function JoinPage({
             <>
                 <Navbar />
 
-                <main className="flex min-h-screen items-center justify-center bg-[#050505] px-6 text-center text-white">
+                <main className="flex min-h-screen items-center justify-center bg-shell px-6 text-center text-ink">
                     <div>
                         <h1 className="text-4xl font-bold">
                             Etkinlik bulunamadı.
                         </h1>
 
-                        <p className="mt-4 text-white/45">
+                        <p className="mt-4 text-ink-soft">
                             Etkinlik kaldırılmış veya henüz yayınlanmamış olabilir.
                         </p>
 
                         <Link
                             href="/join"
-                            className="mt-8 inline-flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-black"
+                            className="mt-8 inline-flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-ink"
                         >
                             Etkinlik seç
                         </Link>
@@ -303,18 +310,18 @@ export default async function JoinPage({
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-[#050505] px-6 pb-24 pt-36 text-white md:px-10 lg:px-16">
+            <main className="min-h-screen bg-white px-6 pb-24 pt-36 text-ink md:px-10 lg:px-16">
                 <div className="mx-auto max-w-7xl">
                     <Link
                         href="/join"
-                        className="text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
+                        className="text-sm font-semibold uppercase tracking-wider text-ink-soft transition-colors hover:text-holly-ink"
                     >
                         ← Başka etkinlik seç
                     </Link>
 
                     <div className="mt-12 grid gap-14 lg:grid-cols-[1fr_520px]">
                         <div>
-                            <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                            <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                                 {event.category}
                             </span>
 
@@ -322,13 +329,13 @@ export default async function JoinPage({
                                 {event.title}
                             </h1>
 
-                            <p className="mt-8 max-w-xl text-lg leading-8 text-white/50">
+                            <p className="mt-8 max-w-xl text-lg leading-8 text-ink-soft">
                                 {event.short_description}
                             </p>
 
-                            <div className="mt-12 divide-y divide-white/10 border-y border-white/10">
+                            <div className="mt-12 divide-y divide-line border-y border-line">
                                 <div className="py-5">
-                                    <span className="text-xs uppercase tracking-wider text-white/30">
+                                    <span className="text-xs uppercase tracking-wider text-ink-soft">
                                         Tarih
                                     </span>
 
@@ -338,7 +345,7 @@ export default async function JoinPage({
                                 </div>
 
                                 <div className="py-5">
-                                    <span className="text-xs uppercase tracking-wider text-white/30">
+                                    <span className="text-xs uppercase tracking-wider text-ink-soft">
                                         Konum
                                     </span>
 
@@ -348,7 +355,7 @@ export default async function JoinPage({
                                 </div>
 
                                 <div className="py-5">
-                                    <span className="text-xs uppercase tracking-wider text-white/30">
+                                    <span className="text-xs uppercase tracking-wider text-ink-soft">
                                         Kontenjan
                                     </span>
 
@@ -379,10 +386,10 @@ export default async function JoinPage({
                                 />
                             )
                         ) : (
-                            <div className="h-fit rounded-3xl border border-white/10 bg-[#111111] p-8 text-center">
+                            <div className="h-fit rounded-3xl border border-line bg-shell p-8 text-center">
                                 <h2 className="text-3xl font-bold">Başvuru yapılamıyor</h2>
 
-                                <p className="mt-4 leading-7 text-white/45">
+                                <p className="mt-4 leading-7 text-ink-soft">
                                     {isPast
                                         ? "Bu etkinlik tamamlandı."
                                         : isFull
@@ -394,7 +401,7 @@ export default async function JoinPage({
 
                                 <Link
                                     href="/join"
-                                    className="mt-8 inline-flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-black"
+                                    className="mt-8 inline-flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-ink"
                                 >
                                     Başka etkinlik seç
                                 </Link>

@@ -9,10 +9,10 @@ import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/client";
 
 const inputClass =
-    "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
+    "mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-holly-ink focus:ring-2 focus:ring-holly-ink/20";
 
 const labelClass =
-    "text-xs font-semibold uppercase tracking-wider text-white/40";
+    "text-xs font-semibold uppercase tracking-wider text-ink-soft";
 
 export default function UpdatePasswordPage() {
     const router = useRouter();
@@ -68,9 +68,9 @@ export default function UpdatePasswordPage() {
         <>
             <Navbar />
 
-            <main className="flex min-h-screen items-center justify-center bg-[#050505] px-6 py-24 text-white">
-                <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0a0a0a] p-7 sm:p-9">
-                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <main className="flex min-h-screen items-center justify-center bg-shell px-6 py-24 text-ink">
+                <div className="w-full max-w-md rounded-3xl border border-line bg-white p-7 shadow-sm sm:p-9">
+                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                         Güvenlik
                     </span>
 
@@ -78,14 +78,14 @@ export default function UpdatePasswordPage() {
                         Yeni Şifre Belirle
                     </h1>
 
-                    <p className="mt-2 text-sm leading-6 text-white/45">
+                    <p className="mt-2 text-sm leading-6 text-ink-soft">
                         Hesabın için yeni bir şifre oluştur.
                     </p>
 
                     {success ? (
-                        <div className="mt-8 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 p-8 text-center">
-                            <CheckCircle2 className="mx-auto h-10 w-10 text-[#27D66B]" />
-                            <p className="mt-4 text-sm font-semibold leading-6 text-[#27D66B]">
+                        <div className="mt-8 rounded-2xl border border-holly-ink/30 bg-holly-ink/10 p-8 text-center">
+                            <CheckCircle2 className="mx-auto h-10 w-10 text-holly-ink" />
+                            <p className="mt-4 text-sm font-semibold leading-6 text-holly-ink">
                                 Şifreniz başarıyla güncellendi,
                                 yönlendiriliyorsunuz…
                             </p>
@@ -116,7 +116,7 @@ export default function UpdatePasswordPage() {
                                 {fieldErrors.password && (
                                     <p
                                         role="alert"
-                                        className="mt-2 text-xs leading-5 text-red-400"
+                                        className="mt-2 text-xs leading-5 text-red-700"
                                     >
                                         {fieldErrors.password}
                                     </p>
@@ -143,7 +143,7 @@ export default function UpdatePasswordPage() {
                                 {fieldErrors.passwordConfirm && (
                                     <p
                                         role="alert"
-                                        className="mt-2 text-xs leading-5 text-red-400"
+                                        className="mt-2 text-xs leading-5 text-red-700"
                                     >
                                         {fieldErrors.passwordConfirm}
                                     </p>
@@ -153,7 +153,7 @@ export default function UpdatePasswordPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-holly text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                             >
                                 {loading && (
                                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -162,7 +162,7 @@ export default function UpdatePasswordPage() {
                             </button>
 
                             {errorMessage && (
-                                <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                     {errorMessage}
                                 </p>
                             )}

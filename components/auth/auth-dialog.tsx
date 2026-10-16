@@ -65,16 +65,16 @@ function computeJoinDate(monthsBack: number): string {
 }
 
 const inputClass =
-    "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
+    "mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-holly-ink focus:ring-2 focus:ring-holly-ink/20";
 
 const labelClass =
-    "text-xs font-semibold uppercase tracking-wider text-white/40";
+    "text-xs font-semibold uppercase tracking-wider text-ink-soft";
 
 function FieldError({ children }: { children: string | null }) {
     if (!children) return null;
 
     return (
-        <p role="alert" className="mt-2 text-xs leading-5 text-red-400">
+        <p role="alert" className="mt-2 text-xs leading-5 text-red-700">
             {children}
         </p>
     );
@@ -375,22 +375,22 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
             role="dialog"
             aria-modal="true"
             aria-label={titles[view].title}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
             onClick={onClose}
         >
             <div
-                className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-white/10 bg-[#0a0a0a] p-7 sm:p-9"
+                className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-line bg-white p-7 shadow-sm sm:p-9"
                 onClick={(event) => event.stopPropagation()}
             >
                 <div className="flex items-start justify-between gap-4">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                             Üyelik
                         </span>
-                        <h2 className="mt-2 text-2xl font-bold text-white">
+                        <h2 className="mt-2 text-2xl font-bold text-ink">
                             {titles[view].title}
                         </h2>
-                        <p className="mt-2 text-sm leading-6 text-white/45">
+                        <p className="mt-2 text-sm leading-6 text-ink-soft">
                             {titles[view].hint}
                         </p>
                     </div>
@@ -399,14 +399,14 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         type="button"
                         onClick={onClose}
                         aria-label="Kapat"
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/50 transition hover:border-white/40 hover:text-white"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line text-ink-soft transition hover:border-ink-soft hover:text-ink"
                     >
                         <X className="h-4 w-4" />
                     </button>
                 </div>
 
                 {successMessage && (
-                    <p className="mt-6 flex items-start gap-2.5 rounded-xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-3 text-sm leading-6 text-[#27D66B]">
+                    <p className="mt-6 flex items-start gap-2.5 rounded-xl border border-holly-ink/30 bg-holly-ink/10 px-4 py-3 text-sm leading-6 text-holly-ink">
                         <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
                         {successMessage}
                     </p>
@@ -449,7 +449,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-holly text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                         >
                             {loading && (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -458,19 +458,19 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         </button>
 
                         {errorMessage && (
-                            <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                 {errorMessage}
                             </p>
                         )}
 
-                        <div className="space-y-2 pt-1 text-center text-sm text-white/45">
+                        <div className="space-y-2 pt-1 text-center text-sm text-ink-soft">
                             <p>
                                 <button
                                     type="button"
                                     onClick={() =>
                                         switchView("forgot_password")
                                     }
-                                    className="font-semibold text-[#27D66B] underline-offset-4 transition hover:underline"
+                                    className="font-semibold text-holly-ink underline-offset-4 transition hover:underline"
                                 >
                                     Şifremi unuttum
                                 </button>
@@ -482,7 +482,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                                     onClick={() =>
                                         switchView("register")
                                     }
-                                    className="font-semibold text-[#27D66B] underline-offset-4 transition hover:underline"
+                                    className="font-semibold text-holly-ink underline-offset-4 transition hover:underline"
                                 >
                                     Kayıt ol
                                 </button>
@@ -604,6 +604,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                             action="register"
                             onTokenChange={setTurnstileToken}
                             resetKey={turnstileResetKey}
+                            theme="light"
                         />
 
                         <div className="grid gap-5 sm:grid-cols-2">
@@ -637,7 +638,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                                     onChange={(event) =>
                                         setGender(event.target.value)
                                     }
-                                    className={`${inputClass} bg-[#050505]`}
+                                    className={inputClass}
                                 >
                                     <option value="">Seçilmedi</option>
                                     <option value="kadin">
@@ -657,7 +658,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         <label className="block">
                             <span className={labelClass}>
                                 Telefon Numarası{" "}
-                                <span className="text-white/30">
+                                <span className="text-ink-soft/70">
                                     (opsiyonel)
                                 </span>
                             </span>
@@ -720,8 +721,8 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                                             aria-pressed={isPicked}
                                             className={`rounded-xl border px-3 py-2.5 text-left text-xs font-semibold transition ${
                                                 isPicked
-                                                    ? "border-[#27D66B] bg-[#27D66B]/10 text-[#27D66B]"
-                                                    : "border-white/10 text-white/50 hover:border-white/25 hover:text-white"
+                                                    ? "border-holly-ink bg-holly-ink/10 text-holly-ink"
+                                                    : "border-line text-ink-soft hover:border-ink-soft hover:text-ink"
                                             }`}
                                         >
                                             {sport}
@@ -748,16 +749,16 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                             {sportsError && (
                                 <p
                                     role="alert"
-                                    className="mt-2 text-xs leading-5 text-red-400"
+                                    className="mt-2 text-xs leading-5 text-red-700"
                                 >
                                     {sportsError}
                                 </p>
                             )}
                         </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-[#050505] p-4">
+                        <div className="rounded-2xl border border-line bg-shell p-4">
                             <label className="flex cursor-pointer items-center justify-between gap-4">
-                                <span className="text-sm font-semibold text-white/70">
+                                <span className="text-sm font-semibold text-ink/70">
                                     Eski bir üyemiz misiniz?
                                 </span>
 
@@ -773,12 +774,12 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                                     }}
                                     className={`relative h-6 w-11 shrink-0 rounded-full transition ${
                                         isVeteran
-                                            ? "bg-[#27D66B]"
-                                            : "bg-white/15"
+                                            ? "bg-holly"
+                                            : "bg-line"
                                     }`}
                                 >
                                     <span
-                                        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${
+                                        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-all ${
                                             isVeteran
                                                 ? "left-[1.4rem]"
                                                 : "left-0.5"
@@ -800,7 +801,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                                                 event.target.value,
                                             )
                                         }
-                                        className={`${inputClass} bg-[#050505]`}
+                                        className={inputClass}
                                     >
                                         <option value="">
                                             Süre seç
@@ -843,7 +844,7 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         <button
                             type="submit"
                             disabled={loading || !turnstileToken}
-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-holly text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                         >
                             {loading && (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -852,17 +853,17 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         </button>
 
                         {errorMessage && (
-                            <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                 {errorMessage}
                             </p>
                         )}
 
-                        <p className="pt-1 text-center text-sm text-white/45">
+                        <p className="pt-1 text-center text-sm text-ink-soft">
                             Zaten hesabın var mı?{" "}
                             <button
                                 type="button"
                                 onClick={() => switchView("login")}
-                                className="font-semibold text-[#27D66B] underline-offset-4 transition hover:underline"
+                                className="font-semibold text-holly-ink underline-offset-4 transition hover:underline"
                             >
                                 Giriş yap
                             </button>
@@ -894,12 +895,13 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                             action="reset_password"
                             onTokenChange={setTurnstileToken}
                             resetKey={turnstileResetKey}
+                            theme="light"
                         />
 
                         <button
                             type="submit"
                             disabled={loading || !turnstileToken}
-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-holly text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                         >
                             {loading && (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -908,17 +910,17 @@ export default function AuthDialog({ open, onClose }: AuthDialogProps) {
                         </button>
 
                         {errorMessage && (
-                            <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                 {errorMessage}
                             </p>
                         )}
 
-                        <p className="pt-1 text-center text-sm text-white/45">
+                        <p className="pt-1 text-center text-sm text-ink-soft">
                             Şifreni hatırladın mı?{" "}
                             <button
                                 type="button"
                                 onClick={() => switchView("login")}
-                                className="font-semibold text-[#27D66B] underline-offset-4 transition hover:underline"
+                                className="font-semibold text-holly-ink underline-offset-4 transition hover:underline"
                             >
                                 Giriş yap
                             </button>

@@ -143,8 +143,8 @@ export default function AvatarSelector({
                         onClick={() => onChange(key)}
                         className={`flex aspect-square items-center justify-center rounded-xl border transition ${
                             isSelected
-                                ? "border-[#27D66B] bg-[#27D66B]/10 text-[#27D66B]"
-                                : "border-white/10 bg-[#050505] text-white/40 hover:border-white/30 hover:text-white"
+                                ? "border-[#27D66B] bg-[#27D66B]/10 text-holly-ink"
+                                : "border-line bg-white text-ink-soft hover:border-ink-soft hover:text-ink"
                         }`}
                     >
                         <Icon className="h-5 w-5" />

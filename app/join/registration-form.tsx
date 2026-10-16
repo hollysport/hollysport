@@ -32,10 +32,10 @@ export default function RegistrationForm({
     }
 
     const inputClass =
-        "registration-field mt-2 h-14 w-full rounded-xl border border-white/10 bg-[#1A1A1A] px-4 outline-none transition-colors focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
+        "registration-field mt-2 h-14 w-full rounded-xl border border-line bg-white px-4 outline-none transition-colors focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15";
 
     const textareaClass =
-        "registration-field mt-2 w-full rounded-xl border border-white/10 bg-[#1A1A1A] px-4 py-4 outline-none transition-colors focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
+        "registration-field mt-2 w-full rounded-xl border border-line bg-white px-4 py-4 outline-none transition-colors focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15";
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -148,8 +148,8 @@ export default function RegistrationForm({
 
     if (isCompleted) {
         return (
-            <div className="rounded-3xl border border-white/10 bg-[#111111] p-8 text-center md:p-12">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#27D66B] text-3xl font-bold text-black">
+            <div className="rounded-3xl border border-line bg-shell p-8 text-center md:p-12">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#27D66B] text-3xl font-bold text-ink">
                     ✓
                 </div>
 
@@ -157,8 +157,8 @@ export default function RegistrationForm({
                     Başvurun alındı!
                 </h2>
 
-                <p className="mx-auto mt-4 max-w-md leading-7 text-white/50">
-                    <strong className="text-white">
+                <p className="mx-auto mt-4 max-w-md leading-7 text-ink-soft">
+                    <strong className="text-ink">
                         {eventTitle}
                     </strong>{" "}
                     etkinliği için başvurun başarıyla kaydedildi.
@@ -169,14 +169,14 @@ export default function RegistrationForm({
                 <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
                     <Link
                         href={`/events/${eventSlug}`}
-                        className="flex h-13 items-center justify-center rounded-full border border-white/15 px-7 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-[#27D66B] hover:text-[#27D66B]"
+                        className="flex h-13 items-center justify-center rounded-full border border-line bg-white px-7 text-sm font-semibold uppercase tracking-wider text-ink transition-colors hover:border-ink-soft"
                     >
                         Etkinliğe dön
                     </Link>
 
                     <Link
                         href="/events"
-                        className="flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-black"
+                        className="flex h-13 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-ink"
                     >
                         Diğer etkinlikler
                     </Link>
@@ -188,7 +188,7 @@ export default function RegistrationForm({
     return (
         <form
             onSubmit={handleSubmit}
-            className="rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-10"
+            className="rounded-3xl border border-line bg-shell p-7 md:p-10"
         >
             <div
                 aria-hidden="true"
@@ -202,7 +202,6 @@ export default function RegistrationForm({
                     id="registration-website"
                     name="website"
                     type="text"
-                    className="text-white"
                     tabIndex={-1}
                     autoComplete="off"
                     value={honeypot}
@@ -212,7 +211,7 @@ export default function RegistrationForm({
                 />
             </div>
 
-            <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <span className="text-sm font-semibold uppercase tracking-[0.25em] text-holly-ink">
                 Etkinlik Başvurusu
             </span>
 
@@ -220,20 +219,20 @@ export default function RegistrationForm({
                 {eventTitle}
             </h2>
 
-            <p className="mt-3 text-sm leading-6 text-white/45">
+            <p className="mt-3 text-sm leading-6 text-ink-soft">
                 Bilgilerini eksiksiz doldur. Başvurun admin
                 paneline düşecek.
             </p>
 
             {errorMessage && (
-                <div className="mt-7 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300">
+                <div className="mt-7 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
                     {errorMessage}
                 </div>
             )}
 
             <div className="mt-9 space-y-6">
                 <label className="block">
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-ink/70">
                         Ad Soyad *
                     </span>
 
@@ -248,7 +247,7 @@ export default function RegistrationForm({
                 </label>
 
                 <label className="block">
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-ink/70">
                         E-posta *
                     </span>
 
@@ -263,7 +262,7 @@ export default function RegistrationForm({
                 </label>
 
                 <label className="block">
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-ink/70">
                         Telefon *
                     </span>
 
@@ -278,7 +277,7 @@ export default function RegistrationForm({
                 </label>
 
                 <label className="block">
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-ink/70">
                         Cinsiyet *
                     </span>
 
@@ -311,7 +310,7 @@ export default function RegistrationForm({
                 </label>
 
                 <label className="block">
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-ink/70">
                         Eklemek istediğin not
                     </span>
 
@@ -324,7 +323,7 @@ export default function RegistrationForm({
                     />
                 </label>
 
-                <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 p-4">
+                <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-line bg-white p-4">
                     <input
                         name="consent_accepted"
                         type="checkbox"
@@ -332,7 +331,7 @@ export default function RegistrationForm({
                         className="mt-0.5 h-5 w-5 shrink-0 accent-[#27D66B]"
                     />
 
-                    <span className="text-sm leading-6 text-white/50">
+                    <span className="text-sm leading-6 text-ink-soft">
                         Başvuru bilgilerimin etkinlik organizasyonu
                         ve iletişim amacıyla kullanılmasını kabul
                         ediyorum.
@@ -340,11 +339,11 @@ export default function RegistrationForm({
                 </label>
             </div>
 
-            <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div className="mt-6 rounded-2xl border border-line bg-white p-4">
                 <TurnstileWidget
                     action="registration_form"
                     resetKey={turnstileResetKey}
-                    theme="dark"
+                    theme="light"
                     onTokenChange={(token) => {
                         setTurnstileToken(token);
 
@@ -358,7 +357,7 @@ export default function RegistrationForm({
             <button
                 type="submit"
                 disabled={isSubmitting || !turnstileToken}
-                className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-black transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-8 flex h-14 w-full items-center justify-center rounded-full bg-[#27D66B] text-sm font-semibold uppercase tracking-wider text-ink transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {isSubmitting
                     ? "Gönderiliyor..."

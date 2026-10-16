@@ -215,18 +215,18 @@ export default function ReviewForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="rounded-[2rem] border border-white/10 bg-[#111111] p-6 sm:p-8"
+            className="rounded-[2rem] border border-line bg-white p-6 sm:p-8"
         >
             <div>
-                <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#27D66B]">
+                <p className="text-sm font-bold uppercase tracking-[0.22em] text-holly-ink">
                     Görüşünü paylaş
                 </p>
 
-                <h3 className="mt-3 text-2xl font-extrabold tracking-[-0.03em] text-white sm:text-3xl">
+                <h3 className="mt-3 text-2xl font-extrabold tracking-[-0.03em] text-ink sm:text-3xl">
                     Holly Sport deneyimini anlat.
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-white/45">
+                <p className="mt-3 text-sm leading-7 text-ink-soft">
                     Görüşün yayınlanmadan önce yönetim ekibi tarafından
                     incelenecektir.
                 </p>
@@ -236,7 +236,7 @@ export default function ReviewForm() {
                 <div>
                     <label
                         htmlFor="review-full-name"
-                        className="mb-2 block text-sm font-semibold text-white"
+                        className="mb-2 block text-sm font-semibold text-ink"
                     >
                         Ad soyad
                     </label>
@@ -251,12 +251,12 @@ export default function ReviewForm() {
                         placeholder="Umut Küçük"
                         maxLength={80}
                         required
-                        className="form-field-dark min-h-13 w-full rounded-2xl border border-white/10 bg-white/5 px-4 outline-none transition focus:border-[#27D66B]"
+                        className="form-field min-h-13 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15"
                     />
                 </div>
 
                 <div>
-                    <span className="mb-3 block text-sm font-semibold text-white">
+                    <span className="mb-3 block text-sm font-semibold text-ink">
                         Memnuniyet puanı
                     </span>
 
@@ -282,14 +282,14 @@ export default function ReviewForm() {
                                     <Star
                                         className={`h-8 w-8 transition ${isActive
                                                 ? "fill-[#FFD54A] text-[#FFD54A]"
-                                                : "text-white/20"
+                                                : "text-ink-soft/40"
                                             }`}
                                     />
                                 </button>
                             );
                         })}
 
-                        <span className="ml-2 text-sm text-white/45">
+                        <span className="ml-2 text-sm text-ink-soft">
                             {rating > 0
                                 ? `${rating} / 5`
                                 : "Puan seç"}
@@ -300,7 +300,7 @@ export default function ReviewForm() {
                 <div>
                     <label
                         htmlFor="review-membership-duration"
-                        className="mb-2 block text-sm font-semibold text-white"
+                        className="mb-2 block text-sm font-semibold text-ink"
                     >
                         Ne zamandır Holly Sport üyesisin?
                     </label>
@@ -314,7 +314,7 @@ export default function ReviewForm() {
                             )
                         }
                         required
-                        className="form-field-dark min-h-13 w-full rounded-2xl border border-white/10 bg-[#181818] px-4 outline-none transition focus:border-[#27D66B]"
+                        className="form-field min-h-13 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15"
                     >
                         <option value="">
                             Üyelik süresini seç
@@ -332,12 +332,12 @@ export default function ReviewForm() {
                     <div className="mb-2 flex items-center justify-between gap-4">
                         <label
                             htmlFor="review-comment"
-                            className="block text-sm font-semibold text-white"
+                            className="block text-sm font-semibold text-ink"
                         >
                             Görüşün
                         </label>
 
-                        <span className="text-xs text-white/35">
+                        <span className="text-xs text-ink-soft">
                             {comment.length}/1000
                         </span>
                     </div>
@@ -353,20 +353,20 @@ export default function ReviewForm() {
                         maxLength={1000}
                         rows={6}
                         required
-                        className="form-field-dark w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-4 outline-none transition focus:border-[#27D66B]"
+                        className="form-field w-full resize-none rounded-2xl border border-line bg-white px-4 py-4 outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15"
                     />
                 </div>
 
                 <div>
-                    <span className="mb-2 block text-sm font-semibold text-white">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Fotoğraf
-                        <span className="ml-2 font-normal text-white/35">
+                        <span className="ml-2 font-normal text-ink-soft">
                             isteğe bağlı
                         </span>
                     </span>
 
                     {photoPreview ? (
-                        <div className="relative h-32 w-32 overflow-hidden rounded-2xl border border-white/10">
+                        <div className="relative h-32 w-32 overflow-hidden rounded-2xl border border-line">
                             <img
                                 src={photoPreview}
                                 alt="Seçilen profil fotoğrafı"
@@ -377,7 +377,7 @@ export default function ReviewForm() {
                                 type="button"
                                 onClick={removePhoto}
                                 aria-label="Fotoğrafı kaldır"
-                                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/70 text-white transition hover:bg-red-500"
+                                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-red-500"
                             >
                                 <X className="h-4 w-4" />
                             </button>
@@ -385,15 +385,15 @@ export default function ReviewForm() {
                     ) : (
                         <label
                             htmlFor="review-photo"
-                            className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.03] px-5 text-center transition hover:border-[#27D66B]/60 hover:bg-[#27D66B]/5"
+                            className="flex min-h-32 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-line bg-shell px-5 text-center transition hover:border-[#27D66B]/60 hover:bg-[#27D66B]/5"
                         >
-                            <ImagePlus className="h-7 w-7 text-[#27D66B]" />
+                            <ImagePlus className="h-7 w-7 text-holly-ink" />
 
-                            <span className="mt-3 text-sm font-semibold text-white">
+                            <span className="mt-3 text-sm font-semibold text-ink">
                                 Fotoğraf ekle
                             </span>
 
-                            <span className="mt-1 text-xs text-white/35">
+                            <span className="mt-1 text-xs text-ink-soft">
                                 JPG, PNG veya WEBP · En fazla 1 MB
                             </span>
                         </label>
@@ -408,7 +408,7 @@ export default function ReviewForm() {
                     />
                 </div>
 
-                <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-line bg-shell p-4">
                     <input
                         type="checkbox"
                         checked={consent}
@@ -419,7 +419,7 @@ export default function ReviewForm() {
                         className="mt-1 h-4 w-4 accent-[#27D66B]"
                     />
 
-                    <span className="text-sm leading-6 text-white/50">
+                    <span className="text-sm leading-6 text-ink-soft">
                         Adımın, görüşümün ve eklediğim fotoğrafın
                         Holly Sport internet sitesinde yayınlanmasını
                         kabul ediyorum.
@@ -428,13 +428,13 @@ export default function ReviewForm() {
             </div>
 
             {errorMessage && (
-                <div className="mt-6 rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {errorMessage}
                 </div>
             )}
 
             {successMessage && (
-                <div className="mt-6 flex items-start gap-3 rounded-2xl border border-[#27D66B]/25 bg-[#27D66B]/10 px-4 py-4 text-sm text-[#67eb9b]">
+                <div className="mt-6 flex items-start gap-3 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-4 text-sm text-holly-ink">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
 
                     <span>{successMessage}</span>
@@ -444,7 +444,7 @@ export default function ReviewForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-7 inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-extrabold text-black transition hover:bg-[#45e27f] disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-7 inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-extrabold text-ink transition hover:bg-[#1fc461] disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {isSubmitting ? (
                     <>
