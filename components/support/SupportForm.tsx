@@ -19,7 +19,7 @@ import TurnstileWidget from "@/components/security/TurnstileWidget";
 const supportOptions = [
     {
         value: "financial_support",
-        label: "Maddi destek görüşmesi",
+        label: "Maddi destek",
     },
     {
         value: "volunteer",
@@ -27,7 +27,11 @@ const supportOptions = [
     },
     {
         value: "social_media",
-        label: "Sosyal medya desteği",
+        label: "Sosyal medya",
+    },
+    {
+        value: "student_representative",
+        label: "Gönüllü öğrenci temsilcisi",
     },
     {
         value: "photo_video",
@@ -673,16 +677,16 @@ export default function SupportForm() {
     }
 
     const fieldClass =
-        "w-full rounded-2xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 outline-none transition placeholder:text-zinc-500 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10";
+        "w-full rounded-2xl border border-line bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-soft focus:border-orange-600 focus:ring-4 focus:ring-orange-500/15";
 
     const fieldErrorClass =
-        "w-full rounded-2xl border border-red-500 bg-white px-4 py-3 text-zinc-950 outline-none transition placeholder:text-zinc-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
+        "w-full rounded-2xl border border-red-500 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-soft focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
 
     return (
         <form
             noValidate
             onSubmit={handleSubmit}
-            className="relative rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
+            className="relative rounded-3xl border border-line bg-white p-6 shadow-sm sm:p-8"
         >
             <div
                 aria-hidden="true"
@@ -696,7 +700,7 @@ export default function SupportForm() {
                     id="support-company-fax"
                     name="companyFax"
                     type="text"
-                    className="text-zinc-950"
+                    className="text-ink"
                     tabIndex={-1}
                     autoComplete="off"
                     value={companyFax}
@@ -710,7 +714,7 @@ export default function SupportForm() {
 
             <div className="grid gap-6 sm:grid-cols-2">
                 <label className="sm:col-span-2">
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Ad soyad
                     </span>
 
@@ -746,7 +750,7 @@ export default function SupportForm() {
                 </label>
 
                 <label>
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Telefon
                     </span>
 
@@ -783,7 +787,7 @@ export default function SupportForm() {
                 </label>
 
                 <label>
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         E-posta
                     </span>
 
@@ -820,7 +824,7 @@ export default function SupportForm() {
                 </label>
 
                 <label className="sm:col-span-2">
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Şehir
                     </span>
 
@@ -857,11 +861,11 @@ export default function SupportForm() {
             </div>
 
             <div className="mt-10">
-                <h2 className="text-xl font-bold text-zinc-950">
+                <h2 className="text-xl font-bold text-ink">
                     Nasıl destek olmak istersin?
                 </h2>
 
-                <p className="mt-2 text-sm text-zinc-600">
+                <p className="mt-2 text-sm text-ink-soft">
                     Birden fazla destek türü
                     seçebilirsin.
                 </p>
@@ -887,8 +891,8 @@ export default function SupportForm() {
                                     }
                                     className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-medium transition ${
                                         selected
-                                            ? "border-orange-500 bg-orange-50 text-orange-700"
-                                            : "border-zinc-200 text-zinc-700 hover:border-zinc-400"
+                                            ? "border-orange-600 bg-orange-50 text-orange-700"
+                                            : "border-line bg-white text-ink/70 hover:border-ink-soft hover:text-ink"
                                     }`}
                                 >
                                     {option.label}
@@ -896,8 +900,8 @@ export default function SupportForm() {
                                     <span
                                         className={`flex h-5 w-5 items-center justify-center rounded-full border ${
                                             selected
-                                                ? "border-orange-500 bg-orange-500 text-white"
-                                                : "border-zinc-300"
+                                                ? "border-orange-600 bg-orange-600 text-white"
+                                                : "border-line"
                                         }`}
                                     >
                                         {selected && (
@@ -920,8 +924,8 @@ export default function SupportForm() {
             </div>
 
             {hasVolunteerSupport && (
-                <div className="mt-8 rounded-3xl bg-zinc-50 p-5">
-                    <h3 className="font-bold text-zinc-950">
+                <div className="mt-8 rounded-3xl bg-shell p-5">
+                    <h3 className="font-bold text-ink">
                         Gönüllü olmak istediğin
                         alanlar
                     </h3>
@@ -945,8 +949,8 @@ export default function SupportForm() {
                                         }
                                         className={`rounded-xl border px-4 py-3 text-left text-sm transition ${
                                             selected
-                                                ? "border-orange-500 bg-white text-orange-700"
-                                                : "border-zinc-200 bg-white text-zinc-700"
+                                                ? "border-orange-600 bg-white text-orange-700"
+                                                : "border-line bg-white text-ink/70"
                                         }`}
                                     >
                                         {option}
@@ -967,9 +971,9 @@ export default function SupportForm() {
             )}
 
             {hasCorporateSupport && (
-                <div className="mt-8 grid gap-5 rounded-3xl bg-zinc-50 p-5 sm:grid-cols-2">
+                <div className="mt-8 grid gap-5 rounded-3xl bg-shell p-5 sm:grid-cols-2">
                     <label>
-                        <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                        <span className="mb-2 block text-sm font-semibold text-ink">
                             Firma veya kurum adı
                         </span>
 
@@ -1005,7 +1009,7 @@ export default function SupportForm() {
                     </label>
 
                     <label>
-                        <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                        <span className="mb-2 block text-sm font-semibold text-ink">
                             İnternet sitesi
                         </span>
 
@@ -1042,10 +1046,10 @@ export default function SupportForm() {
             )}
 
             {hasFinancialSupport && (
-                <div className="mt-8 rounded-3xl bg-zinc-50 p-5">
+                <div className="mt-8 rounded-3xl bg-shell p-5">
                     <div className="grid gap-5 sm:grid-cols-2">
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Destek biçimi
                             </span>
 
@@ -1096,7 +1100,7 @@ export default function SupportForm() {
                         </label>
 
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Tahmini destek
                                 tutarı
                             </span>
@@ -1139,7 +1143,7 @@ export default function SupportForm() {
                         </label>
                     </div>
 
-                    <p className="mt-3 text-xs leading-5 text-zinc-500">
+                    <p className="mt-3 text-xs leading-5 text-ink-soft">
                         Bu alan yalnızca ön
                         bilgilendirme amaçlıdır.
                         Burada herhangi bir ödeme
@@ -1149,11 +1153,11 @@ export default function SupportForm() {
             )}
 
             <div className="mt-10">
-                <h2 className="text-xl font-bold text-zinc-950">
+                <h2 className="text-xl font-bold text-ink">
                     İsmin nasıl gösterilsin?
                 </h2>
 
-                <p className="mt-2 text-sm text-zinc-600">
+                <p className="mt-2 text-sm text-ink-soft">
                     Destekçiler alanında görünecek
                     formatı seç.
                 </p>
@@ -1214,15 +1218,15 @@ export default function SupportForm() {
                                 }}
                                 className={`rounded-2xl border p-4 text-left transition ${
                                     selected
-                                        ? "border-orange-500 bg-orange-50"
-                                        : "border-zinc-200 hover:border-zinc-400"
+                                        ? "border-orange-600 bg-orange-50"
+                                        : "border-line hover:border-ink-soft"
                                 }`}
                             >
-                                <span className="block font-semibold text-zinc-950">
+                                <span className="block font-semibold text-ink">
                                     {option.title}
                                 </span>
 
-                                <span className="mt-2 block text-sm text-zinc-600">
+                                <span className="mt-2 block text-sm text-ink-soft">
                                     {option.example}
                                 </span>
                             </button>
@@ -1230,8 +1234,8 @@ export default function SupportForm() {
                     })}
                 </div>
 
-                <div className="mt-5 rounded-2xl bg-zinc-950 p-5 text-white">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">
+                <div className="mt-5 rounded-2xl border border-line bg-shell p-5 text-ink">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">
                         Canlı önizleme
                     </p>
 
@@ -1242,7 +1246,7 @@ export default function SupportForm() {
             </div>
 
             <label className="mt-8 block">
-                <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                <span className="mb-2 block text-sm font-semibold text-ink">
                     Eklemek istediğin bilgiler
                 </span>
 
@@ -1278,7 +1282,7 @@ export default function SupportForm() {
                         )}
                     </div>
 
-                    <span className="shrink-0 text-xs text-zinc-400">
+                    <span className="shrink-0 text-xs text-ink-soft">
                         {message.length}/3000
                     </span>
                 </div>
@@ -1302,14 +1306,14 @@ export default function SupportForm() {
                         className="mt-1 h-4 w-4 shrink-0 accent-orange-500"
                     />
 
-                    <span className="text-sm leading-6 text-zinc-600">
+                    <span className="text-sm leading-6 text-ink-soft">
                         Kişisel verilerimin destek
                         başvurusunun
                         değerlendirilmesi amacıyla
                         işlenmesini kabul ediyorum.{" "}
                         <Link
                             href="/kvkk"
-                            className="font-semibold text-orange-600 underline underline-offset-4"
+                            className="font-semibold text-orange-700 underline underline-offset-4"
                         >
                             KVKK Aydınlatma Metni
                         </Link>
@@ -1325,7 +1329,7 @@ export default function SupportForm() {
                 )}
             </div>
 
-            <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
+            <div className="mt-6 rounded-2xl border border-line bg-shell p-4">
                 <TurnstileWidget
                     action="support_form"
                     resetKey={
@@ -1378,7 +1382,7 @@ export default function SupportForm() {
             <button
                 disabled={isSubmitting}
                 type="submit"
-                className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 px-6 py-4 font-semibold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-orange-700 px-6 py-4 font-semibold text-white transition hover:bg-orange-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
                 {isSubmitting ? (
                     <>

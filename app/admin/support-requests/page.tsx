@@ -14,6 +14,7 @@ const statusLabels: Record<string, string> = {
 const supportTypeLabels: Record<string, string> = {
     volunteer: "Gönüllü destek",
     social_media: "Sosyal medya",
+    student_representative: "Gönüllü öğrenci temsilcisi",
     photo_video: "Fotoğraf ve video",
     design_content: "Grafik tasarım ve içerik",
     software: "Yazılım ve teknik destek",
@@ -22,7 +23,7 @@ const supportTypeLabels: Record<string, string> = {
     venue: "Mekân desteği",
     equipment_product: "Ekipman veya ürün",
     corporate_sponsorship: "Kurumsal sponsorluk",
-    financial_support: "Maddi destek görüşmesi",
+    financial_support: "Maddi destek",
     mentorship_network: "Mentorluk ve bağlantı",
     other: "Diğer",
 };
@@ -68,11 +69,7 @@ export default async function SupportRequestsPage() {
         <main className="min-h-screen bg-zinc-50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Admin Paneli
-                    </p>
-
-                    <h1 className="mt-2 text-3xl font-bold text-zinc-950">
+                    <h1 className="text-3xl font-bold text-zinc-950">
                         Destek Başvuruları
                     </h1>
 

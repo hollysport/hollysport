@@ -13,6 +13,7 @@ const allowedSupportTypes = [
     "financial_support",
     "volunteer",
     "social_media",
+    "student_representative",
     "photo_video",
     "design_content",
     "software",

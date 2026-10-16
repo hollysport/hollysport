@@ -14,6 +14,7 @@ const categoryLabels: Record<string, string> = {
 const supportTypeLabels: Record<string, string> = {
     volunteer: "Gönüllü destek",
     social_media: "Sosyal medya",
+    student_representative: "Gönüllü öğrenci temsilcisi",
     photo_video: "Fotoğraf ve video",
     design_content: "Grafik tasarım ve içerik",
     software: "Yazılım ve teknik destek",
@@ -98,18 +99,7 @@ export default async function SupportersAdminPage({
         <main className="min-h-screen bg-zinc-50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Admin Paneli
-                    </p>
-
-                    <Link
-                        href="/admin"
-                        className="mt-2 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:border-zinc-950 hover:text-zinc-950"
-                    >
-                        ← Panele Dön
-                    </Link>
-
-                    <h1 className="mt-4 text-3xl font-bold text-zinc-950">
+                    <h1 className="text-3xl font-bold text-zinc-950">
                         Yayınlanan Destekçiler
                     </h1>
 
