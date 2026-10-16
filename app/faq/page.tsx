@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import QuestionForm from "@/components/contact/QuestionForm";
 
 export const metadata: Metadata = {
@@ -73,97 +74,69 @@ const faqs = [
 
 export default function FaqPage() {
     return (
-        <main>
-            <section className="bg-[#050505] py-20 text-white sm:py-28">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
-                        Yardım Merkezi
-                    </p>
+        <>
+            <main>
+                <Navbar />
 
-                    <h1 className="mt-5 max-w-4xl text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
-                        Sıkça sorulan sorular.
-                    </h1>
-
-                    <p className="mt-6 max-w-2xl text-base leading-7 text-white/50 sm:text-lg">
-                        Etkinlikler, katılım süreci ve Holly Sport topluluğu hakkında
-                        merak edilen soruların cevapları.
-                    </p>
-                </div>
-            </section>
-
-            <section className="bg-white py-16 sm:py-20">
-                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                    <div className="divide-y divide-zinc-200 border-y border-zinc-200">
-                        {faqs.map((faq) => (
-                            <details key={faq.question} className="group py-6">
-                                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left text-lg font-bold text-zinc-950">
-                                    {faq.question}
-
-                                    <span className="relative h-5 w-5 shrink-0">
-                                        <span className="absolute left-0 top-1/2 h-0.5 w-5 -translate-y-1/2 bg-zinc-950" />
-
-                                        <span className="absolute left-1/2 top-0 h-5 w-0.5 -translate-x-1/2 bg-zinc-950 transition group-open:rotate-90 group-open:opacity-0" />
-                                    </span>
-                                </summary>
-
-                                <p className="mt-4 max-w-3xl pr-10 leading-7 text-zinc-600">
-                                    {faq.answer}
-                                </p>
-                            </details>
-                        ))}
-                    </div>
-                    <section className="bg-zinc-50 py-16 sm:py-20">
-                        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:px-8">
-                            <div>
-                                <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
-                                    Sorunu Bulamadın mı?
-                                </p>
-
-                                <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-zinc-950 sm:text-5xl">
-                                    Bize doğrudan sor.
-                                </h2>
-
-                                <p className="mt-5 max-w-lg leading-7 text-zinc-600">
-                                    Aradığın cevap burada yoksa formu doldur. Holly Sport ekibi
-                                    sorunu inceleyerek verdiğin iletişim bilgileri üzerinden sana
-                                    dönüş yapacaktır.
-                                </p>
-
-                                <div className="mt-8 rounded-3xl bg-zinc-950 p-6 text-white">
-                                    <p className="text-sm font-semibold text-[#27D66B]">
-                                        Dönüş süreci
-                                    </p>
-
-                                    <p className="mt-3 text-sm leading-6 text-white/50">
-                                        Sorular mümkün olan en kısa sürede incelenir. Etkinliğe yakın
-                                        acil konular için başlık bölümünde etkinlik adını belirt.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <QuestionForm />
-                        </div>
-                    </section>
-                    <div className="mt-12 flex flex-col items-center rounded-3xl bg-zinc-950 px-6 py-10 text-center text-white">
-                        <h2 className="text-2xl font-bold">
-                            Etkinlikleri incelemeye hazır mısın?
-                        </h2>
-
-                        <p className="mt-3 max-w-xl text-sm leading-6 text-white/50">
-                            Yaklaşan etkinlikleri görüntüleyerek sana uygun deneyimi
-                            seçebilirsin.
+                <section className="bg-shell py-20 text-ink sm:py-28">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
+                            Yardım Merkezi
                         </p>
 
-
-                        <Link
-                            href="/events"
-                            className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
-                        >
-                            Etkinlikleri İncele
-                        </Link>
+                        <h1 className="mt-5 max-w-4xl text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
+                            Sıkça sorulan sorular.
+                        </h1>
                     </div>
-                </div>
-            </section>
+                </section>
+
+                <section className="bg-white py-16 sm:py-20">
+                    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                        <div className="divide-y divide-line border-y border-line">
+                            {faqs.map((faq) => (
+                                <details key={faq.question} className="group py-6">
+                                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left text-lg font-bold text-ink">
+                                        {faq.question}
+
+                                        <span className="relative h-5 w-5 shrink-0">
+                                            <span className="absolute left-0 top-1/2 h-0.5 w-5 -translate-y-1/2 bg-ink group-open:bg-holly-ink" />
+
+                                            <span className="absolute left-1/2 top-0 h-5 w-0.5 -translate-x-1/2 bg-ink transition group-open:rotate-90 group-open:opacity-0" />
+                                        </span>
+                                    </summary>
+
+                                    <p className="mt-4 max-w-3xl pr-10 leading-7 text-ink/70">
+                                        {faq.answer}
+                                    </p>
+                                </details>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="bg-shell py-16 sm:py-20">
+                            <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:px-8">
+                                <div>
+                                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
+                                        Sorunu Bulamadın mı?
+                                    </p>
+
+                                    <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-ink sm:text-5xl">
+                                        Bize doğrudan sor.
+                                    </h2>
+
+                                    <p className="mt-5 max-w-lg leading-7 text-ink/70">
+                                        Aradığın cevap burada yoksa formu doldur. Holly Sport ekibi
+                                        sorunu inceleyerek verdiğin iletişim bilgileri üzerinden sana
+                                        dönüş yapacaktır.
+                                    </p>
+                                </div>
+
+                                <QuestionForm />
+                            </div>
+                </section>
         </main>
-    );
+        <Footer />
+    </>
+);
 }

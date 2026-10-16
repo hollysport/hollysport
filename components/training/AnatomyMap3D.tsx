@@ -146,7 +146,7 @@ function HitboxMesh({
 function ErrorFallback() {
     return (
         <Html center zIndexRange={LABEL_Z_INDEX_RANGE}>
-            <div className="pointer-events-none whitespace-nowrap rounded-full border border-red-500/30 bg-[#0a0a0a]/90 px-3 py-1.5 text-xs font-medium leading-4 text-red-300">
+            <div className="pointer-events-none whitespace-nowrap rounded-full border border-red-200 bg-white/95 px-3 py-1.5 text-xs font-medium leading-4 text-red-700">
                 3D model yüklenemedi.
             </div>
         </Html>
@@ -192,16 +192,18 @@ export default function AnatomyMap3D({
     return (
         <div>
             <div className="mb-4 flex items-center justify-between gap-4">
-                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+                <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                     3D Vücut Haritası
                 </span>
 
-                <span className="text-xs text-white/40">
+                <span className="text-xs text-ink-soft">
                     Döndürmek için sürükle
                 </span>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
+            {/* 3D sahne zemini WebGL olduğu için koyu kalır (bilinçli);
+                sayfanın kalanı beyaz temadır. */}
+            <div className="relative overflow-hidden rounded-2xl border border-line bg-[#0a0a0a]">
                 <Canvas
                     camera={{ position: [0, 1.05, 3.1], fov: 42 }}
                     style={{ height: "420px", touchAction: "none" }}
@@ -262,9 +264,9 @@ export default function AnatomyMap3D({
                                     transition: "opacity 0.2s ease",
                                 }}
                             >
-                                <div className="flex items-center gap-1 whitespace-nowrap rounded-full border border-[#27D66B]/50 bg-[#050505]/85 px-2.5 py-1 shadow-[0_0_10px_rgba(39,214,107,0.25)]">
+                                <div className="flex items-center gap-1 whitespace-nowrap rounded-full border border-line bg-white/95 px-2.5 py-1 shadow-sm">
                                     <span className="h-1 w-1 rounded-full bg-[#27D66B]" />
-                                    <span className="text-[11px] font-medium leading-4 text-[#27D66B]">
+                                    <span className="text-[11px] font-medium leading-4 text-ink">
                                         {group.label} Aktif
                                     </span>
                                 </div>
@@ -327,7 +329,7 @@ export default function AnatomyMap3D({
                 />
 
                 {hoveredLabel && (
-                    <div className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded-full border border-[#27D66B]/40 bg-[#050505]/80 px-3 py-1 text-[11px] font-medium leading-4 text-[#27D66B]">
+                    <div className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 rounded-full border border-line bg-white/95 px-3 py-1 text-[11px] font-medium leading-4 text-ink shadow-sm">
                         {hoveredLabel}
                     </div>
                 )}

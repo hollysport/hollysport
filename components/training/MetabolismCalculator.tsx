@@ -95,7 +95,7 @@ const PROTEIN_PER_KG = 2;
 const FAT_PER_KG = 0.9;
 
 const inputClassName =
-    "w-full rounded-2xl border border-white/15 bg-[#050505] px-5 py-4 text-lg font-semibold text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
+    "w-full rounded-2xl border border-line bg-white px-5 py-4 text-lg font-semibold text-ink outline-none transition placeholder:text-ink-soft focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15";
 
 const STEP_TITLES = [
     "Önce seni tanıyalım",
@@ -207,19 +207,19 @@ export default function MetabolismCalculator() {
     }
 
     return (
-        <div className="grid gap-12 lg:grid-cols-[1fr_420px]">
-            <div className="rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-10">
+        <div className="mx-auto w-full max-w-4xl">
+            <div className="rounded-3xl border border-line bg-shell p-7 md:p-10">
                 <div className="flex items-center justify-between gap-4">
-                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+                    <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                         Metabolizma ve Makro Hesaplayıcı
                     </span>
 
-                    <span className="text-sm tabular-nums text-white/35">
+                    <span className="text-sm tabular-nums text-ink-soft">
                         {Math.min(step + 1, 3)} / 3
                     </span>
                 </div>
 
-                <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-white/10">
+                <div className="mt-4 h-1 w-full overflow-hidden rounded-full bg-line">
                     <div
                         className="h-full bg-[#27D66B] transition-all duration-500"
                         style={{
@@ -237,7 +237,7 @@ export default function MetabolismCalculator() {
                 {step === 0 && (
                     <div className="mt-10 space-y-8">
                         <div>
-                            <span className="text-xs font-semibold uppercase tracking-wider text-white/35">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                 Cinsiyet
                             </span>
 
@@ -256,8 +256,8 @@ export default function MetabolismCalculator() {
                                         }
                                         className={`rounded-2xl border px-5 py-4 text-lg font-semibold transition ${
                                             gender === value
-                                                ? "border-[#27D66B] bg-[#27D66B]/10 text-[#27D66B]"
-                                                : "border-white/15 text-white/60 hover:border-white/30"
+                                                ? "border-[#27D66B] bg-[#27D66B]/10 text-holly-ink"
+                                                : "border-line bg-white text-ink/70 hover:border-ink-soft hover:text-ink"
                                         }`}
                                     >
                                         {label}
@@ -268,7 +268,7 @@ export default function MetabolismCalculator() {
 
                         <div className="grid gap-5 sm:grid-cols-3">
                             <label className="block">
-                                <span className="text-xs font-semibold uppercase tracking-wider text-white/35">
+                                <span className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                     Yaş
                                 </span>
 
@@ -290,7 +290,7 @@ export default function MetabolismCalculator() {
                             </label>
 
                             <label className="block">
-                                <span className="text-xs font-semibold uppercase tracking-wider text-white/35">
+                                <span className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                     Boy (cm)
                                 </span>
 
@@ -312,7 +312,7 @@ export default function MetabolismCalculator() {
                             </label>
 
                             <label className="block">
-                                <span className="text-xs font-semibold uppercase tracking-wider text-white/35">
+                                <span className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                     Kilo (kg)
                                 </span>
 
@@ -349,7 +349,7 @@ export default function MetabolismCalculator() {
                                     activity?.key ===
                                     level.key
                                         ? "border-[#27D66B] bg-[#27D66B]/10"
-                                        : "border-white/15 hover:border-white/30"
+                                        : "border-line bg-white hover:border-ink-soft"
                                 }`}
                             >
                                 <span>
@@ -357,19 +357,19 @@ export default function MetabolismCalculator() {
                                         className={`block text-lg font-semibold ${
                                             activity?.key ===
                                             level.key
-                                                ? "text-[#27D66B]"
-                                                : "text-white"
+                                                ? "text-holly-ink"
+                                                : "text-ink"
                                         }`}
                                     >
                                         {level.label}
                                     </span>
 
-                                    <span className="mt-1 block text-sm text-white/40">
+                                    <span className="mt-1 block text-sm text-ink-soft">
                                         {level.description}
                                     </span>
                                 </span>
 
-                                <span className="shrink-0 text-sm tabular-nums text-white/30">
+                                <span className="shrink-0 text-sm tabular-nums text-ink-soft">
                                     ×{level.multiplier}
                                 </span>
                             </button>
@@ -389,20 +389,20 @@ export default function MetabolismCalculator() {
                                 className={`block w-full rounded-2xl border px-5 py-4 text-left transition ${
                                     goal === item.key
                                         ? "border-[#27D66B] bg-[#27D66B]/10"
-                                        : "border-white/15 hover:border-white/30"
+                                        : "border-line bg-white hover:border-ink-soft"
                                 }`}
                             >
                                 <span
                                     className={`block text-lg font-semibold ${
                                         goal === item.key
-                                            ? "text-[#27D66B]"
-                                            : "text-white"
+                                            ? "text-holly-ink"
+                                            : "text-ink"
                                     }`}
                                 >
                                     {item.label}
                                 </span>
 
-                                <span className="mt-1 block text-sm text-white/40">
+                                <span className="mt-1 block text-sm text-ink-soft">
                                     {item.description}
                                 </span>
                             </button>
@@ -412,26 +412,26 @@ export default function MetabolismCalculator() {
 
                 {step === 3 && result && (
                     <div className="mt-6">
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                             Sonuçların hazır
                         </span>
 
                         <div className="mt-6">
-                            <span className="text-sm uppercase tracking-wider text-white/35">
+                            <span className="text-sm uppercase tracking-wider text-ink-soft">
                                 Günlük hedef kalori
                             </span>
 
-                            <p className="mt-2 text-7xl font-bold tabular-nums tracking-tight text-[#27D66B] lg:text-8xl">
+                            <p className="mt-2 text-7xl font-bold tabular-nums tracking-tight text-holly-ink lg:text-8xl">
                                 {formatNumber(
                                     result.targetCalories,
                                 )}
-                                <span className="ml-3 text-2xl font-semibold text-white/40">
+                                <span className="ml-3 text-2xl font-semibold text-ink-soft">
                                     kcal
                                 </span>
                             </p>
                         </div>
 
-                        <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-3">
+                        <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
                             {(
                                 [
                                     [
@@ -450,15 +450,15 @@ export default function MetabolismCalculator() {
                             ).map(([label, grams]) => (
                                 <div
                                     key={label}
-                                    className="bg-[#111111] px-5 py-6"
+                                    className="bg-white px-5 py-6"
                                 >
-                                    <span className="text-xs uppercase tracking-wider text-white/35">
+                                    <span className="text-xs uppercase tracking-wider text-ink-soft">
                                         {label}
                                     </span>
 
                                     <p className="mt-2 text-3xl font-bold tabular-nums">
                                         {grams}
-                                        <span className="ml-1 text-base font-semibold text-white/40">
+                                        <span className="ml-1 text-base font-semibold text-ink-soft">
                                             g
                                         </span>
                                     </p>
@@ -466,11 +466,11 @@ export default function MetabolismCalculator() {
                             ))}
                         </div>
 
-                        <div className="mt-8 space-y-4 border-t border-white/10 pt-6 text-sm leading-6 text-white/45">
+                        <div className="mt-8 space-y-4 border-t border-line pt-6 text-sm leading-6 text-ink/70">
                             <p>
                                 Bazal metabolizma hızın
                                 (BMR):{" "}
-                                <strong className="text-white">
+                                <strong className="text-ink">
                                     {formatNumber(result.bmr)}{" "}
                                     kcal
                                 </strong>{" "}
@@ -480,7 +480,7 @@ export default function MetabolismCalculator() {
 
                             <p>
                                 Toplam günlük harcaman (TDEE):{" "}
-                                <strong className="text-white">
+                                <strong className="text-ink">
                                     {formatNumber(result.tdee)}{" "}
                                     kcal
                                 </strong>{" "}
@@ -489,7 +489,7 @@ export default function MetabolismCalculator() {
                             </p>
 
                             {result.isClamped && (
-                                <p className="text-[#27D66B]">
+                                <p className="text-holly-ink">
                                     Hesaplanan hedef düşük
                                     çıktığı için güvenli alt
                                     sınır olan {MIN_CALORIES}{" "}
@@ -502,7 +502,7 @@ export default function MetabolismCalculator() {
                     </div>
                 )}
 
-                <div className="mt-10 flex items-center justify-between gap-4 border-t border-white/10 pt-6">
+                <div className="mt-10 flex items-center justify-between gap-4 border-t border-line pt-6">
                     {step > 0 ? (
                         <button
                             type="button"
@@ -514,7 +514,7 @@ export default function MetabolismCalculator() {
                                     ),
                                 )
                             }
-                            className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 px-6 text-sm font-semibold text-white/70 transition hover:border-white/30 hover:text-white"
+                            className="inline-flex h-12 items-center gap-2 rounded-full border border-line bg-white px-6 text-sm font-semibold text-ink/70 transition hover:border-ink-soft hover:text-ink"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Geri
@@ -535,7 +535,7 @@ export default function MetabolismCalculator() {
                                     ),
                                 )
                             }
-                            className="inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-black transition enabled:hover:bg-[#45e27f] disabled:cursor-not-allowed disabled:opacity-30"
+                            className="inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-semibold uppercase tracking-wider text-ink transition enabled:hover:bg-[#1fc461] disabled:cursor-not-allowed disabled:opacity-30"
                         >
                             {step === 2
                                 ? "Hesapla"
@@ -546,7 +546,7 @@ export default function MetabolismCalculator() {
                         <button
                             type="button"
                             onClick={reset}
-                            className="inline-flex h-12 items-center gap-2 rounded-full border border-[#27D66B]/40 px-7 text-sm font-semibold uppercase tracking-wider text-[#27D66B] transition hover:bg-[#27D66B]/10"
+                            className="inline-flex h-12 items-center gap-2 rounded-full border border-[#27D66B]/40 bg-white px-7 text-sm font-semibold uppercase tracking-wider text-holly-ink transition hover:bg-[#27D66B]/10"
                         >
                             <RotateCcw className="h-4 w-4" />
                             Yeniden hesapla
@@ -555,50 +555,11 @@ export default function MetabolismCalculator() {
                 </div>
             </div>
 
-            <aside className="h-fit space-y-6 rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-9">
-                <h2 className="text-2xl font-bold">
-                    Nasıl hesaplıyoruz?
-                </h2>
-
-                <div className="space-y-5 text-sm leading-7 text-white/50">
-                    <p>
-                        <strong className="text-white">
-                            1. BMR
-                        </strong>{" "}
-                        — Vücudunun dinlenirken yaktığı enerji,
-                        Mifflin-St Jeor formülüyle
-                        hesaplanır. Bilimsel olarak en güncel
-                        ve güvenilir yaklaşımdır.
-                    </p>
-
-                    <p>
-                        <strong className="text-white">
-                            2. TDEE
-                        </strong>{" "}
-                        — BMR, günlük hareketlilik katsayınla
-                        çarpılarak gerçek hayattaki toplam
-                        enerji harcaman bulunur.
-                    </p>
-
-                    <p>
-                        <strong className="text-white">
-                            3. Hedef ve makrolar
-                        </strong>{" "}
-                        — Hedefine göre kalori eklenir veya
-                        azaltılır; protein kilo başına 2 g
-                        olacak şekilde sabitlenir, yağ 0.9
-                        g/kg ayarlanır, kalan kalori
-                        karbonhidrata verilir.
-                    </p>
-                </div>
-
-                <p className="border-t border-white/10 pt-5 text-xs leading-6 text-white/30">
-                    Bu araç genel bilgilendirme amaçlıdır;
-                    tıbbi tavsiye yerine geçmez. Sağlık
-                    durumunla ilgili kararlar için bir uzmana
-                    danış.
-                </p>
-            </aside>
+            <p className="mt-6 text-xs leading-6 text-ink-soft">
+                Bu araç genel bilgilendirme amaçlıdır; tıbbi
+                tavsiye yerine geçmez. Sağlık durumunla ilgili
+                kararlar için bir uzmana danış.
+            </p>
         </div>
     );
 }

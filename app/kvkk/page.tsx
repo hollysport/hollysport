@@ -33,7 +33,7 @@ const sections = [
                     kapsamındaki başvurularınız için{" "}
                     <a
                         href="mailto:iletisim@hollysport.net"
-                        className="font-semibold text-[#27D66B] underline decoration-[#27D66B]/40 underline-offset-4"
+                        className="font-semibold text-holly-ink underline decoration-holly-ink/40 underline-offset-4"
                     >
                         iletisim@hollysport.net
                     </a>{" "}
@@ -51,7 +51,7 @@ const sections = [
                     aşağıdaki kişisel verileriniz işlenebilir:
                 </p>
 
-                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-[#27D66B]">
+                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-holly-ink">
                     <li>Ad ve soyad bilgisi</li>
                     <li>E-posta adresi</li>
                     <li>Telefon numarası</li>
@@ -84,7 +84,7 @@ const sections = [
                     Kişisel verileriniz aşağıdaki amaçlarla işlenebilir:
                 </p>
 
-                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-[#27D66B]">
+                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-holly-ink">
                     <li>
                         Etkinlik başvurularının alınması ve
                         değerlendirilmesi
@@ -169,7 +169,7 @@ const sections = [
                     hukuki sebeplerden biri veya birkaçı uygulanabilir:
                 </p>
 
-                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-[#27D66B]">
+                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-holly-ink">
                     <li>Açık rızanızın bulunması</li>
                     <li>
                         Bir sözleşmenin kurulması veya ifasıyla doğrudan
@@ -203,7 +203,7 @@ const sections = [
                     paylaşılabilir:
                 </p>
 
-                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-[#27D66B]">
+                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-holly-ink">
                     <li>
                         Holly Sport etkinliklerinin yürütülmesinde görev
                         alan yetkili ekip üyeleri ve gönüllüler
@@ -328,7 +328,7 @@ const sections = [
                     haklara sahipsiniz:
                 </p>
 
-                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-[#27D66B]">
+                <ul className="mt-4 list-disc space-y-2 pl-5 marker:text-holly-ink">
                     <li>
                         Kişisel verilerinizin işlenip işlenmediğini
                         öğrenme
@@ -379,7 +379,7 @@ const sections = [
                     KVKK kapsamındaki taleplerinizi{" "}
                     <a
                         href="mailto:iletisim@hollysport.net"
-                        className="font-semibold text-[#27D66B] underline decoration-[#27D66B]/40 underline-offset-4"
+                        className="font-semibold text-holly-ink underline decoration-holly-ink/40 underline-offset-4"
                     >
                         iletisim@hollysport.net
                     </a>{" "}
@@ -417,12 +417,12 @@ const sections = [
 
 export default function KvkkPage() {
     return (
-        <main className="min-h-screen bg-[#050505] text-white">
+        <main className="min-h-screen bg-white text-ink">
             <Navbar />
 
-            <section className="border-b border-white/10 px-6 py-20 sm:py-28 lg:px-8">
+            <section className="border-b border-line px-6 py-20 sm:py-28 lg:px-8">
                 <div className="mx-auto max-w-5xl">
-                    <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#27D66B]">
+                    <p className="text-sm font-bold uppercase tracking-[0.25em] text-holly-ink">
                         Yasal Bilgilendirme
                     </p>
 
@@ -430,7 +430,7 @@ export default function KvkkPage() {
                         KVKK Aydınlatma Metni
                     </h1>
 
-                    <p className="mt-6 max-w-3xl text-base leading-8 text-white/50 sm:text-lg">
+                    <p className="mt-6 max-w-3xl text-base leading-8 text-ink-soft sm:text-lg">
                         Holly Sport internet sitesi üzerinden toplanan
                         kişisel verilerin hangi amaçlarla işlendiğini,
                         saklandığını, aktarıldığını ve korunduğunu
@@ -438,50 +438,50 @@ export default function KvkkPage() {
                     </p>
 
                     <div className="mt-7 flex flex-wrap gap-3 text-sm">
-                        <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-white/50">
+                        <span className="rounded-full border border-line bg-white px-4 py-2 text-ink-soft">
                             Veri sorumlusu: Umut Küçük
                         </span>
 
                         <a
                             href="mailto:iletisim@hollysport.net"
-                            className="rounded-full border border-[#27D66B]/20 bg-[#27D66B]/5 px-4 py-2 text-[#27D66B] transition hover:bg-[#27D66B]/10"
+                            className="rounded-full border border-holly-ink/30 bg-holly-ink/10 px-4 py-2 text-holly-ink transition hover:bg-holly-ink/15"
                         >
                             iletisim@hollysport.net
                         </a>
                     </div>
 
-                    <p className="mt-5 text-sm text-white/30">
+                    <p className="mt-5 text-sm text-ink-soft">
                         Son güncelleme: 23 Temmuz 2026
                     </p>
                 </div>
             </section>
 
-            <section className="px-6 py-16 sm:py-20 lg:px-8">
+            <section className="bg-shell px-6 py-16 sm:py-20 lg:px-8">
                 <div className="mx-auto max-w-5xl">
                     <div className="space-y-5">
                         {sections.map((section) => (
                             <article
                                 key={section.title}
-                                className="rounded-3xl border border-white/10 bg-[#111111] p-6 sm:p-8"
+                                className="rounded-3xl border border-line bg-white p-6 sm:p-8"
                             >
-                                <h2 className="text-xl font-bold text-white sm:text-2xl">
+                                <h2 className="text-xl font-bold text-ink sm:text-2xl">
                                     {section.title}
                                 </h2>
 
-                                <div className="mt-5 text-sm leading-7 text-white/55 sm:text-base">
+                                <div className="mt-5 text-sm leading-7 text-ink-soft sm:text-base">
                                     {section.content}
                                 </div>
                             </article>
                         ))}
                     </div>
 
-                    <div className="mt-10 rounded-3xl border border-[#27D66B]/20 bg-[#27D66B]/5 p-6 sm:p-8">
-                        <h2 className="text-xl font-bold">
+                    <div className="mt-10 rounded-3xl border border-holly-ink/30 bg-holly-ink/10 p-6 sm:p-8">
+                        <h2 className="text-xl font-bold text-ink">
                             Kişisel verilerinle ilgili bir talebin mi
                             var?
                         </h2>
 
-                        <p className="mt-3 max-w-2xl text-sm leading-7 text-white/50">
+                        <p className="mt-3 max-w-2xl text-sm leading-7 text-ink/70">
                             Bilgi alma, düzeltme, silme veya diğer KVKK
                             taleplerini bize e-posta yoluyla
                             ulaştırabilirsin.
@@ -490,14 +490,14 @@ export default function KvkkPage() {
                         <div className="mt-6 flex flex-wrap gap-3">
                             <a
                                 href="mailto:iletisim@hollysport.net?subject=KVKK%20Başvurusu"
-                                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                             >
                                 KVKK Başvurusu Gönder
                             </a>
 
                             <Link
                                 href="/contact"
-                                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-7 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/5"
+                                className="inline-flex min-h-12 items-center justify-center rounded-full border border-line bg-white px-7 text-sm font-semibold text-ink transition hover:border-ink-soft hover:bg-shell"
                             >
                                 İletişim Sayfası
                             </Link>

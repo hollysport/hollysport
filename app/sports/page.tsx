@@ -19,9 +19,9 @@ export default function SportsPage() {
       <Navbar />
 
       <main className="min-h-screen bg-white">
-        <section className="bg-[#050505] py-20 text-white sm:py-28">
+        <section className="bg-shell py-20 text-ink sm:py-28">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+            <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
               Branşlarımız
             </p>
 
@@ -29,7 +29,7 @@ export default function SportsPage() {
               Branşını seç, anıları keşfet.
             </h1>
 
-            <p className="mt-6 max-w-2xl leading-7 text-white/50 sm:text-lg">
+            <p className="mt-6 max-w-2xl leading-7 text-ink-soft sm:text-lg">
               Bir branşa tıklayarak o branşa ait etkinlik fotoğraflarını
               galeride görüntüleyebilirsin.
             </p>
@@ -42,7 +42,7 @@ export default function SportsPage() {
               <Link
                 key={sport.slug}
                 href={`/gallery?branch=${sport.slug}`}
-                className="group relative min-h-[340px] overflow-hidden rounded-[2rem] bg-zinc-900 transition-transform duration-300 active:scale-[0.985]"
+                className="group relative min-h-[340px] overflow-hidden rounded-[2rem] bg-shell transition-transform duration-300 active:scale-[0.985]"
               >
                 <Image
                   src={sport.cover}
@@ -59,7 +59,7 @@ export default function SportsPage() {
                     {sport.name}
                   </h2>
 
-                  <span className="holly-arrow-button flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white text-black">
+                  <span className="holly-arrow-button flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white text-ink">
                     <ArrowUpRight
                       aria-hidden="true"
                       strokeWidth={2.2}

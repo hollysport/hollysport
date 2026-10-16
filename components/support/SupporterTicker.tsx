@@ -31,28 +31,28 @@ export default function SupporterTicker({
     const hasMore = uniqueNames.length > visibleLimit;
 
     return (
-        <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5">
-            <div className="border-b border-white/10 px-5 py-5 sm:px-6">
-                <h3 className="text-lg font-bold text-white">
+        <div className="overflow-hidden rounded-3xl border border-line bg-shell">
+            <div className="border-b border-line px-5 py-5 sm:px-6">
+                <h3 className="text-lg font-bold text-ink">
                     Destekçilerimiz
                 </h3>
             </div>
 
             {uniqueNames.length > 0 ? (
-                <div className="divide-y divide-white/10">
+                <div className="divide-y divide-line">
                     {visibleNames.map((name) => (
                         <div
                             key={name}
                             className="flex min-h-14 items-center px-5 py-3 sm:px-6"
                         >
-                            <span className="font-semibold text-white">
+                            <span className="font-semibold text-ink">
                                 {name}
                             </span>
                         </div>
                     ))}
                 </div>
             ) : (
-                <div className="px-6 py-12 text-center text-sm text-zinc-400">
+                <div className="px-6 py-12 text-center text-sm text-ink-soft">
                     {emptyMessage}
                 </div>
             )}
@@ -64,7 +64,7 @@ export default function SupporterTicker({
                         setShowAll((current) => !current)
                     }
                     aria-expanded={showAll}
-                    className="flex min-h-14 w-full items-center justify-center gap-2 border-t border-white/10 px-5 text-sm font-semibold text-[#27D66B] transition-colors hover:bg-white/5"
+                    className="flex min-h-14 w-full items-center justify-center gap-2 border-t border-line px-5 text-sm font-semibold text-holly-ink transition-colors hover:bg-white"
                 >
                     {showAll ? (
                         <>

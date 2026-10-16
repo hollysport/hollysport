@@ -298,23 +298,23 @@ export default function DreamForm() {
     }
 
     const normalFieldClass =
-        "form-field-dark w-full rounded-2xl border border-white/10 px-4 py-3.5 text-white outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
+        "form-field w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-ink outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15";
 
     const errorFieldClass =
-        "form-field-dark w-full rounded-2xl border border-red-500 px-4 py-3.5 text-white outline-none transition focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
+        "form-field w-full rounded-2xl border border-red-500 bg-white px-4 py-3.5 text-ink outline-none transition focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
 
     return (
         <form
             noValidate
             onSubmit={handleSubmit}
-            className="relative rounded-[2rem] border border-white/10 bg-[#101010] p-6 shadow-[0_24px_80px_rgba(0,0,0,0.4)] sm:p-8"
+            className="relative rounded-[2rem] border border-line bg-white p-6 shadow-sm sm:p-8"
         >
             <div className="mb-8">
-                <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#27D66B]">
+                <p className="text-sm font-bold uppercase tracking-[0.22em] text-holly-ink">
                     Hayalini paylaş
                 </p>
 
-                <h2 className="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-white">
+                <h2 className="mt-3 text-3xl font-extrabold tracking-[-0.04em] text-ink">
                     Aklındaki hedefi bize anlat.
                 </h2>
             </div>
@@ -331,7 +331,6 @@ export default function DreamForm() {
                     id="dream-website"
                     name="website"
                     type="text"
-                    className="text-white"
                     tabIndex={-1}
                     autoComplete="off"
                     value={website}
@@ -343,7 +342,7 @@ export default function DreamForm() {
 
             <div className="grid gap-5 sm:grid-cols-2">
                 <label htmlFor="dream-full-name">
-                    <span className="mb-2 block text-sm font-semibold text-white">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         İsim soyisim
                     </span>
 
@@ -377,7 +376,7 @@ export default function DreamForm() {
                 </label>
 
                 <label htmlFor="dream-phone">
-                    <span className="mb-2 block text-sm font-semibold text-white">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Telefon
                     </span>
 
@@ -415,7 +414,7 @@ export default function DreamForm() {
                     htmlFor="dream-email"
                     className="sm:col-span-2"
                 >
-                    <span className="mb-2 block text-sm font-semibold text-white">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         E-posta
                     </span>
 
@@ -453,7 +452,7 @@ export default function DreamForm() {
                     htmlFor="dream-title"
                     className="sm:col-span-2"
                 >
-                    <span className="mb-2 block text-sm font-semibold text-white">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Kısaca hayaliniz
                     </span>
 
@@ -489,7 +488,7 @@ export default function DreamForm() {
                             )}
                         </div>
 
-                        <span className="shrink-0 text-xs text-white/30">
+                        <span className="shrink-0 text-xs text-ink-soft">
                             {dreamTitle.length}/140
                         </span>
                     </div>
@@ -499,7 +498,7 @@ export default function DreamForm() {
                     htmlFor="dream-description"
                     className="sm:col-span-2"
                 >
-                    <span className="mb-2 block text-sm font-semibold text-white">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Hayalinizi açıklayın
                     </span>
 
@@ -539,7 +538,7 @@ export default function DreamForm() {
                             )}
                         </div>
 
-                        <span className="shrink-0 text-xs text-white/30">
+                        <span className="shrink-0 text-xs text-ink-soft">
                             {dreamDescription.length}/3000
                         </span>
                     </div>
@@ -564,14 +563,14 @@ export default function DreamForm() {
                         className="mt-1 h-4 w-4 shrink-0 accent-[#27D66B]"
                     />
 
-                    <span className="text-sm leading-6 text-white/55">
+                    <span className="text-sm leading-6 text-ink-soft">
                         Kişisel verilerimin başvurumun
                         değerlendirilmesi ve benimle iletişime
                         geçilmesi amacıyla işlenmesini kabul
                         ediyorum.{" "}
                         <Link
                             href="/kvkk"
-                            className="font-semibold text-[#27D66B] underline underline-offset-4"
+                            className="font-semibold text-holly-ink underline underline-offset-4"
                         >
                             KVKK metni
                         </Link>
@@ -585,11 +584,11 @@ export default function DreamForm() {
                 )}
             </div>
 
-            <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div className="mt-6 rounded-2xl border border-line bg-shell p-4">
                 <TurnstileWidget
                     action="dream_form"
                     resetKey={turnstileResetKey}
-                    theme="dark"
+                    theme="light"
                     onTokenChange={(token) => {
                         setTurnstileToken(token);
 
@@ -610,7 +609,7 @@ export default function DreamForm() {
             {errorMessage && (
                 <div
                     role="alert"
-                    className="mt-5 flex items-start gap-2 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-300"
+                    className="mt-5 flex items-start gap-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
                 >
                     <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
                     {errorMessage}
@@ -620,7 +619,7 @@ export default function DreamForm() {
             {successMessage && (
                 <div
                     role="status"
-                    className="mt-5 flex items-start gap-2 rounded-2xl border border-[#27D66B]/20 bg-[#27D66B]/10 px-4 py-4 text-sm font-medium leading-6 text-[#65e995]"
+                    className="mt-5 flex items-start gap-2 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-4 text-sm font-medium leading-6 text-holly-ink"
                 >
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" />
                     {successMessage}
@@ -630,7 +629,7 @@ export default function DreamForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-bold uppercase tracking-wider text-[#050505] transition hover:bg-[#45e27f] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-bold uppercase tracking-wider text-ink transition hover:bg-[#1fc461] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
             >
                 {isSubmitting ? (
                     <>
@@ -654,7 +653,7 @@ function FieldError({
     message: string;
 }) {
     return (
-        <span className="mt-2 flex items-start gap-1.5 text-sm font-medium text-red-400">
+        <span className="mt-2 flex items-start gap-1.5 text-sm font-medium text-red-700">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
             {message}
         </span>

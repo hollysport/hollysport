@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown } from "lucide-react";
 
 /*
- * Antrenman Merkezi filtreleri için editoryal siyah/yeşil tema uyumlu
- * açılır menüler (tekli + çoklu seçim). Dışarı tıklama ve Esc ile kapanır.
+ * Antrenman Merkezi filtreleri için beyaz tema uyumlu açılır menüler
+ * (tekli + çoklu seçim). Dışarı tıklama ve Esc ile kapanır.
  */
 
 type Option = {
@@ -14,10 +14,10 @@ type Option = {
 };
 
 const triggerClass =
-    "flex w-full items-center justify-between gap-3 rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition hover:border-white/30 focus:border-[#27D66B]";
+    "flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink outline-none transition hover:border-ink-soft focus:border-[#27D66B]";
 
 const panelClass =
-    "absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] p-1.5 shadow-[0_24px_60px_rgba(0,0,0,0.65)]";
+    "absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-line bg-white p-1.5 shadow-sm";
 
 function useDismissOnOutside(
     open: boolean,
@@ -58,7 +58,7 @@ function useDismissOnOutside(
 
 function FieldLabel({ children }: { children: string }) {
     return (
-        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">
+        <span className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-soft">
             {children}
         </span>
     );
@@ -95,8 +95,8 @@ export function SingleSelect({
             >
                 <span className="truncate">{selectedLabel}</span>
                 <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-white/40 transition-transform ${
-                        open ? "rotate-180 text-[#27D66B]" : ""
+                    className={`h-4 w-4 shrink-0 text-ink-soft transition-transform ${
+                        open ? "rotate-180 text-holly-ink" : ""
                     }`}
                 />
             </button>
@@ -118,13 +118,13 @@ export function SingleSelect({
                                 }}
                                 className={`flex w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition ${
                                     isSelected
-                                        ? "bg-[#27D66B]/10 font-semibold text-[#27D66B]"
-                                        : "text-white/70 hover:bg-white/5 hover:text-white"
+                                        ? "bg-[#27D66B]/10 font-semibold text-holly-ink"
+                                        : "text-ink/70 hover:bg-shell hover:text-ink"
                                 }`}
                             >
                                 {option.label}
                                 {isSelected && (
-                                    <Check className="h-4 w-4 text-[#27D66B]" />
+                                    <Check className="h-4 w-4 text-holly-ink" />
                                 )}
                             </button>
                         );
@@ -169,8 +169,8 @@ export function MultiSelect({
                     {summary}
                 </span>
                 <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-white/40 transition-transform ${
-                        open ? "rotate-180 text-[#27D66B]" : ""
+                    className={`h-4 w-4 shrink-0 text-ink-soft transition-transform ${
+                        open ? "rotate-180 text-holly-ink" : ""
                     }`}
                 />
             </button>
@@ -195,15 +195,15 @@ export function MultiSelect({
                                 onClick={() => onToggle(option.value)}
                                 className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition ${
                                     isSelected
-                                        ? "bg-[#27D66B]/10 font-semibold text-[#27D66B]"
-                                        : "text-white/70 hover:bg-white/5 hover:text-white"
+                                        ? "bg-[#27D66B]/10 font-semibold text-holly-ink"
+                                        : "text-ink/70 hover:bg-shell hover:text-ink"
                                 }`}
                             >
                                 <span
                                     className={`flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition ${
                                         isSelected
-                                            ? "border-[#27D66B] bg-[#27D66B] text-black"
-                                            : "border-white/25"
+                                            ? "border-[#27D66B] bg-[#27D66B] text-ink"
+                                            : "border-line"
                                     }`}
                                 >
                                     {isSelected && (

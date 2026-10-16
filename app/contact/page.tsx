@@ -23,7 +23,7 @@ const contactOptions = [
         title: "Sıkça Sorulan Sorular",
         description:
             "Etkinlikler, katılım ve topluluk hakkında sık sorulan cevapları incele.",
-        href: "/#faq",
+        href: "/faq",
         linkText: "Soruları incele",
         icon: CircleHelp,
         external: false,
@@ -50,12 +50,12 @@ const contactOptions = [
 
 export default function ContactPage() {
     return (
-        <main className="min-h-screen bg-[#050505] text-white">
+        <main className="min-h-screen bg-white text-ink">
             <Navbar />
 
-            <section className="border-b border-white/10 px-6 py-20 sm:py-28 lg:px-8">
+            <section className="border-b border-line px-6 py-20 sm:py-28 lg:px-8">
                 <div className="mx-auto max-w-7xl">
-                    <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#27D66B]">
+                    <p className="text-sm font-bold uppercase tracking-[0.25em] text-holly-ink">
                         İletişim
                     </p>
 
@@ -63,7 +63,7 @@ export default function ContactPage() {
                         Sorularını ve fikirlerini bizimle paylaş.
                     </h1>
 
-                    <p className="mt-6 max-w-2xl text-base leading-8 text-white/50 sm:text-lg">
+                    <p className="mt-6 max-w-2xl text-base leading-8 text-ink-soft sm:text-lg">
                         Etkinlikler, topluluğa katılım, gönüllülük,
                         destek ve kurumsal iş birlikleri hakkında bize
                         ulaşabilirsin.
@@ -79,7 +79,7 @@ export default function ContactPage() {
                         const cardContent = (
                             <>
                                 <div>
-                                    <div className="flex h-13 w-13 items-center justify-center rounded-2xl bg-[#27D66B]/10 text-[#27D66B]">
+                                    <div className="flex h-13 w-13 items-center justify-center rounded-2xl bg-holly/10 text-holly-ink">
                                         {option.external ? (
                                             <svg
                                                 aria-hidden="true"
@@ -97,17 +97,17 @@ export default function ContactPage() {
                                         {option.title}
                                     </h2>
 
-                                    <p className="mt-3 text-sm leading-7 text-white/45">
+                                    <p className="mt-3 text-sm leading-7 text-ink-soft">
                                         {option.description}
                                     </p>
                                 </div>
 
                                 <div className="mt-8 flex items-center justify-between gap-4">
-                                    <span className="text-sm font-semibold text-[#27D66B]">
+                                    <span className="text-sm font-semibold text-holly-ink">
                                         {option.linkText}
                                     </span>
 
-                                    <span className="holly-arrow-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/50 md:group-hover:border-[#27D66B]/40 md:group-hover:text-[#27D66B]">
+                                    <span className="holly-arrow-button flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink-soft md:group-hover:border-holly-ink md:group-hover:text-holly-ink">
                                         <ArrowUpRight className="holly-arrow-icon h-5 w-5" />
                                     </span>
                                 </div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                         );
 
                         const cardClassName =
-                            "group flex min-h-64 flex-col justify-between rounded-3xl border border-white/10 bg-[#111111] p-7 transition duration-300 active:scale-[0.985] md:hover:-translate-y-1 md:hover:border-[#27D66B]/40";
+                            "group flex min-h-64 flex-col justify-between rounded-3xl border border-line bg-shell p-7 transition duration-300 active:scale-[0.985] md:hover:-translate-y-1 md:hover:border-holly-ink";
 
                         return option.external ? (
                             <a
@@ -141,27 +141,27 @@ export default function ContactPage() {
             </section>
 
             <section className="px-6 pb-20 pt-6 sm:pb-28 lg:px-8">
-                <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#111111] lg:grid-cols-[0.75fr_1.25fr]">
-                    <div className="border-b border-white/10 bg-[#27D66B] p-8 text-black sm:p-10 lg:border-b-0 lg:border-r">
+                <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-line bg-shell lg:grid-cols-[0.75fr_1.25fr]">
+                    <div className="border-b border-line bg-holly p-8 text-ink sm:p-10 lg:border-b-0 lg:border-r">
                         <MessageCircle className="h-10 w-10" />
 
                         <h2 className="mt-8 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
                             Bize mesaj gönder.
                         </h2>
 
-                        <p className="mt-5 max-w-md text-sm leading-7 text-black/65">
+                        <p className="mt-5 max-w-md text-sm leading-7 text-ink/70">
                             Formu doldurduğunda mesajın doğrudan Holly
                             Sport yönetim ekibine ulaşır. En kısa sürede
                             verdiğin iletişim bilgileri üzerinden dönüş
                             yapılır.
                         </p>
 
-                        <div className="mt-10 rounded-2xl border border-black/10 bg-black/5 p-5">
+                        <div className="mt-10 rounded-2xl border border-ink/10 bg-ink/5 p-5">
                             <p className="text-sm font-bold">
                                 Mesaj göndermeden önce
                             </p>
 
-                            <p className="mt-2 text-sm leading-6 text-black/60">
+                            <p className="mt-2 text-sm leading-6 text-ink/70">
                                 E-posta ve telefon bilgilerini doğru
                                 yazdığından emin ol.
                             </p>

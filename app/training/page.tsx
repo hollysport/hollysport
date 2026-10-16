@@ -16,19 +16,19 @@ export default function TrainingPage() {
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-[#050505] text-white">
+            <main className="min-h-screen bg-white text-ink">
                 <section className="px-6 pb-10 pt-36 md:px-10 lg:px-16">
                     <div className="mx-auto max-w-7xl">
-                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Holly Sport
                         </span>
 
                         <h1 className="mt-6 max-w-5xl text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl lg:text-8xl">
                             Antrenman
-                            <span className="text-[#27D66B]"> Merkezi.</span>
+                            <span className="text-holly-ink"> Merkezi.</span>
                         </h1>
 
-                        <p className="mt-8 max-w-2xl text-lg leading-8 text-white/50">
+                        <p className="mt-8 max-w-2xl text-lg leading-8 text-ink-soft">
                             Kalori ve makro hesaplamalarını başka bir
                             uygulamaya gerek kalmadan burada yap. İlk araç:
                             metabolizma ve makro hesaplayıcı.
@@ -42,9 +42,9 @@ export default function TrainingPage() {
                     </div>
                 </section>
 
-                <section className="border-t border-white/10 px-6 py-24 md:px-10 lg:px-16">
+                <section className="border-t border-line px-6 py-24 md:px-10 lg:px-16">
                     <div className="mx-auto max-w-7xl">
-                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Bölgesel Antrenman
                         </span>
 
@@ -52,15 +52,6 @@ export default function TrainingPage() {
                             Hangi bölgeleri çalıştırmak
                             istiyorsun?
                         </h2>
-
-                        <p className="mt-5 max-w-2xl leading-7 text-white/50">
-                            3D haritadan birden fazla kas grubu seç,
-                            hedefini ve ortamını belirle; programın
-                            set ve tekrarlarıyla otomatik hazırlansın.
-                            Esneklik, postür ve sıçrama hedeflerinde
-                            bölge seçimi gerekmez; program doğrudan
-                            üretilir.
-                        </p>
 
                         <div className="mt-12">
                             <WorkoutGenerator />

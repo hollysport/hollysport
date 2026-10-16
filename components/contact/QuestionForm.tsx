@@ -194,20 +194,20 @@ export default function QuestionForm() {
     }
 
     const normalFieldClass =
-        "w-full rounded-2xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
+        "w-full rounded-2xl border border-line bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-soft focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10";
 
     const errorFieldClass =
-        "w-full rounded-2xl border border-red-500 bg-red-50 px-4 py-3 text-zinc-950 outline-none transition focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
+        "w-full rounded-2xl border border-red-500 bg-red-50 px-4 py-3 text-ink outline-none transition placeholder:text-ink-soft focus:border-red-500 focus:ring-4 focus:ring-red-500/10";
 
     return (
         <form
             noValidate
             onSubmit={handleSubmit}
-            className="rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
+            className="rounded-[2rem] border border-line bg-white p-6 shadow-sm sm:p-8"
         >
             <div className="grid gap-5 sm:grid-cols-2">
                 <label htmlFor="contact-full-name">
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Ad soyad
                     </span>
 
@@ -250,7 +250,7 @@ export default function QuestionForm() {
                 </label>
 
                 <label htmlFor="contact-email">
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         E-posta
                     </span>
 
@@ -292,9 +292,9 @@ export default function QuestionForm() {
                 </label>
 
                 <label htmlFor="contact-phone">
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Telefon{" "}
-                        <span className="font-normal text-zinc-400">
+                        <span className="font-normal text-ink-soft">
                             (isteğe bağlı)
                         </span>
                     </span>
@@ -338,7 +338,7 @@ export default function QuestionForm() {
                 </label>
 
                 <label htmlFor="contact-category">
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Konu
                     </span>
 
@@ -349,7 +349,7 @@ export default function QuestionForm() {
                         onChange={(event) =>
                             setCategory(event.target.value)
                         }
-                        className="w-full rounded-2xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10"
+                        className="w-full rounded-2xl border border-line bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-soft focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10"
                     >
                         <option value="general">Genel soru</option>
                         <option value="event">Etkinlikler</option>
@@ -373,7 +373,7 @@ export default function QuestionForm() {
                     htmlFor="contact-subject"
                     className="sm:col-span-2"
                 >
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Başlık
                     </span>
 
@@ -419,7 +419,7 @@ export default function QuestionForm() {
                     htmlFor="contact-question"
                     className="sm:col-span-2"
                 >
-                    <span className="mb-2 block text-sm font-semibold text-zinc-950">
+                    <span className="mb-2 block text-sm font-semibold text-ink">
                         Sorun
                     </span>
 
@@ -465,7 +465,7 @@ export default function QuestionForm() {
                         <span
                             className={`shrink-0 text-xs ${question.length >= 2000
                                     ? "font-semibold text-red-600"
-                                    : "text-zinc-400"
+                                    : "text-ink-soft"
                                 }`}
                         >
                             {question.length}/2000
@@ -495,7 +495,7 @@ export default function QuestionForm() {
                         className="mt-1 h-4 w-4 shrink-0 accent-[#27D66B]"
                     />
 
-                    <span className="text-sm leading-6 text-zinc-600">
+                    <span className="text-sm leading-6 text-ink/70">
                         Kişisel verilerimin soruma dönüş yapılması
                         amacıyla işlenmesine ilişkin bilgilendirmeyi
                         okudum.
@@ -535,7 +535,7 @@ export default function QuestionForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-7 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-holly px-7 text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:cursor-not-allowed disabled:opacity-60"
             >
                 {isSubmitting ? (
                     <>

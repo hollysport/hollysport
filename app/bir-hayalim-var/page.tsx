@@ -20,23 +20,24 @@ export default function DreamPage() {
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-[#050505] text-white">
-                <section className="relative overflow-hidden border-b border-white/10 px-6 pb-20 pt-24 sm:pb-28 sm:pt-32 lg:px-8">
+            <main className="min-h-screen bg-white text-ink">
+                <section className="relative overflow-hidden border-b border-line px-6 pb-20 pt-24 sm:pb-28 sm:pt-32 lg:px-8">
+                    {/* Dekoratif marka tonu — beyaz zeminde çok hafif bırakıldı */}
                     <div className="pointer-events-none absolute -right-40 top-0 h-[500px] w-[500px] rounded-full bg-[#27D66B]/10 blur-[120px]" />
 
                     <div className="relative mx-auto max-w-7xl">
-                        <p className="text-sm font-bold uppercase tracking-[0.25em] text-[#27D66B]">
+                        <p className="text-sm font-bold uppercase tracking-[0.25em] text-holly-ink">
                             Bir Hayalim Var
                         </p>
 
                         <h1 className="mt-5 max-w-5xl text-5xl font-extrabold leading-[0.95] tracking-[-0.06em] sm:text-7xl lg:text-8xl">
                             Siz isteyin,
-                            <span className="block text-[#27D66B]">
+                            <span className="block text-holly-ink">
                                 birlikte yapalım.
                             </span>
                         </h1>
 
-                        <p className="mt-8 max-w-3xl text-base leading-8 text-white/55 sm:text-xl sm:leading-9">
+                        <p className="mt-8 max-w-3xl text-base leading-8 text-ink-soft sm:text-xl sm:leading-9">
                             Deneyimlemek, başarmak veya ulaşmak
                             istediğin bireysel bir hedefin mi var?
                             Hayalini bizimle paylaş. Holly Sport olarak
@@ -50,7 +51,7 @@ export default function DreamPage() {
                 <section className="px-6 py-20 sm:py-28 lg:px-8">
                     <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
                         <div className="lg:sticky lg:top-28">
-                            <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                            <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                                 Hayaline ilk adım
                             </p>
 
@@ -59,7 +60,7 @@ export default function DreamPage() {
                                 atılacak ilk adımdır.
                             </h2>
 
-                            <p className="mt-6 max-w-xl text-base leading-8 text-white/50">
+                            <p className="mt-6 max-w-xl text-base leading-8 text-ink-soft">
                                 Likya Yolu’nu yürümek, Ağrı Dağı’na
                                 tırmanmak, ilk yarışına katılmak veya
                                 uzun zamandır ertelediğin başka bir
@@ -88,7 +89,7 @@ export default function DreamPage() {
                                 />
                             </div>
 
-                            <p className="mt-8 text-sm leading-7 text-white/35">
+                            <p className="mt-8 text-sm leading-7 text-ink-soft">
                                 Her başvuruyu dikkatle inceliyoruz. Her
                                 hayali gerçekleştirme garantisi
                                 veremeyiz; ancak katkı sağlayabileceğimiz
@@ -118,17 +119,17 @@ function InfoCard({
     description,
 }: InfoCardProps) {
     return (
-        <div className="flex gap-4 rounded-3xl border border-white/10 bg-white/[0.035] p-5">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#27D66B]/10 text-[#27D66B]">
+        <div className="flex gap-4 rounded-3xl border border-line bg-shell p-5">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#27D66B]/10 text-holly-ink">
                 <Icon className="h-6 w-6" />
             </div>
 
             <div>
-                <h3 className="font-bold text-white">
+                <h3 className="font-bold text-ink">
                     {title}
                 </h3>
 
-                <p className="mt-2 text-sm leading-6 text-white/45">
+                <p className="mt-2 text-sm leading-6 text-ink-soft">
                     {description}
                 </p>
             </div>

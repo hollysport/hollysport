@@ -126,10 +126,10 @@ export default function ProgramRequestDialog({
     }
 
     const inputClass =
-        "mt-2 w-full rounded-xl border border-white/15 bg-[#050505] px-4 py-3 text-sm font-medium text-white outline-none transition placeholder:text-white/45 focus:border-[#27D66B]";
+        "mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium text-ink outline-none transition placeholder:text-ink-soft focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/15";
 
     const labelClass =
-        "text-xs font-semibold uppercase tracking-wider text-white/40";
+        "text-xs font-semibold uppercase tracking-wider text-ink-soft";
 
     /*
      * Modal document.body'ye portal edilir: DOM ağacından (3D Canvas
@@ -141,22 +141,22 @@ export default function ProgramRequestDialog({
             role="dialog"
             aria-modal="true"
             aria-label="Kişisel antrenman programı talebi"
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
             onClick={handleClose}
         >
             <div
-                className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-[#111111] p-7 sm:p-9"
+                className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-line bg-white p-7 sm:p-9 shadow-sm"
                 onClick={(event) => event.stopPropagation()}
             >
                 <div className="flex items-start justify-between gap-4">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+                        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-holly-ink">
                             Kişiye Özel
                         </span>
-                        <h2 className="mt-2 text-2xl font-bold text-white">
+                        <h2 className="mt-2 text-2xl font-bold text-ink">
                             Kişisel Antrenman Programı
                         </h2>
-                        <p className="mt-2 text-sm leading-6 text-white/45">
+                        <p className="mt-2 text-sm leading-6 text-ink-soft">
                             Bilgilerini bırak; koç ekibimiz sana özel
                             program hazırlayıp iletişime geçsin.
                         </p>
@@ -166,7 +166,7 @@ export default function ProgramRequestDialog({
                         type="button"
                         onClick={handleClose}
                         aria-label="Kapat"
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/50 transition hover:border-white/40 hover:text-white"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition hover:border-ink-soft hover:text-ink"
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -174,17 +174,17 @@ export default function ProgramRequestDialog({
 
                 {submitted ? (
                     <div className="mt-8 rounded-2xl border border-[#27D66B]/30 bg-[#27D66B]/10 p-8 text-center">
-                        <CheckCircle2 className="mx-auto h-10 w-10 text-[#27D66B]" />
-                        <h3 className="mt-4 text-lg font-bold text-white">
+                        <CheckCircle2 className="mx-auto h-10 w-10 text-holly-ink" />
+                        <h3 className="mt-4 text-lg font-bold text-ink">
                             Talebin alındı!
                         </h3>
-                        <p className="mt-2 text-sm leading-6 text-white/50">
+                        <p className="mt-2 text-sm leading-6 text-ink-soft">
                             En kısa sürede seninle iletişime geçeceğiz.
                         </p>
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#27D66B] px-8 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                            className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-[#27D66B] px-8 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                         >
                             Tamam
                         </button>
@@ -204,7 +204,6 @@ export default function ProgramRequestDialog({
                                 id="program-request-website"
                                 name="website"
                                 type="text"
-                                className="text-white"
                                 tabIndex={-1}
                                 autoComplete="off"
                                 value={honeypot}
@@ -305,7 +304,7 @@ export default function ProgramRequestDialog({
                                             .value as typeof goal,
                                     )
                                 }
-                                className={`${inputClass} bg-[#050505]`}
+                                className={inputClass}
                             >
                                 {GOALS.map((item) => (
                                     <option key={item.key} value={item.key}>
@@ -334,7 +333,7 @@ export default function ProgramRequestDialog({
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                         >
                             {submitting && (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -343,7 +342,7 @@ export default function ProgramRequestDialog({
                         </button>
 
                         {errorMessage && (
-                            <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                            <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                 {errorMessage}
                             </p>
                         )}

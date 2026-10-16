@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Heart, Users } from "lucide-react";
 
@@ -18,9 +19,9 @@ export default function AboutPage() {
         <main>
             <Navbar />
 
-            <section className="bg-zinc-950 py-20 text-white sm:py-28">
+            <section className="bg-shell py-20 text-ink sm:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-700">
                         Hakkımızda
                     </p>
 
@@ -29,29 +30,47 @@ export default function AboutPage() {
                         getiriyoruz.
                     </h1>
 
-                    <p className="mt-7 max-w-3xl text-base leading-8 text-zinc-400 sm:text-xl">
-                        Holly Sport, her yaştan insanın fiziksel, mental
-                        ve sosyal açıdan daha aktif bir yaşam sürmesini
-                        amaçlayan, gönüllülük esasına dayanan bağımsız
-                        bir spor topluluğudur.
-                    </p>
+                    <div className="mt-8 grid items-center gap-8 md:grid-cols-[1fr_320px] lg:gap-12">
+                        <p className="max-w-3xl text-base leading-8 text-ink-soft sm:text-xl">
+                            Holly Sport, her yaştan insanın fiziksel, mental
+                            ve sosyal açıdan daha aktif bir yaşam sürmesini
+                            amaçlayan, gönüllülük esasına dayanan bağımsız
+                            bir spor topluluğudur.
+                        </p>
+
+                        <figure className="rounded-3xl border border-line bg-white p-2">
+                            <div className="relative aspect-[19/10] overflow-hidden rounded-2xl">
+                                <Image
+                                    src="/images/about/about-commun.jpg"
+                                    alt="Holly Sport topluluğu bir etkinlikte bir arada"
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 320px"
+                                    className="object-cover"
+                                />
+                            </div>
+
+                            <figcaption className="px-3 pb-1 pt-3 text-xs leading-5 text-ink-soft">
+                                Holly Sport topluluğu
+                            </figcaption>
+                        </figure>
+                    </div>
                 </div>
             </section>
 
             <section className="bg-white py-20 sm:py-24">
                 <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
                     <div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-700">
                             Hikâyemiz
                         </p>
 
-                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
+                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-5xl">
                             Küçük bir arkadaş grubundan güçlü bir
                             topluluğa.
                         </h2>
                     </div>
 
-                    <div className="space-y-6 text-base leading-8 text-zinc-600 sm:text-lg">
+                    <div className="space-y-6 text-base leading-8 text-ink/70 sm:text-lg">
                         <p>
                             Holly Sport, birlikte spor yapmak isteyen
                             küçük bir arkadaş grubuyla başladı. Zamanla
@@ -79,19 +98,19 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            <section className="bg-zinc-50 py-20 sm:py-24">
+            <section className="bg-shell py-20 sm:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid gap-5 md:grid-cols-2">
-                        <article className="rounded-3xl border border-zinc-200 bg-white p-7 sm:p-9">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
+                        <article className="rounded-3xl border border-line bg-white p-7 sm:p-9">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-ink">
                                 <Users className="h-6 w-6" />
                             </div>
 
-                            <h2 className="mt-7 text-2xl font-bold text-zinc-950">
+                            <h2 className="mt-7 text-2xl font-bold text-ink">
                                 Nasıl çalışıyoruz?
                             </h2>
 
-                            <p className="mt-4 leading-7 text-zinc-600">
+                            <p className="mt-4 leading-7 text-ink/70">
                                 Etkinlikler gönüllü organizatörler,
                                 topluluk üyeleri ve destekçilerle
                                 birlikte planlanır. Her etkinlikte
@@ -100,16 +119,16 @@ export default function AboutPage() {
                             </p>
                         </article>
 
-                        <article className="rounded-3xl border border-zinc-200 bg-white p-7 sm:p-9">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
+                        <article className="rounded-3xl border border-line bg-white p-7 sm:p-9">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-ink">
                                 <Heart className="h-6 w-6" />
                             </div>
 
-                            <h2 className="mt-7 text-2xl font-bold text-zinc-950">
+                            <h2 className="mt-7 text-2xl font-bold text-ink">
                                 Gönüllülük kültürü
                             </h2>
 
-                            <p className="mt-4 leading-7 text-zinc-600">
+                            <p className="mt-4 leading-7 text-ink/70">
                                 Holly Sport’un büyümesinde gönüllü emeğin
                                 önemli bir yeri vardır. Etkinliklerden
                                 sosyal medyaya, tasarımdan teknik desteğe
@@ -127,9 +146,9 @@ export default function AboutPage() {
 
             <section className="bg-white py-20 sm:py-24">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col items-start justify-between gap-8 rounded-[2rem] bg-orange-500 p-8 text-white sm:p-12 lg:flex-row lg:items-center">
+                    <div className="flex flex-col items-start justify-between gap-8 rounded-[2rem] bg-orange-500 p-8 text-ink sm:p-12 lg:flex-row lg:items-center">
                         <div>
-                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-ink/70">
                                 Birlikte büyüyelim
                             </p>
 
@@ -141,7 +160,7 @@ export default function AboutPage() {
 
                         <Link
                             href="/events"
-                            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-zinc-950 px-6 py-3.5 font-semibold text-white transition hover:bg-zinc-800"
+                            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3.5 font-semibold text-ink transition hover:bg-shell"
                         >
                             Etkinlikleri İncele
 

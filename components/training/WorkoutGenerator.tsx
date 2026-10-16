@@ -28,7 +28,7 @@ import type { Gender } from "./AnatomyMap3D";
 const AnatomyMap3D = dynamic(() => import("./AnatomyMap3D"), {
     ssr: false,
     loading: () => (
-        <div className="flex h-[420px] items-center justify-center rounded-2xl border border-white/10 bg-[#0a0a0a] text-sm text-white/40">
+        <div className="flex h-[420px] items-center justify-center rounded-2xl border border-line bg-shell text-sm text-ink-soft">
             3D harita yükleniyor…
         </div>
     ),
@@ -281,19 +281,19 @@ export default function WorkoutGenerator() {
 
     return (
         <div className="grid gap-12 lg:grid-cols-[420px_1fr]">
-            <div className="h-fit rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-9">
+            <div className="h-fit rounded-3xl border border-line bg-shell p-7 md:p-9">
                 {muscleStepSkipped ? (
                     /*
                      * Adım atlandı: cinsiyet seçimi ve 3D kas haritası
                      * gösterilmez; kullanıcıdan bölge istenmez.
                      */
                     <div className="mb-5 rounded-2xl border border-dashed border-[#27D66B]/35 bg-[#27D66B]/5 p-5">
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-holly-ink">
                             Kas grubu adımı atlandı
                         </p>
 
-                        <p className="mt-2 text-sm leading-6 text-white/55">
-                            <span className="font-semibold text-white">
+                        <p className="mt-2 text-sm leading-6 text-ink/70">
+                            <span className="font-semibold text-ink">
                                 {currentGoal?.label ?? "Bu hedef"}
                             </span>{" "}
                             tüm vücudu kapsadığı için seçim gerekmiyor.
@@ -310,7 +310,7 @@ export default function WorkoutGenerator() {
                         <div
                             role="group"
                             aria-label="Cinsiyet seçimi"
-                            className="mb-5 flex rounded-full border border-white/15 p-1"
+                            className="mb-5 flex rounded-full border border-line bg-white p-1"
                         >
                             {(
                                 [
@@ -325,8 +325,8 @@ export default function WorkoutGenerator() {
                                     aria-pressed={gender === value}
                                     className={`h-10 flex-1 rounded-full text-sm font-semibold transition ${
                                         gender === value
-                                            ? "bg-[#27D66B] text-black"
-                                            : "text-white/55 hover:text-white"
+                                            ? "bg-[#27D66B] text-ink"
+                                            : "text-ink-soft hover:text-ink"
                                     }`}
                                 >
                                     {label}
@@ -348,7 +348,7 @@ export default function WorkoutGenerator() {
                                     setSelectedMuscles([]);
                                     setTemplate("custom");
                                 }}
-                                className="mt-5 w-full rounded-full border border-white/15 py-2.5 text-xs font-semibold uppercase tracking-wider text-white/50 transition hover:border-white/30 hover:text-white"
+                                className="mt-5 w-full rounded-full border border-line bg-white py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-soft transition hover:border-ink-soft hover:text-ink"
                             >
                                 Seçimi temizle (
                                 {selectedMuscles.length} bölge)
@@ -360,14 +360,14 @@ export default function WorkoutGenerator() {
                 <button
                     type="button"
                     onClick={() => setDialogOpen(true)}
-                    className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                    className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                 >
                     <Sparkles className="h-4 w-4" />
                     Kişisel Antrenman Programı İstiyorum
                 </button>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-9">
+            <div className="rounded-3xl border border-line bg-white p-7 md:p-9">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <h2 className="text-2xl font-bold">
                         {muscleStepSkipped
@@ -380,7 +380,7 @@ export default function WorkoutGenerator() {
                     <div
                         role="group"
                         aria-label="Ortam seçimi"
-                        className="flex rounded-full border border-white/15 p-1"
+                        className="flex rounded-full border border-line bg-shell p-1"
                     >
                         {(
                             [
@@ -395,8 +395,8 @@ export default function WorkoutGenerator() {
                                 aria-pressed={environment === value}
                                 className={`inline-flex h-10 items-center gap-2 rounded-full px-5 text-sm font-semibold transition ${
                                     environment === value
-                                        ? "bg-[#27D66B] text-black"
-                                        : "text-white/55 hover:text-white"
+                                        ? "bg-[#27D66B] text-ink"
+                                        : "text-ink-soft hover:text-ink"
                                 }`}
                             >
                                 <Icon className="h-4 w-4" />
@@ -407,7 +407,7 @@ export default function WorkoutGenerator() {
                 </div>
 
                 <div className="mt-6">
-                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-holly-ink">
                         <Target className="h-4 w-4" />
                         Filtreler
                     </div>
@@ -419,7 +419,7 @@ export default function WorkoutGenerator() {
                              * adımla birlikte gizlenir; yerine bilgi
                              * notu konur (hedef seçimi yerinde kalır).
                              */
-                            <div className="rounded-xl border border-dashed border-white/15 px-4 py-3 text-xs leading-5 text-white/45 sm:col-span-1 xl:col-span-2">
+                            <div className="rounded-xl border border-dashed border-line px-4 py-3 text-xs leading-5 text-ink-soft sm:col-span-1 xl:col-span-2">
                                 Bu hedefte şablon ve kas grubu seçimi
                                 gerekmiyor. Program{" "}
                                 {environment === "home"
@@ -478,9 +478,9 @@ export default function WorkoutGenerator() {
                     </div>
 
                     {currentGoal && (
-                        <p className="mt-3 text-xs leading-5 text-white/35">
+                        <p className="mt-3 text-xs leading-5 text-ink-soft">
                             {currentGoal.description} Set/tekrar:{" "}
-                            <span className="font-semibold text-[#27D66B]">
+                            <span className="font-semibold text-holly-ink">
                                 {currentGoal.sets} × {currentGoal.reps}
                             </span>
                         </p>
@@ -488,14 +488,14 @@ export default function WorkoutGenerator() {
                 </div>
 
                 {!readyToGenerate ? (
-                    <div className="mt-8 rounded-2xl border border-dashed border-white/15 px-6 py-14 text-center">
-                        <p className="mx-auto max-w-md text-lg leading-8 text-white/45">
+                    <div className="mt-8 rounded-2xl border border-dashed border-line px-6 py-14 text-center">
+                        <p className="mx-auto max-w-md text-lg leading-8 text-ink/70">
                             Antrenman programını görmek için 3D
                             haritadan bir veya daha fazla kas grubu
                             seç.
                         </p>
 
-                        <p className="mt-3 text-sm text-white/30">
+                        <p className="mt-3 text-sm text-ink-soft">
                             Hedefini belirlediğinde set ve tekrarlar
                             otomatik ayarlanır; çoklu bölge seçiminde
                             program dengelenir.
@@ -509,19 +509,19 @@ export default function WorkoutGenerator() {
                     >
                         {effectiveMuscles.map((muscle) => (
                             <div key={muscle} className="animate-pulse">
-                                <div className="h-4 w-28 rounded-full bg-white/10" />
-                                <div className="mt-3 space-y-3 border-y border-white/10 py-4">
+                                <div className="h-4 w-28 rounded-full bg-line" />
+                                <div className="mt-3 space-y-3 border-y border-line py-4">
                                     {[0, 1, 2].map((row) => (
                                         <div
                                             key={row}
                                             className="flex items-center gap-5"
                                         >
-                                            <span className="h-9 w-9 rounded-full bg-white/10" />
+                                            <span className="h-9 w-9 rounded-full bg-line" />
                                             <div className="flex-1 space-y-2">
-                                                <div className="h-4 w-2/5 rounded bg-white/10" />
-                                                <div className="h-3 w-3/5 rounded bg-white/5" />
+                                                <div className="h-4 w-2/5 rounded bg-line" />
+                                                <div className="h-3 w-3/5 rounded bg-shell" />
                                             </div>
-                                            <div className="h-6 w-14 rounded bg-white/10" />
+                                            <div className="h-6 w-14 rounded bg-line" />
                                         </div>
                                     ))}
                                 </div>
@@ -529,20 +529,20 @@ export default function WorkoutGenerator() {
                         ))}
                     </div>
                 ) : loadError ? (
-                    <div className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-5 text-red-300">
+                    <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-red-700">
                         Egzersizler yüklenemedi. Lütfen daha sonra
                         tekrar dene.
                     </div>
                 ) : program.length === 0 ? (
                     /* Sadece atlanan hedeflerde görünebilir (seçimli
                      * hedeflerde en az bir bölge grubu döner). */
-                    <div className="mt-8 rounded-2xl border border-dashed border-white/15 px-6 py-14 text-center">
-                        <p className="mx-auto max-w-md text-lg leading-8 text-white/45">
+                    <div className="mt-8 rounded-2xl border border-dashed border-line px-6 py-14 text-center">
+                        <p className="mx-auto max-w-md text-lg leading-8 text-ink/70">
                             Seçilen ortam ve hedef için uygun
                             egzersiz bulunamadı.
                         </p>
 
-                        <p className="mt-3 text-sm text-white/30">
+                        <p className="mt-3 text-sm text-ink-soft">
                             Farklı bir ortam (Ev / Spor Salonu)
                             deneyebilir ya da koç ekibimizden
                             kişiye özel program isteyebilirsin.
@@ -553,11 +553,11 @@ export default function WorkoutGenerator() {
                         {program.map((group) =>
                             group.exercises.length === 0 ? (
                                 <div key={group.muscle}>
-                                    <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                                    <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-holly-ink">
                                         {group.label}
                                     </h3>
 
-                                    <p className="mt-3 rounded-2xl border border-dashed border-white/15 px-6 py-6 text-sm leading-6 text-white/45">
+                                    <p className="mt-3 rounded-2xl border border-dashed border-line px-6 py-6 text-sm leading-6 text-ink-soft">
                                         Bu bölge için seçilen amaca
                                         uygun spesifik bir hareket
                                         bulunmuyor, farklı bir
@@ -566,18 +566,18 @@ export default function WorkoutGenerator() {
                                 </div>
                             ) : (
                             <div key={group.muscle}>
-                                <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                                <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-holly-ink">
                                     {group.label}
                                 </h3>
 
-                                <div className="mt-3 divide-y divide-white/10 border-y border-white/10">
+                                <div className="mt-3 divide-y divide-line border-y border-line">
                                     {group.exercises.map(
                                         (exercise, index) => (
                                             <div
                                                 key={exercise.id}
                                                 className="flex items-start gap-5 py-5"
                                             >
-                                                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#27D66B]/10 text-sm font-bold tabular-nums text-[#27D66B]">
+                                                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#27D66B]/10 text-sm font-bold tabular-nums text-holly-ink">
                                                     {index + 1}
                                                 </span>
 
@@ -587,7 +587,7 @@ export default function WorkoutGenerator() {
                                                     </h4>
 
                                                     {exercise.description && (
-                                                        <p className="mt-1 text-sm leading-6 text-white/45">
+                                                        <p className="mt-1 text-sm leading-6 text-ink-soft">
                                                             {
                                                                 exercise.description
                                                             }
@@ -596,11 +596,11 @@ export default function WorkoutGenerator() {
                                                 </div>
 
                                                 <div className="shrink-0 text-right">
-                                                    <span className="block text-[11px] uppercase tracking-wider text-white/30">
+                                                    <span className="block text-[11px] uppercase tracking-wider text-ink-soft">
                                                         Set × Tekrar
                                                     </span>
 
-                                                    <span className="mt-1 block text-lg font-bold tabular-nums text-[#27D66B]">
+                                                    <span className="mt-1 block text-lg font-bold tabular-nums text-holly-ink">
                                                         {exercise.sets}{" "}
                                                         × {exercise.reps}
                                                     </span>
@@ -614,7 +614,7 @@ export default function WorkoutGenerator() {
                         )}
 
                         {programHasContent && (
-                            <div className="border-t border-white/10 pt-5">
+                            <div className="border-t border-line pt-5">
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -627,8 +627,8 @@ export default function WorkoutGenerator() {
                                     disabled={saveState !== "idle"}
                                     className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-bold transition ${
                                         saveState === "saved"
-                                            ? "cursor-default border border-[#27D66B]/40 bg-[#27D66B]/10 text-[#27D66B]"
-                                            : "bg-[#27D66B] text-[#050505] hover:bg-[#45e27f] disabled:opacity-50"
+                                            ? "cursor-default border border-[#27D66B]/40 bg-[#27D66B]/10 text-holly-ink"
+                                            : "bg-[#27D66B] text-ink hover:bg-[#1fc461] disabled:opacity-50"
                                     }`}
                                 >
                                     {saveState === "saving" ? (
@@ -649,7 +649,7 @@ export default function WorkoutGenerator() {
                                 </button>
 
                                 {saveState === "saved" && (
-                                    <p className="mt-3 text-center text-sm text-[#27D66B]">
+                                    <p className="mt-3 text-center text-sm text-holly-ink">
                                         Programın profiline kaydedildi.{" "}
                                         <a
                                             href="/profile"
@@ -661,14 +661,14 @@ export default function WorkoutGenerator() {
                                 )}
 
                                 {saveError && (
-                                    <p className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                                    <p className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                                         {saveError}
                                     </p>
                                 )}
                             </div>
                         )}
 
-                        <p className="text-xs leading-6 text-white/30">
+                        <p className="text-xs leading-6 text-ink-soft">
                             Hareketleri kendi seviyene göre adapte et;
                             ağrı hissedersen bırak. Bu program genel
                             bilgilendirme amaçlıdır, kişiye özel plan
