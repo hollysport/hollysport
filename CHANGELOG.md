@@ -2,6 +2,16 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-10-17 — Ana sayfa SEO: eski "3D anatomi" mesajı kaldırıldı, marka tanıtımı düzeltildi (commit bekliyor)
+
+- **İstek:** Google'da `hollysport.net` için eski "3D Anatomi Destekli Yeni Nesil Antrenman" mesajı yerine Holly Sport'un **bağımsız spor topluluğu** olarak tanıtılması.
+- **Kök neden:** Tüm metadata tek kaynaktan geliyor — `app/layout.tsx` (ana sayfada `metadata` override'ı yok, tüm rotalar root layout'tan miras alıyor). Eski antrenman-odaklı mesaj üç alandaydı: `description`, `openGraph.description`, `twitter.description`.
+- **Yeni SEO başlığı:** `Holly Sport | Bağımsız Spor Topluluğu` (root `title`, `og:title`, `twitter:title`).
+- **Yeni meta açıklaması:** "Holly Sport; spor, sosyalleşme ve yeni deneyimler etrafında insanları bir araya getiren bağımsız bir spor topluluğudur. Etkinliklere katıl, yeni insanlarla tanış ve hareketin bir parçası ol." — `openGraph` ve `twitter` artık tek `siteDescription` sabitini paylaşıyor (üç ayrı metin tekrarı giderildi, ileride tek yerden güncellenir).
+- **Antrenman sayfası korundu:** `/training` kendi metadata'sını ("Antrenman Merkezi" + kalori/metabolizma açıklaması) kullanmaya devam ediyor; 3D anatomi haritası gerçek bir antrenman özelliği (`AnatomyMap3D`) olarak sayfa içeriğinde duruyor — silinmedi, yalnızca genel marka metadata'sından eski cümle kaldırıldı.
+- **Kontroller:** `npx tsc --noEmit` exit 0; `npm run lint` 0 hata (5 önceden varan `<img>`); `npm run build` exit 0 (dev durdurularak alındı); `git diff --check` temiz. Kodda "3D anatomi destekli / Yeni Nesil Antrenman" referansı kalmadı.
+- **Doğrulama:** yerel dev sunucusunda `<title>`, `description`, `og:title`, `og:description`, `twitter:title`, `twitter:description` hepsi yeni değerlerle doğrulandı; eski "3D anatomi / yeni nesil" ifadesi ana sayfada yok. Canlı HTML doğrulaması + Google'a yeniden dizin talebi production yayın sonrası (aşağıda).
+
 ## 2026-10-16 — Production yayını: 9 mantıklı commit push edildi, Vercel'e canlı alındı
 
 - **Git:** `main` branch'ine, `origin` (github.com/hollysport/hollysport) üzerinden **9 mantıklı commit** push edildi (taban `bb26148` → `f5b68c9`). 198 dosya / +3817 / −2516. Çalışma ağacı push sonrası temiz. Gruplar: (1) görseller + `next/image`, (2) beyaz tema + global bağlantı renk katmanı, (3) admin paneli (sol menü/logo/aktivite akışı), (4) sayfa sadeleştirmeleri, (5) destek formu seçeneği, (6) navbar/footer/kimlik beyaz tema, (7) SEO metadata/manifest/sitemap/ikon, (8) kullanılmayan bölüm silmeleri, (9) dokümanlar + `.gitignore`. `.env*`, `.next/`, `.vercel`, derleme çıktıları ve geçici dosyalar commit edilmedi (önceden ignore).
