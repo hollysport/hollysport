@@ -1,10 +1,18 @@
+import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentTimestamp } from "@/lib/time";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+    title: "Etkinlikler | Holly Sport",
+    description:
+        "Holly Sport'un yaklaşan ve geçmiş spor etkinliklerini keşfet, kontenjan ve kayıt durumlarını gör.",
+};
 
 type EventItem = {
     id: string;
@@ -55,16 +63,55 @@ function EventCard({
         event.capacity !== null &&
         event.participant_count >= event.capacity;
 
+    /*
+     * Geçmiş etkinlik kartları bilinçli olarak sade tutulur:
+     * yalnızca afiş (kare), etkinlik adı ve tarih. Uzun açıklama,
+     * katılımcı sayısı ve diğer ikincil bilgiler yalnızca yaklaşan
+     * etkinlik kartlarında gösterilir.
+     */
+    if (isPast) {
+        return (
+            <article className="group overflow-hidden rounded-3xl border border-line bg-white transition-colors duration-300 md:hover:border-holly/45">
+                <Link href={`/events/${event.slug}`} className="block">
+                    <div className="relative aspect-square overflow-hidden">
+                        {imageUrl ? (
+                            <Image
+                                src={imageUrl}
+                                alt={`${event.title} etkinlik afişi`}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                className="object-cover transition-transform duration-700 ease-out md:group-hover:scale-105"
+                            />
+                        ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#27D66B]/30 via-[#111111] to-black" />
+                        )}
+                    </div>
+
+                    <div className="p-6">
+                        <p className="text-sm font-semibold text-holly-ink">
+                            {formatDate(event.starts_at)}
+                        </p>
+
+                        <h3 className="mt-2 text-2xl font-bold tracking-tight md:text-3xl">
+                            {event.title}
+                        </h3>
+                    </div>
+                </Link>
+            </article>
+        );
+    }
+
     return (
-        <article className="group overflow-hidden rounded-3xl border border-white/10 bg-[#111111]">
+        <article className="group overflow-hidden rounded-3xl border border-line bg-white">
             <Link href={`/events/${event.slug}`} className="block">
                 <div className="relative h-72 overflow-hidden">
                     {imageUrl ? (
-                        <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                            style={{
-                                backgroundImage: `url("${imageUrl}")`,
-                            }}
+                        <Image
+                            src={imageUrl}
+                            alt={`${event.title} etkinlik görseli`}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                     ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-[#27D66B]/30 via-[#111111] to-black" />
@@ -78,20 +125,16 @@ function EventCard({
                         </span>
 
                         <span
-                            className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider ${isPast
-                                    ? "bg-white/15 text-white"
-                                    : event.registration_open && !isFull
-                                        ? "bg-[#27D66B] text-black"
-                                        : "bg-black/70 text-white/60"
+                            className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider ${isFull
+                                    ? "bg-black/70 text-white"
+                                    : "bg-holly text-ink"
                                 }`}
                         >
-                            {isPast
-                                ? "Tamamlandı"
-                                : isFull
-                                    ? "Kontenjan dolu"
-                                    : event.registration_open
-                                        ? "Kayıt açık"
-                                        : "Kayıt kapalı"}
+                            {isFull
+                                ? "Kontenjan dolu"
+                                : event.registration_open
+                                    ? "Kayıt açık"
+                                    : "Kayıt kapalı"}
                         </span>
                     </div>
 
@@ -100,7 +143,7 @@ function EventCard({
                             {formatDate(event.starts_at)} · {formatTime(event.starts_at)}
                         </p>
 
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight">
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">
                             {event.title}
                         </h2>
 
@@ -111,14 +154,14 @@ function EventCard({
                 </div>
 
                 <div className="p-6">
-                    <p className="line-clamp-3 min-h-[84px] leading-7 text-white/45">
+                    <p className="line-clamp-3 min-h-[84px] leading-7 text-ink-soft">
                         {event.short_description ||
                             "Etkinlik detaylarını görüntülemek için incele."}
                     </p>
 
-                    <div className="mt-7 flex items-end justify-between gap-5 border-t border-white/10 pt-5">
+                    <div className="mt-7 flex items-end justify-between gap-5 border-t border-line pt-5">
                         <div>
-                            <span className="block text-xs uppercase tracking-wider text-white/30">
+                            <span className="block text-xs uppercase tracking-wider text-ink-soft">
                                 Katılım
                             </span>
 
@@ -131,7 +174,7 @@ function EventCard({
                         </div>
 
                         <div>
-                            <span className="block text-right text-xs uppercase tracking-wider text-white/30">
+                            <span className="block text-right text-xs uppercase tracking-wider text-ink-soft">
                                 Katılımcı
                             </span>
 
@@ -143,7 +186,7 @@ function EventCard({
                             </span>
                         </div>
 
-                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#27D66B] text-xl text-black transition-transform group-hover:translate-x-1">
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-holly text-xl text-ink transition-transform group-hover:translate-x-1">
                             →
                         </span>
                     </div>
@@ -212,34 +255,34 @@ export default async function EventsPage() {
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-[#050505] text-white">
+            <main className="min-h-screen bg-white text-ink">
                 <section className="px-6 pb-20 pt-36 md:px-10 lg:px-16">
                     <div className="mx-auto max-w-7xl">
-                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Holly Sport Etkinlikleri
                         </span>
 
                         <h1 className="mt-6 max-w-6xl text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl lg:text-8xl">
                             Yeni deneyimlere
-                            <span className="text-[#27D66B]">
+                            <span className="text-holly-ink">
                                 {" "}
                                 birlikte adım at.
                             </span>
                         </h1>
 
-                        <div className="mt-12 flex flex-col justify-between gap-8 border-t border-white/10 pt-8 md:flex-row md:items-end">
-                            <p className="max-w-2xl text-base leading-8 text-white/50 md:text-lg">
+                        <div className="mt-12 flex flex-col justify-between gap-8 border-t border-line pt-8 md:flex-row md:items-end">
+                            <p className="max-w-2xl text-base leading-8 text-ink-soft md:text-lg">
                                 Yaklaşan etkinliklere katıl veya daha önce
                                 gerçekleştirdiğimiz etkinlikleri keşfet.
                             </p>
 
                             <div className="flex gap-8">
                                 <div>
-                                    <strong className="block text-3xl text-[#27D66B]">
+                                    <strong className="block text-3xl text-holly-ink">
                                         {upcomingEvents.length}
                                     </strong>
 
-                                    <span className="mt-1 block text-xs uppercase tracking-wider text-white/35">
+                                    <span className="mt-1 block text-xs uppercase tracking-wider text-ink-soft">
                                         Yaklaşan
                                     </span>
                                 </div>
@@ -249,7 +292,7 @@ export default async function EventsPage() {
                                         {pastEvents.length}
                                     </strong>
 
-                                    <span className="mt-1 block text-xs uppercase tracking-wider text-white/35">
+                                    <span className="mt-1 block text-xs uppercase tracking-wider text-ink-soft">
                                         Tamamlanan
                                     </span>
                                 </div>
@@ -260,7 +303,7 @@ export default async function EventsPage() {
 
                 {error && (
                     <section className="px-6 pb-10 md:px-10 lg:px-16">
-                        <div className="mx-auto max-w-7xl rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-5 text-red-300">
+                        <div className="mx-auto max-w-7xl rounded-2xl border border-red-200 bg-red-50 px-6 py-5 text-red-700">
                             Etkinlikler yüklenemedi: {error.message}
                         </div>
                     </section>
@@ -268,7 +311,7 @@ export default async function EventsPage() {
 
                 <section className="px-6 pb-24 md:px-10 lg:px-16">
                     <div className="mx-auto max-w-7xl">
-                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Sıradaki Buluşmalar
                         </span>
 
@@ -277,13 +320,13 @@ export default async function EventsPage() {
                         </h2>
 
                         {upcomingEvents.length === 0 ? (
-                            <div className="mt-10 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
+                            <div className="mt-10 rounded-3xl border border-dashed border-line px-6 py-16 text-center">
                                 <h3 className="text-2xl font-semibold">
                                     Yakında yepyeni etkinliklerle karşınızda
                                     olacağız.
                                 </h3>
 
-                                <p className="mt-3 text-white/40">
+                                <p className="mt-3 text-ink-soft">
                                     Takipte kalın!
                                 </p>
                             </div>
@@ -304,9 +347,9 @@ export default async function EventsPage() {
                     </div>
                 </section>
 
-                <section className="bg-[#F3F1EB] px-6 py-24 text-black md:px-10 lg:px-16">
+                <section className="bg-shell px-6 py-24 text-ink md:px-10 lg:px-16">
                     <div className="mx-auto max-w-7xl">
-                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#159447]">
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Holly Sport Anıları
                         </span>
 
@@ -314,13 +357,13 @@ export default async function EventsPage() {
                             Geçmiş etkinlikler
                         </h2>
 
-                        <p className="mt-5 max-w-2xl leading-7 text-black/50">
+                        <p className="mt-5 max-w-2xl leading-7 text-ink-soft">
                             Tamamlanan etkinlikler otomatik olarak bu bölüme
                             taşınır.
                         </p>
 
                         {pastEvents.length === 0 ? (
-                            <div className="mt-10 rounded-3xl border border-dashed border-black/15 px-6 py-16 text-center text-black/45">
+                            <div className="mt-10 rounded-3xl border border-dashed border-line px-6 py-16 text-center text-ink-soft">
                                 Henüz geçmiş etkinlik bulunmuyor.
                             </div>
                         ) : (

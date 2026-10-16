@@ -127,14 +127,6 @@ export default function GalleryGrid({
         shuffledImages,
     ]);
 
-    const selectedBranchName =
-        selectedBranch === "all"
-            ? "Tüm Branşlar"
-            : sports.find(
-                (sport) =>
-                    sport.slug === selectedBranch,
-            )?.name ?? "Tüm Branşlar";
-
     function changeBranch(branch: string) {
         setSelectedBranch(branch);
 
@@ -158,27 +150,21 @@ export default function GalleryGrid({
 
     return (
         <>
-            <div className="mb-10 flex flex-col gap-4 rounded-3xl border border-zinc-200 bg-zinc-50 p-5 sm:flex-row sm:items-end sm:justify-between sm:p-6">
+            <div className="mb-10 flex flex-col gap-4 rounded-3xl border border-line bg-shell p-5 sm:flex-row sm:items-end sm:justify-between sm:p-6">
                 <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#159447]">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-holly-ink">
                         Galeriyi Filtrele
                     </p>
 
-                    <h2 className="mt-2 text-xl font-bold text-zinc-950 sm:text-2xl">
+                    <h2 className="mt-2 text-xl font-bold text-ink sm:text-2xl">
                         Görmek istediğin branşı seç.
                     </h2>
-
-                    <p className="mt-2 text-sm text-zinc-500">
-                        {selectedBranchName} kategorisinde{" "}
-                        {filteredImages.length} fotoğraf
-                        gösteriliyor.
-                    </p>
                 </div>
 
                 <div className="relative w-full sm:w-72">
                     <Images
                         aria-hidden="true"
-                        className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-zinc-500"
+                        className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-ink-soft"
                     />
 
                     <select
@@ -189,7 +175,7 @@ export default function GalleryGrid({
                             )
                         }
                         aria-label="Galeri branşı seç"
-                        className="min-h-14 w-full cursor-pointer appearance-none rounded-2xl border border-zinc-300 bg-white py-3 pl-12 pr-12 text-sm font-bold text-zinc-950 outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10"
+                        className="min-h-14 w-full cursor-pointer appearance-none rounded-2xl border border-line bg-white py-3 pl-12 pr-12 text-sm font-bold text-ink outline-none transition focus:border-[#27D66B] focus:ring-4 focus:ring-[#27D66B]/10"
                     >
                         <option value="all">
                             Tüm Branşlar
@@ -207,7 +193,7 @@ export default function GalleryGrid({
 
                     <ChevronDown
                         aria-hidden="true"
-                        className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500"
+                        className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-ink-soft"
                     />
                 </div>
             </div>
@@ -221,7 +207,7 @@ export default function GalleryGrid({
                             onClick={() =>
                                 setSelectedImage(image)
                             }
-                            className="group relative h-80 overflow-hidden rounded-3xl bg-zinc-200 text-left transition-transform duration-200 active:scale-[0.985]"
+                            className="group relative h-80 overflow-hidden rounded-3xl bg-shell text-left transition-transform duration-200 active:scale-[0.985]"
                         >
                             <Image
                                 src={image.src}
@@ -236,7 +222,7 @@ export default function GalleryGrid({
                     ))}
                 </div>
             ) : (
-                <div className="rounded-3xl bg-zinc-100 px-6 py-16 text-center text-zinc-500">
+                <div className="rounded-3xl border border-line bg-shell px-6 py-16 text-center text-ink-soft">
                     Bu kategoriye henüz fotoğraf
                     eklenmedi.
                 </div>
@@ -258,7 +244,7 @@ export default function GalleryGrid({
                         onClick={() =>
                             setSelectedImage(null)
                         }
-                        className="absolute right-5 top-5 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition active:scale-95"
+                        className="absolute right-5 top-5 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink transition active:scale-95"
                     >
                         <X className="h-6 w-6" />
                     </button>

@@ -17,18 +17,12 @@ export const metadata: Metadata = {
 
 const imageExtensionPattern = /\.(avif|gif|jpe?g|png|webp)$/i;
 
-function shuffleArray<T>(items: T[]): T[] {
-    return [...items]
-        .map((item) => ({
-            item,
-            sort: Math.random(),
-        }))
-        .sort((firstItem, secondItem) => {
-            return firstItem.sort - secondItem.sort;
-        })
-        .map(({ item }) => item);
-}
-
+/*
+ * Sıralama bilinçli olarak deterministik: dosyalar tr-sıralamasıyla
+ * listelenir. Karıştırma (shuffle) yalnızca istemcide bir kez yapılır
+ * (bkz. GalleryGrid) — sunucuda Math.random() kullanmak hem gereksiz
+ * bir iş hem hydration/görsel atlama riski taşıdığı için kaldırıldı.
+ */
 function getGalleryImages(): GalleryImage[] {
     const galleryRoot = path.join(
         process.cwd(),
@@ -66,7 +60,7 @@ function getGalleryImages(): GalleryImage[] {
         }));
     });
 
-    return shuffleArray(images);
+    return images;
 }
 
 export default function GalleryPage() {
@@ -76,9 +70,9 @@ export default function GalleryPage() {
         <main className="min-h-screen bg-white">
             <Navbar />
 
-            <section className="bg-[#050505] py-20 text-white sm:py-28">
+            <section className="bg-shell py-20 text-ink sm:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                         Holly Sport Galeri
                     </p>
 
@@ -86,7 +80,7 @@ export default function GalleryPage() {
                         Branşını seç, anıları keşfet.
                     </h1>
 
-                    <p className="mt-6 max-w-2xl text-base leading-7 text-white/50 sm:text-lg">
+                    <p className="mt-6 max-w-2xl text-base leading-7 text-ink-soft sm:text-lg">
                         Koşudan voleybola, doğa sporlarından
                         turnuvalara kadar topluluğumuzun birlikte
                         biriktirdiği anıları keşfet.
