@@ -9,8 +9,6 @@ const managementTeam = [
             "Etkinlik ve Operasyon Koordinatörü",
             "Finans ve Kaynak Geliştirme Sorumlusu",
         ],
-        description:
-            "Topluluk akışını, ulaşım ve lojistik süreçlerini, etkinlik operasyonlarını ve kaynak geliştirme çalışmalarını koordine eder.",
         image: "/images/team/idris-dirican.jpg",
         instagram: "idris_dirican",
     },
@@ -22,8 +20,6 @@ const managementTeam = [
             "Sosyal Medya",
             "Fotoğraf ve Video Sorumlusu",
         ],
-        description:
-            "Etkinlik operasyonları, topluluk iletişimi, sosyal medya içerikleri ve fotoğraf-video süreçlerinde aktif rol alır.",
         image: "/images/team/ilayda-nur-kaynak.jpg",
         instagram: "ilaydanurkaynak",
     },
@@ -34,8 +30,6 @@ const managementTeam = [
             "Topluluk Yöneticisi",
             "Sponsorluk ve İş Birlikleri",
         ],
-        description:
-            "Etkinlik süreçlerinin yürütülmesi, topluluk koordinasyonu ve sponsorluk iş birliklerinin geliştirilmesinde görev alır.",
         image: "/images/team/mert-coskun.jpg",
         instagram: "mertcoskun.13",
     },
@@ -46,8 +40,6 @@ const managementTeam = [
             "Topluluk Yöneticisi",
             "Sponsorluk ve İş Birlikleri",
         ],
-        description:
-            "Etkinlik organizasyonu, topluluk yönetimi ve iş birliği süreçlerinin yürütülmesine katkı sağlar.",
         image: "/images/team/alper-tunga.jpg",
         instagram: "alpertungakr",
     },
@@ -59,22 +51,18 @@ const managementTeam = [
             "İletişim ve Sosyal Medya",
             "Öğrenci Temsilcisi",
         ],
-        description:
-            "Topluluk iletişimi, sosyal medya süreçleri, etkinlik operasyonları ve öğrenci bağlantılarında aktif sorumluluk üstlenir.",
         image: "/images/team/ozgu-oncul.jpg",
         instagram: "o.oncl",
     },
     {
-        name: "Ahmet Ali",
+        name: "Hadicha",
         roles: [
             "Topluluk Yöneticisi",
-            "Etkinlik ve Operasyon Koordinatörü",
+            "İletişim ve Sosyal Medya",
             "Öğrenci Temsilcisi",
         ],
-        description:
-            "Topluluk yönetimi, etkinlik operasyonları ve öğrenci katılım süreçlerinde görev alır.",
-        image: "/images/team/ahmet-ali.jpg",
-        instagram: "ahmetali_2727",
+        image: "/images/team/hadicha.jpg",
+        instagram: "rizayevakh",
     },
     {
         name: "Kerem Özer",
@@ -83,8 +71,6 @@ const managementTeam = [
             "Etkinlik ve Operasyon Koordinatörü",
             "Müzik ve Eğlence Koordinatörü",
         ],
-        description:
-            "Etkinlik akışı, topluluk koordinasyonu ve müzik-eğlence deneyiminin planlanmasında görev üstlenir.",
         image: "/images/team/kerem-ozer.jpg",
         instagram: "keremozerist",
     },
@@ -95,8 +81,6 @@ const managementTeam = [
             "Etkinlik ve Operasyon Koordinatörü",
             "Sponsorluk ve İş Birlikleri",
         ],
-        description:
-            "Topluluk yönetimi, etkinlik operasyonları ve sponsorluk ilişkilerinin geliştirilmesinde destek verir.",
         image: "/images/team/eray-unsal.jpg",
         instagram: "eraypluss",
     },
@@ -142,10 +126,10 @@ function InstagramIcon({
 
 export default function FounderTeam() {
     return (
-        <section className="overflow-hidden bg-[#050505] px-6 pb-24 pt-16 text-white lg:px-8 lg:pb-32 lg:pt-24">
+        <section className="overflow-hidden bg-white px-6 pb-24 pt-16 text-ink lg:px-8 lg:pb-32 lg:pt-24">
             <div className="mx-auto max-w-7xl">
                 <header className="mb-16 max-w-3xl lg:mb-24">
-                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                         Ekibimiz
                     </p>
 
@@ -153,7 +137,7 @@ export default function FounderTeam() {
                         Holly Sport’u birlikte büyütüyoruz.
                     </h1>
 
-                    <p className="mt-6 text-lg leading-8 text-white/50 sm:text-xl">
+                    <p className="mt-6 text-lg leading-8 text-ink-soft sm:text-xl">
                         Topluluğun kuruluş hikâyesini ve etkinliklerden
                         iletişime kadar tüm süreçleri gönüllülük ruhuyla
                         yürüten yönetim kadromuzu tanıyın.
@@ -162,7 +146,7 @@ export default function FounderTeam() {
 
                 <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
                     <div className="relative">
-                        <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#111111]">
+                        <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-line bg-shell">
                             <Image
                                 src="/images/team/umut-kucuk.jpg"
                                 alt="Holly Sport kurucusu Umut Küçük"
@@ -195,7 +179,7 @@ export default function FounderTeam() {
                     </div>
 
                     <div>
-                        <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                        <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                             Kurucumuz
                         </p>
 
@@ -203,11 +187,11 @@ export default function FounderTeam() {
                             Umut Küçük
                         </h2>
 
-                        <p className="mt-3 text-lg font-semibold text-white/45">
+                        <p className="mt-3 text-lg font-semibold text-ink-soft">
                             Holly Sport Kurucusu
                         </p>
 
-                        <div className="mt-8 space-y-5 text-base leading-8 text-white/60 sm:text-lg">
+                        <div className="mt-8 space-y-5 text-base leading-8 text-ink/70 sm:text-lg">
                             <p>
                                 Holly Sport’u kurma yolculuğum, spor
                                 aracılığıyla kendi sosyal çevremi oluşturma
@@ -237,7 +221,7 @@ export default function FounderTeam() {
                             </p>
                         </div>
 
-                        <blockquote className="mt-9 border-l-2 border-[#27D66B] pl-6 text-xl font-semibold leading-9 text-white sm:text-2xl">
+                        <blockquote className="mt-9 border-l-2 border-holly pl-6 text-xl font-semibold leading-9 text-ink sm:text-2xl">
                             “Sporun insanları dönüştüren ve bir araya
                             getiren gücüne inanıyorum.”
                         </blockquote>
@@ -248,7 +232,7 @@ export default function FounderTeam() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Umut Küçük Instagram"
-                                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 transition hover:border-[#27D66B]/40 hover:bg-[#27D66B]/10 hover:text-[#27D66B]"
+                                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white text-ink-soft transition hover:border-holly-ink hover:bg-holly/10 hover:text-holly-ink"
                             >
                                 <InstagramIcon />
                             </a>
@@ -256,9 +240,9 @@ export default function FounderTeam() {
                     </div>
                 </div>
 
-                <div className="mt-28 border-t border-white/10 pt-20">
+                <div className="mt-28 border-t border-line pt-20">
                     <div className="max-w-3xl">
-                        <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                        <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                             Yönetim Kadromuz
                         </p>
 
@@ -266,7 +250,7 @@ export default function FounderTeam() {
                             Birlikte hareket eden ekip
                         </h2>
 
-                        <p className="mt-5 text-lg leading-8 text-white/45">
+                        <p className="mt-5 text-lg leading-8 text-ink-soft">
                             Holly Sport’un etkinlik, iletişim, operasyon ve
                             topluluk süreçlerini birlikte yürüten yönetim
                             ekibimiz.
@@ -277,9 +261,9 @@ export default function FounderTeam() {
                         {managementTeam.map((member) => (
                             <article
                                 key={member.name}
-                                className="group flex h-full flex-col rounded-[2rem] border border-white/10 bg-[#111111] p-5 transition duration-300 hover:-translate-y-1 hover:border-[#27D66B]/30"
+                                className="group flex h-full flex-col rounded-[2rem] border border-line bg-shell p-5 transition duration-300 hover:-translate-y-1 hover:border-holly-ink"
                             >
-                                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-white/[0.04]">
+                                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-line">
                                     <Image
                                         src={member.image}
                                         alt={member.name}
@@ -298,24 +282,20 @@ export default function FounderTeam() {
                                         {member.roles.map((role) => (
                                             <span
                                                 key={role}
-                                                className="rounded-full border border-[#27D66B]/20 bg-[#27D66B]/10 px-3 py-1 text-xs font-semibold leading-5 text-[#27D66B]"
+                                                className="rounded-full border border-holly-ink/25 bg-holly/10 px-3 py-1 text-xs font-semibold leading-5 text-holly-ink"
                                             >
                                                 {role}
                                             </span>
                                         ))}
                                     </div>
 
-                                    <p className="mt-5 flex-1 text-sm leading-7 text-white/45">
-                                        {member.description}
-                                    </p>
-
-                                    <div className="mt-6">
+                                    <div className="mt-auto pt-6">
                                         <a
                                             href={`https://www.instagram.com/${member.instagram}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             aria-label={`${member.name} Instagram`}
-                                            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-white/45 transition hover:border-[#27D66B]/40 hover:bg-[#27D66B]/10 hover:text-[#27D66B]"
+                                            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink-soft transition hover:border-holly-ink hover:bg-holly/10 hover:text-holly-ink"
                                         >
                                             <InstagramIcon className="h-4 w-4" />
                                         </a>

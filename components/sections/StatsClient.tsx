@@ -56,21 +56,21 @@ function StatValue({ value }: { value: number | null }) {
   return (
     <>
       <Counter value={value} />
-      <span className="text-[#27D66B]">+</span>
+      <span className="text-holly-ink">+</span>
     </>
   );
 }
 
 export default function StatsClient({ stats }: { stats: StatItem[] }) {
   return (
-    <section className="bg-[#050505] px-6 py-24 sm:py-32 lg:px-8">
+    <section className="bg-shell px-6 py-24 sm:py-32 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 flex flex-col gap-5 border-b border-white/10 pb-10 sm:mb-16">
-          <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+        <div className="mb-12 flex flex-col gap-5 border-b border-line pb-10 sm:mb-16">
+          <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
             Rakamlarla Holly Sport
           </p>
 
-          <h2 className="max-w-3xl text-4xl font-extrabold tracking-[-0.04em] text-white sm:text-5xl">
+          <h2 className="max-w-3xl text-4xl font-extrabold tracking-[-0.04em] text-ink sm:text-5xl">
             Her etkinlikte büyüyen bir topluluk.
           </h2>
         </div>
@@ -81,11 +81,11 @@ export default function StatsClient({ stats }: { stats: StatItem[] }) {
               key={stat.label}
               className="border-l-2 border-[#27D66B]/40 pl-6 sm:pl-8"
             >
-              <p className="text-sm font-medium text-white/50">
+              <p className="text-sm font-medium text-ink-soft">
                 {stat.label}
               </p>
 
-              <p className="mt-4 text-6xl font-extrabold tracking-[-0.06em] text-white lg:text-7xl">
+              <p className="mt-4 text-6xl font-extrabold tracking-[-0.06em] text-ink lg:text-7xl">
                 <StatValue value={stat.value} />
               </p>
             </div>

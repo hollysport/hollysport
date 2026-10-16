@@ -23,15 +23,15 @@ export default function MissionVision() {
         <section className="bg-white py-20 sm:py-24">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl">
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-700">
                         Amacımız ve Geleceğimiz
                     </p>
 
-                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-950 sm:text-5xl">
+                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-5xl">
                         Birlikte hareket ediyor, birlikte büyüyoruz.
                     </h2>
 
-                    <p className="mt-5 text-base leading-7 text-zinc-600 sm:text-lg">
+                    <p className="mt-5 text-base leading-7 text-ink/70 sm:text-lg">
                         Holly Sport yalnızca spor etkinlikleri düzenleyen bir yapı değil;
                         insanların tanıştığı, geliştiği ve kendini ait hissettiği bir
                         topluluktur.
@@ -45,21 +45,21 @@ export default function MissionVision() {
                         return (
                             <article
                                 key={item.label}
-                                className="rounded-3xl border border-zinc-200 bg-zinc-50 p-7 sm:p-9"
+                                className="rounded-3xl border border-line bg-shell p-7 sm:p-9"
                             >
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-ink">
                                     <Icon className="h-6 w-6" />
                                 </div>
 
-                                <p className="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+                                <p className="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-orange-700">
                                     {item.label}
                                 </p>
 
-                                <h3 className="mt-3 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+                                <h3 className="mt-3 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
                                     {item.title}
                                 </h3>
 
-                                <p className="mt-5 leading-7 text-zinc-600">
+                                <p className="mt-5 leading-7 text-ink/70">
                                     {item.description}
                                 </p>
                             </article>

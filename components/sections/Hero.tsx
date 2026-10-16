@@ -34,7 +34,7 @@ export default function Hero() {
     const shouldReduceMotion = useReducedMotion();
 
     return (
-        <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-[#050505]">
+        <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-ink">
             <motion.div
                 aria-hidden="true"
                 initial={
@@ -131,7 +131,7 @@ export default function Hero() {
                             href="https://chat.whatsapp.com/LEHiMPxVmsC7lGB0zvjoJK"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="tap-scale inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-7 py-3 text-sm font-bold text-[#050505] transition duration-300 hover:-translate-y-0.5 hover:bg-[#3be47a] sm:w-auto"
+                            className="tap-scale inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-7 py-3 text-sm font-bold text-ink transition duration-300 hover:-translate-y-0.5 hover:bg-[#3be47a] sm:w-auto"
                         >
                             <svg
                                 aria-hidden="true"
@@ -153,7 +153,7 @@ export default function Hero() {
                     >
                         <Link
                             href="/events"
-                            className="holly-arrow-button group inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/5 px-7 py-3 text-sm font-bold text-white backdrop-blur-md hover:border-white/30 hover:bg-white/10 sm:w-auto"
+                            className="holly-arrow-button group inline-flex min-h-12 w-full items-center justify-center gap-2.5 rounded-full border border-white bg-transparent px-7 py-3 text-sm font-bold text-white transition hover:border-white hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:w-auto"
                         >
                             Etkinlikleri Keşfet
 

@@ -1,49 +1,103 @@
 @import "tailwindcss";
 
+/*
+ * HOLLY SPORT — BEYAZ TEMA TASARIM TOKEN'LARI
+ *
+ * Tek doğruluk kaynağı: aşağıda tanımlı değişkenler ve `@theme` renkleri.
+ * Bileşenler bu token'ları kullanır; aynı renk farklı sayfalarda farklı
+ * biçimde tanımlanmaz.
+ *
+ *   Yüzey (ana)      #FFFFFF   → bg-surface / bg-white
+ *   Yüzey (ikincil)  #F7F8F6   → bg-shell
+ *   Metin (ana)      #171917   → text-ink
+ *   Metin (ikincil)  #626862   → text-ink-soft
+ *   Kenarlık         #E5E8E3   → border-line
+ *   Marka yeşili     #27D66B   → bg-holly (dolgu/yüzey)
+ *   Yeşil metin      #0E7C3D   → text-holly-ink (beyaz zeminde AA kontrast)
+ */
+
+@theme {
+    --color-surface: #ffffff;
+    --color-shell: #f7f8f6;
+    --color-ink: #171917;
+    --color-ink-soft: #626862;
+    --color-line: #e5e8e3;
+    --color-holly: #27d66b;
+    --color-holly-ink: #0e7c3d;
+
+    --font-sans: var(--font-manrope), Arial, sans-serif;
+}
+
 :root {
-  --background: #050505;
-  --surface: #111111;
-  --primary: #27d66b;
-  --foreground: #f5f5f5;
-  --muted: #808080;
+    --background: #ffffff;
+    --surface: #f7f8f6;
+    --primary: #27d66b;
+    --foreground: #171917;
+    --muted: #626862;
+    --border: #e5e8e3;
+    --placeholder: #6b716b;
+
+    color-scheme: light;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
-  background: var(--background);
-  -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background: var(--background);
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
-  overflow-x: hidden;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-manrope), Arial, sans-serif;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    overflow-x: hidden;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-manrope), Arial, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+::selection {
+    background: rgba(39, 214, 107, 0.28);
+    color: var(--foreground);
+}
+
+/*
+ * Genel bağlantı sıfırlama — `@layer base` içinde (Tailwind preflight'inin
+ * yanına). Katmansız yazılan önceki hâli CSS katman önceliği gereği
+ * `.text-white` / `.text-holly-ink` gibi `@layer utilities` renk
+ * sınıflarını eziyordu (bağlantı renkleri hiç uygulanmıyordu). Base
+ * katmanında preflight gibi davrandığı için artık renk yardımcı
+ * sınıfları bağlantıları doğru şekilde etkiliyor; `text-decoration: none`
+ * de aynı katmanda korunuyor.
+ */
+@layer base {
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 }
 
 button,
 a {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 img,
 video {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
+}
+
+/* Görünür ve tutarlı klavye odağı (beyaz zeminde kaybolmasın). */
+:focus-visible {
+    outline: 2px solid var(--color-holly-ink, #0e7c3d);
+    outline-offset: 2px;
 }
 
 /* ------------------------------------------------ */
@@ -51,32 +105,32 @@ video {
 /* ------------------------------------------------ */
 
 .home-events-marquee {
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
 
-  animation-name: home-events-marquee;
-  animation-duration: 55s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-play-state: running;
+    animation-name: home-events-marquee;
+    animation-duration: 55s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
 }
 
 @keyframes home-events-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
+    from {
+        transform: translate3d(0, 0, 0);
+    }
 
-  to {
-    transform: translate3d(calc(-50% - 10px), 0, 0);
-  }
+    to {
+        transform: translate3d(calc(-50% - 10px), 0, 0);
+    }
 }
 
 @media (max-width: 640px) {
-  .home-events-marquee {
-    animation-duration: 42s;
-  }
+    .home-events-marquee {
+        animation-duration: 42s;
+    }
 }
 
 /* ------------------------------------------------ */
@@ -84,37 +138,37 @@ video {
 /* ------------------------------------------------ */
 
 .holly-arrow-button {
-  transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 
-  transition:
-    transform 220ms ease,
-    background-color 220ms ease,
-    border-color 220ms ease,
-    color 220ms ease;
+    transition:
+        transform 220ms ease,
+        background-color 220ms ease,
+        border-color 220ms ease,
+        color 220ms ease;
 }
 
 .holly-arrow-icon {
-  transform: translate3d(0, 0, 0);
-  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+    transform: translate3d(0, 0, 0);
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .holly-arrow-button:hover {
-    transform: translate3d(0, -2px, 0);
-  }
+    .holly-arrow-button:hover {
+        transform: translate3d(0, -2px, 0);
+    }
 
-  .holly-arrow-button:hover .holly-arrow-icon {
-    transform: translate3d(3px, -3px, 0);
-  }
+    .holly-arrow-button:hover .holly-arrow-icon {
+        transform: translate3d(3px, -3px, 0);
+    }
 }
 
 .holly-arrow-button:active {
-  transform: scale(0.96);
+    transform: scale(0.96);
 }
 
 .holly-arrow-button:active .holly-arrow-icon {
-  transform: translate3d(2px, -2px, 0) scale(0.92);
+    transform: translate3d(2px, -2px, 0) scale(0.92);
 }
 
 /* ------------------------------------------------ */
@@ -122,21 +176,21 @@ video {
 /* ------------------------------------------------ */
 
 @media (hover: none) and (pointer: coarse) {
-  .tap-scale {
-    transition: transform 180ms ease;
-  }
+    .tap-scale {
+        transition: transform 180ms ease;
+    }
 
-  .tap-scale:active {
-    transform: scale(0.97);
-  }
+    .tap-scale:active {
+        transform: scale(0.97);
+    }
 
-  .holly-arrow-button:active {
-    transform: scale(0.94);
-  }
+    .holly-arrow-button:active {
+        transform: scale(0.94);
+    }
 
-  .holly-arrow-button:active .holly-arrow-icon {
-    transform: translate3d(3px, -3px, 0);
-  }
+    .holly-arrow-button:active .holly-arrow-icon {
+        transform: translate3d(3px, -3px, 0);
+    }
 }
 
 /* ------------------------------------------------ */
@@ -144,61 +198,61 @@ video {
 /* ------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+    html {
+        scroll-behavior: auto;
+    }
 
-  .home-events-marquee {
-    animation: none;
-    transform: none;
-  }
+    .home-events-marquee {
+        animation: none;
+        transform: none;
+    }
 
-  .holly-arrow-button,
-  .holly-arrow-icon,
-  .tap-scale {
-    transition-duration: 0.01ms;
-  }
+    .holly-arrow-button,
+    .holly-arrow-icon,
+    .tap-scale {
+        transition-duration: 0.01ms;
+    }
 }
 
 /* ------------------------------------------------ */
-/* GENEL FORM ALANLARI */
+/* GENEL FORM ALANLARI (BEYAZ ZEMİN) */
 /* ------------------------------------------------ */
 
 /*
- * Yazılan metin rengi: alan, bulunduğu yüzeyin metin rengini devralır
- * (Tailwind preflight `color: inherit`).
- *
- * DÜZELTME: Bu kural eskiden tüm input/textarea/select alanlarına zorla
- * `#18181b` (koyu) veriyordu; koyu zeminli formlarda (giriş, profil,
- * özel antrenman, etkinlik başvurusu, admin girişi…) yazılan yazı
- * okunmaz hale geliyordu.
- *
- * Renk artık bileşende belirtilir:
- *   - koyu zeminde  → `text-white`
- *   - açık zeminde  → `text-zinc-950` (ör. /admin/sponsors, /admin/supporters)
- * Sınıf yoksa devir alma (inherit) geçerlidir; hiçbir yerde koyu zorlaması yoktur.
+ * Yazılan metin rengi alan, bulunduğu yüzeyin metin rengini devralır
+ * (Tailwind preflight `color: inherit`). Beyaz temada gövde rengi
+ * koyu (#171917) olduğu için girilen metin her yerde okunur.
+ * Bileşen içi `text-*` sınıfı bu devri geçersiz kılmaz, yalnızca
+ * açıkça yazılan rengi uygular.
  */
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
-  color: inherit;
+    color: inherit;
 }
 
 /*
- * Placeholder: yazılan metinden (beyaz / neredeyse siyah) net biçimde
- * ayrışan, hem koyu (#050505–#1a1a1a) hem açık (beyaz) zeminde ≈4.5:1
- * kontrast sunan orta gri ton. Bileşen içi `placeholder:text-*`
- * sınıfları bu varsayılanın üzerine yazabilir.
+ * Placeholder: yazılan metinden net biçimde ayrışan, beyaz ve çok açık
+ * nötr zeminlerde ≈4.5:1 kontrast sunan gri ton.
  */
 input::placeholder,
 textarea::placeholder {
-  color: #767680;
-  opacity: 1;
+    color: var(--placeholder);
+    opacity: 1;
 }
 
 select option {
-  background-color: #1a1a1a;
-  color: #ffffff;
+    background-color: #ffffff;
+    color: #171917;
+}
+
+/* Tarih/saat ve yerel tarayıcı kontrolleri açık temayla çalışsın. */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"] {
+    color-scheme: light;
 }
 
 /* ------------------------------------------------ */
@@ -206,29 +260,29 @@ select option {
 /* ------------------------------------------------ */
 
 .admin-event-field {
-  color: #ffffff !important;
-  background-color: #1a1a1a !important;
-  caret-color: #27d66b !important;
-  -webkit-text-fill-color: #ffffff !important;
+    color: #171917 !important;
+    background-color: #ffffff !important;
+    caret-color: #0e7c3d !important;
+    -webkit-text-fill-color: #171917 !important;
 }
 
 .admin-event-field::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.45) !important;
+    color: rgba(23, 25, 23, 0.45) !important;
+    -webkit-text-fill-color: rgba(23, 25, 23, 0.45) !important;
 }
 
 .admin-event-field option {
-  color: #ffffff !important;
-  background-color: #1a1a1a !important;
+    color: #171917 !important;
+    background-color: #ffffff !important;
 }
 
 .admin-event-field:-webkit-autofill,
 .admin-event-field:-webkit-autofill:hover,
 .admin-event-field:-webkit-autofill:focus {
-  -webkit-text-fill-color: #ffffff !important;
-  caret-color: #27d66b !important;
-  box-shadow: 0 0 0 1000px #1a1a1a inset !important;
-  transition: background-color 9999s ease-out;
+    -webkit-text-fill-color: #171917 !important;
+    caret-color: #0e7c3d !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    transition: background-color 9999s ease-out;
 }
 
 /* ------------------------------------------------ */
@@ -236,61 +290,61 @@ select option {
 /* ------------------------------------------------ */
 
 .registration-field {
-  color: #ffffff !important;
-  background-color: #1a1a1a !important;
-  caret-color: #27d66b !important;
-  -webkit-text-fill-color: #ffffff !important;
+    color: #171917 !important;
+    background-color: #ffffff !important;
+    caret-color: #0e7c3d !important;
+    -webkit-text-fill-color: #171917 !important;
 }
 
 .registration-field::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.45) !important;
+    color: rgba(23, 25, 23, 0.45) !important;
+    -webkit-text-fill-color: rgba(23, 25, 23, 0.45) !important;
 }
 
 .registration-field option {
-  color: #ffffff !important;
-  background-color: #1a1a1a !important;
+    color: #171917 !important;
+    background-color: #ffffff !important;
 }
 
 .registration-field:-webkit-autofill,
 .registration-field:-webkit-autofill:hover,
 .registration-field:-webkit-autofill:focus {
-  -webkit-text-fill-color: #ffffff !important;
-  caret-color: #27d66b !important;
-  box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+    -webkit-text-fill-color: #171917 !important;
+    caret-color: #0e7c3d !important;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
 }
 
 /* ------------------------------------------------ */
-/* ORTAK KOYU FORM ALANLARI */
+/* ORTAK FORM ALANLARI */
 /* ------------------------------------------------ */
 
-.form-field-dark {
-  color: #ffffff !important;
-  background-color: #181818;
-  -webkit-text-fill-color: #ffffff !important;
-  caret-color: #27d66b;
+.form-field {
+    color: #171917 !important;
+    background-color: #ffffff;
+    -webkit-text-fill-color: #171917 !important;
+    caret-color: #0e7c3d;
 }
 
-.form-field-dark::placeholder {
-  color: rgba(255, 255, 255, 0.45) !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.45) !important;
+.form-field::placeholder {
+    color: rgba(23, 25, 23, 0.45) !important;
+    -webkit-text-fill-color: rgba(23, 25, 23, 0.45) !important;
 }
 
-.form-field-dark:-webkit-autofill,
-.form-field-dark:-webkit-autofill:hover,
-.form-field-dark:-webkit-autofill:focus,
-.form-field-dark:-webkit-autofill:active {
-  -webkit-text-fill-color: #ffffff !important;
-  caret-color: #27d66b;
-  box-shadow: 0 0 0 1000px #181818 inset !important;
-  transition: background-color 9999s ease-in-out 0s;
+.form-field:-webkit-autofill,
+.form-field:-webkit-autofill:hover,
+.form-field:-webkit-autofill:focus,
+.form-field:-webkit-autofill:active {
+    -webkit-text-fill-color: #171917 !important;
+    caret-color: #0e7c3d;
+    box-shadow: 0 0 0 1000px #ffffff inset !important;
+    transition: background-color 9999s ease-in-out 0s;
 }
 
-select.form-field-dark {
-  color-scheme: dark;
+select.form-field {
+    color-scheme: light;
 }
 
-select.form-field-dark option {
-  background: #181818;
-  color: #ffffff;
+select.form-field option {
+    background: #ffffff;
+    color: #171917;
 }

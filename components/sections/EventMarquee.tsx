@@ -160,21 +160,21 @@ export default function EventMarquee() {
     }
 
     return (
-        <section className="overflow-hidden bg-[#050505] py-16 sm:py-20">
+        <section className="overflow-hidden bg-white py-16 sm:py-20">
             <div className="mx-auto mb-10 flex max-w-7xl flex-col justify-between gap-6 px-6 md:flex-row md:items-end lg:px-8">
                 <div>
-                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                    <p className="text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                         Holly Sport deneyimleri
                     </p>
 
-                    <h2 className="mt-4 max-w-3xl text-4xl font-extrabold tracking-[-0.04em] text-white sm:text-5xl">
+                    <h2 className="mt-4 max-w-3xl text-4xl font-extrabold tracking-[-0.04em] text-ink sm:text-5xl">
                         Her hafta yeni bir hareket.
                     </h2>
                 </div>
 
                 <Link
                     href="/gallery"
-                    className="inline-flex min-h-12 w-fit items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold text-white transition hover:border-[#27D66B] hover:text-[#27D66B]"
+                    className="inline-flex min-h-12 w-fit items-center justify-center rounded-full border border-line bg-white px-6 text-sm font-semibold text-ink transition hover:border-[#27D66B] hover:text-holly-ink"
                 >
                     Tüm Galeriyi Gör
                 </Link>
@@ -186,7 +186,7 @@ export default function EventMarquee() {
                     onClick={() => scrollCards("left")}
                     disabled={!canScrollLeft}
                     aria-label="Önceki etkinlikleri göster"
-                    className="absolute left-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/80 text-white shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-black active:scale-95 disabled:pointer-events-none disabled:opacity-25 sm:left-6 sm:h-14 sm:w-14"
+                    className="absolute left-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-ink active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:left-6 sm:h-14 sm:w-14"
                 >
                     <ChevronLeft
                         aria-hidden="true"
@@ -203,7 +203,7 @@ export default function EventMarquee() {
                         <Link
                             key={event.title}
                             href={event.href}
-                            className="group relative flex h-[290px] w-[250px] shrink-0 snap-start overflow-hidden rounded-[26px] border border-white/10 bg-[#111111] shadow-[0_16px_45px_rgba(0,0,0,0.35)] transition active:scale-[0.98] sm:h-[330px] sm:w-[290px] md:hover:-translate-y-1 md:hover:border-[#27D66B]/50"
+                            className="group relative flex h-[290px] w-[250px] shrink-0 snap-start overflow-hidden rounded-[26px] border border-line bg-shell shadow-sm transition active:scale-[0.98] sm:h-[330px] sm:w-[290px] md:hover:-translate-y-1 md:hover:border-[#27D66B]/50"
                         >
                             <Image
                                 src={event.image}
@@ -239,7 +239,7 @@ export default function EventMarquee() {
                     onClick={() => scrollCards("right")}
                     disabled={!canScrollRight}
                     aria-label="Sonraki etkinlikleri göster"
-                    className="absolute right-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/80 text-white shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-black active:scale-95 disabled:pointer-events-none disabled:opacity-25 sm:right-6 sm:h-14 sm:w-14"
+                    className="absolute right-3 top-1/2 z-30 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition hover:border-[#27D66B] hover:bg-[#27D66B] hover:text-ink active:scale-95 disabled:pointer-events-none disabled:opacity-40 sm:right-6 sm:h-14 sm:w-14"
                 >
                     <ChevronRight
                         aria-hidden="true"

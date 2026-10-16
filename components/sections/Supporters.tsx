@@ -83,14 +83,14 @@ export default async function Supporters() {
         .filter((name): name is string => Boolean(name));
 
     return (
-        <section className="bg-[#050505] py-20 text-white sm:py-24">
+        <section className="bg-white py-20 text-ink sm:py-24">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#27D66B] text-[#050505]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#27D66B] text-ink">
                         <HandHeart className="h-6 w-6" />
                     </div>
 
-                    <p className="mt-6 text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+                    <p className="mt-6 text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
                         Destekçilerimiz
                     </p>
 
@@ -98,7 +98,7 @@ export default async function Supporters() {
                         Holly Sport birlikte büyüyor.
                     </h2>
 
-                    <p className="mt-5 max-w-2xl leading-7 text-white/55 sm:text-lg">
+                    <p className="mt-5 max-w-2xl leading-7 text-ink-soft sm:text-lg">
                         Emeği, uzmanlığı, ürünleri ve desteğiyle
                         topluluğumuza güç veren kişi ve kurumlara
                         teşekkür ederiz.
@@ -108,7 +108,7 @@ export default async function Supporters() {
                 <div className="mt-14">
                     <div className="flex items-end justify-between gap-6">
                         <div>
-                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-holly-ink">
                                 Kurumsal
                             </p>
 
@@ -132,11 +132,11 @@ export default async function Supporters() {
                                         </div>
 
                                         <div className="mt-5 text-center">
-                                            <p className="font-semibold text-zinc-950">
+                                            <p className="font-semibold text-ink">
                                                 {sponsor.name}
                                             </p>
 
-                                            <p className="mt-1 text-xs text-zinc-500">
+                                            <p className="mt-1 text-xs text-ink-soft">
                                                 {sponsorCategoryLabels[
                                                     sponsor.category
                                                 ] ?? "Destekçi"}
@@ -152,7 +152,7 @@ export default async function Supporters() {
                                             href={sponsor.website}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="rounded-3xl border border-transparent bg-white p-6 transition duration-300 hover:border-white/30"
+                                            className="rounded-3xl border border-line bg-white p-6 transition duration-300 hover:border-ink-soft"
                                         >
                                             {content}
                                         </a>
@@ -162,7 +162,7 @@ export default async function Supporters() {
                                 return (
                                     <div
                                         key={sponsor.id}
-                                        className="rounded-3xl border border-transparent bg-white p-6"
+                                        className="rounded-3xl border border-line bg-white p-6"
                                     >
                                         {content}
                                     </div>
@@ -170,7 +170,7 @@ export default async function Supporters() {
                             })}
                         </div>
                     ) : (
-                        <div className="mt-7 rounded-3xl border border-white/10 bg-[#111111] px-6 py-12 text-center text-sm text-white/55">
+                        <div className="mt-7 rounded-3xl border border-line bg-shell px-6 py-12 text-center text-sm text-ink-soft">
                             Kurumsal destekçilerimiz yakında burada yer
                             alacak.
                         </div>
@@ -179,7 +179,7 @@ export default async function Supporters() {
 
                 <div className="mt-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
                     <div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#27D66B]">
+                        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-holly-ink">
                             Bireysel Destek
                         </p>
 
@@ -187,15 +187,10 @@ export default async function Supporters() {
                             Bireysel Yatırımcılarımız
                         </h3>
 
-                        <p className="mt-4 max-w-lg leading-7 text-white/55">
+                        <p className="mt-4 max-w-lg leading-7 text-ink-soft">
                             Holly Sport&apos;un gelişimine bireysel ve
                             finansal katkı sağlayan yatırımcılarımıza
                             teşekkür ederiz.
-                        </p>
-
-                        <p className="mt-4 text-sm leading-6 text-white/40">
-                            İsimler, yatırımcıların seçtiği gizlilik
-                            tercihine göre gösterilmektedir.
                         </p>
                     </div>
 
@@ -205,13 +200,13 @@ export default async function Supporters() {
                     />
                 </div>
 
-                <div className="mt-12 flex flex-col items-start justify-between gap-6 rounded-3xl border border-white/10 bg-[#111111] px-6 py-7 text-white sm:flex-row sm:items-center sm:px-8">
+                <div className="mt-12 flex flex-col items-start justify-between gap-6 rounded-3xl border border-line bg-shell px-6 py-7 text-ink sm:flex-row sm:items-center sm:px-8">
                     <div>
                         <h3 className="text-xl font-bold">
                             Sen de Holly Sport&apos;a güç ver.
                         </h3>
 
-                        <p className="mt-2 text-sm leading-6 text-white/55">
+                        <p className="mt-2 text-sm leading-6 text-ink-soft">
                             Gönüllü, bireysel veya kurumsal destek
                             seçeneklerini inceleyebilirsin.
                         </p>
@@ -219,7 +214,7 @@ export default async function Supporters() {
 
                     <Link
                         href="/destek-ol"
-                        className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#27D66B] px-6 py-3 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                        className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#27D66B] px-6 py-3 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                     >
                         Destekçilerimiz Arasına Katıl
                         <ArrowRight className="h-5 w-5" />

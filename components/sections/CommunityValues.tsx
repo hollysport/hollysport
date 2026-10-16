@@ -29,41 +29,41 @@ const values = [
 
 export default function CommunityValues() {
     return (
-        <section className="bg-zinc-950 py-20 sm:py-24">
+        <section className="bg-shell py-20 sm:py-24">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl">
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-500">
+                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-orange-700">
                         Bizi Biz Yapan
                     </p>
 
-                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-ink sm:text-5xl">
                         Spordan daha fazlasını birlikte oluşturuyoruz.
                     </h2>
 
-                    <p className="mt-5 text-base leading-7 text-zinc-400 sm:text-lg">
+                    <p className="mt-5 text-base leading-7 text-ink-soft sm:text-lg">
                         Holly Sport; hareket etmenin yanında yeni insanlarla tanışmayı,
                         dayanışmayı ve güçlü bağlar kurmayı önemser.
                     </p>
                 </div>
 
-                <div className="mt-12 grid gap-px overflow-hidden rounded-3xl bg-white/10 md:grid-cols-2 lg:grid-cols-4">
+                <div className="mt-12 grid gap-px overflow-hidden rounded-3xl bg-line md:grid-cols-2 lg:grid-cols-4">
                     {values.map((value) => {
                         const Icon = value.icon;
 
                         return (
                             <div
                                 key={value.title}
-                                className="bg-zinc-950 p-7 transition hover:bg-zinc-900 sm:p-8"
+                                className="bg-shell p-7 transition hover:bg-white sm:p-8"
                             >
-                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500/10 text-orange-500">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-700">
                                     <Icon className="h-6 w-6" />
                                 </div>
 
-                                <h3 className="mt-7 text-xl font-bold text-white">
+                                <h3 className="mt-7 text-xl font-bold text-ink">
                                     {value.title}
                                 </h3>
 
-                                <p className="mt-3 leading-7 text-zinc-400">
+                                <p className="mt-3 leading-7 text-ink-soft">
                                     {value.description}
                                 </p>
                             </div>

@@ -25,20 +25,20 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      className="scroll-mt-20 overflow-hidden bg-[#050505] py-16 sm:py-20 md:scroll-mt-28"
+      className="scroll-mt-20 overflow-hidden bg-shell py-16 sm:py-20 md:scroll-mt-28"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.24em] text-holly-ink">
               Bizden Kareler
             </p>
 
-            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+            <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-5xl">
               Spor, enerji ve gerçek dostluklar.
             </h2>
 
-            <p className="mt-4 text-base leading-7 text-white/55 sm:text-lg">
+            <p className="mt-4 text-base leading-7 text-ink-soft sm:text-lg">
               Holly Sport etkinliklerinde yalnızca spor
               yapmıyor, birlikte unutulmaz anılar
               biriktiriyoruz.
@@ -47,7 +47,7 @@ export default function Gallery() {
 
           <Link
             href="/gallery"
-            className="tap-scale group inline-flex min-h-12 w-fit shrink-0 items-center justify-center gap-2.5 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-[#050505] transition duration-300 hover:bg-[#45e27f]"
+            className="tap-scale group inline-flex min-h-12 w-fit shrink-0 items-center justify-center gap-2.5 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-ink transition duration-300 hover:bg-[#1fc461]"
           >
             Tüm Galeriyi Gör
 
@@ -71,7 +71,7 @@ export default function Gallery() {
             >
               <Link
                 href={`/gallery?branch=${sport.slug}`}
-                className={`tap-scale group relative block min-h-[240px] overflow-hidden rounded-2xl border border-white/10 bg-[#111111] ${index === 0
+                className={`tap-scale group relative block min-h-[240px] overflow-hidden rounded-2xl border border-line bg-white ${index === 0
                     ? "lg:min-h-[540px]"
                     : "lg:h-full lg:min-h-0"
                   }`}
@@ -106,7 +106,7 @@ export default function Gallery() {
                     </h3>
                   </div>
 
-                  <span className="holly-arrow-button flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md md:group-hover:border-white md:group-hover:bg-white md:group-hover:text-black">
+                  <span className="holly-arrow-button flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-black/25 text-white backdrop-blur-md md:group-hover:border-white md:group-hover:bg-white md:group-hover:text-ink">
                     <ArrowUpRight
                       aria-hidden="true"
                       strokeWidth={2.2}
