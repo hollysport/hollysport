@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
             "Spor, sosyalleşme ve yeni deneyimler etrafında insanları bir araya getiren bağımsız spor topluluğu.",
         start_url: "/",
         display: "standalone",
-        background_color: "#050505",
+        background_color: "#ffffff",
         theme_color: "#27D66B",
         orientation: "portrait-primary",
         icons: [

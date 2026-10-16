@@ -15,14 +15,14 @@ const manrope = Manrope({
 });
 
 export const viewport: Viewport = {
-    themeColor: "#050505",
-    colorScheme: "dark",
+    themeColor: "#ffffff",
+    colorScheme: "light",
 };
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
 
-    title: "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman",
+    title: "Holly Sport | Spor topluluğu",
 
     description: siteDescription,
 
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
         locale: "tr_TR",
         url: "/",
         siteName: "Holly Sport",
-        title: "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman",
+        title: "Holly Sport | Spor topluluğu",
         description:
             "İnteraktif 3D anatomi haritası ve bilimsel algoritmayla kişisel antrenman programını oluştur. Spor yap, yeni insanlarla tanış, birlikte hareket et.",
         images: [
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
 
     twitter: {
         card: "summary_large_image",
-        title: "Holly Sport | 3D Anatomi Destekli Yeni Nesil Antrenman",
+        title: "Holly Sport | Spor topluluğu",
         description:
             "İnteraktif 3D anatomi haritasıyla hedefine özel antrenman programını oluştur.",
         images: ["/images/seo/holly-sport-og.jpg"],
@@ -106,7 +106,7 @@ export default function RootLayout({
     return (
         <html lang="tr">
             <body
-                className={`${manrope.className} ${manrope.variable} bg-[#050505] antialiased`}
+                className={`${manrope.className} ${manrope.variable} bg-white text-[#171917] antialiased`}
             >
                 {children}
             </body>
