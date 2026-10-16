@@ -73,3 +73,9 @@ next-env.d.ts
 
 # opencode / agent konfigürasyonu (yerel araç ayarları)
 /opencode.json
+
+# Temporary image-editing files
+# (Windows gorsel editoru / indirme birakilan ~tmp ve RF artiklari;
+#  public/ altina sizmamali, deploy'a tasinmamali.)
+*.~tmp
+*~RF*.TMP

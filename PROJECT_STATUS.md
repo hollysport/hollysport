@@ -1,7 +1,114 @@
 # Proje Durumu — Holly Sport
 
-Son güncelleme: 2026-10-01
+Son güncelleme: 2026-10-16
 
+## 2026-10-16: Global bağlantı renk katmanı düzeltmesi (kalıcı) + gereksiz hero sınıfının kaldırılması
+
+- **Sorun (küresel):** `app/globals.css` içindeki `a { color: inherit; text-decoration: none; }` kuralı **katmansız**ydı → CSS katman önceliği gereği `@layer utilities`'teki `.text-white`, `.text-holly-ink`, `hover:text-*` gibi **tüm** bağlantı renk sınıflarını eziyordu; bağlantılarda renk sınıfları hiç uygulanmıyordu (daima üst/`body` rengi devralınıyordu). Önceki iki hero düzeltmesi bu yüzden metni beyaz yapamamıştı.
+- **Düzeltme:** kural `@layer base` katmanına taşındı (Tailwind preflight'inin yanına). `text-decoration: none` aynı katmanda korundu; `!important`/inline style yok; dokunma kuralı (`button, a { touch-action }`) ve diğer globals kuralları değişmedi. Artık `utilities > base` → renk sınıfları bağlantıları doğru şekilde etkiliyor.
+- **Hero butonu:** "Etkinlikleri Keşfet" şeffaf zemin + beyaz kenarlık + beyaz metin/ok korundu (`text-white` artık kendisi uygulanıyor). Geçici `.holly-hero-secondary-link` özel sınıfı hem `globals.css`'ten hem `Hero.tsx`'ten kaldırıldı. Hedef (`/events`), boyut, hover/focus ve yeşil "Topluluğa Katıl" CTA'sı değişmedi.
+- **Etki denetimi:** 68 gerçek `<a>`/`<Link>` otomatik+manuel incelendi. Beyaz zeminde `text-white` (görünmez metin) **yok**. `text-holly-ink` + `bg-holly-ink/10` (KVKK/privacy/terms mailto rozetleri) ve `text-ink` + yeşil zemin (etkinlik katılım, SSS/galeri/destek CTA'ları, profil aksiyonları) kontrastlı. Navbar, footer, etkinlik kartları, SSS, admin bağlantılarında istenmeyen renk kayması yok.
+- **Doğrulama:** dev sunucusu `.next/dev` önbelleği (5.6 GB) temizlenip yeniden başlatıldı (CSS katman değişimi önbekte kalıyordu). Servis edilen CSS kaskad kanıtı: `a{color:inherit}` → `@layer base`, `.text-white`/`.text-holly-ink` → `@layer utilities` → utilities > base. Buton HTML'de `text-white`+`border-white`+`bg-transparent`+hover/focus, geçici sınıf yok, ok `stroke="currentColor"`, yeşil CTA yerinde. `tsc` exit 0; `lint` 0 hata (5 önceden varan `<img>`); `build` exit 0 (dev durdurulup alındı); `git diff --check` temiz. **Tarayıcı bağlı olmadığından** ekran görüntülü teyit yapılamadı; `/`, navbar, `/faq`, `/events`, `/gallery`, `/admin/login` manuel kontrolü TODO'da.
+
+## 2026-10-16: Sadeleştirme, etkinlik düzeni ve destek formu güncellemesi
+
+- **Hero butonu:** "Etkinlikleri Keşfet" şeffaf zemin + tam beyaz kenarlık + beyaz metin/ok oldu (`border-white`, `bg-transparent`, hover `bg-white/10`); boyut/hizalama ve yeşil ana CTA değişmedi.
+- **Etkinlikler:** geçmiş kartlar kare afiş + ad + tarih (uzun açıklama/katılımcı sayısı/rozet yok, `aspect-square`); yaklaşan kartlar mevcut görünümünü korudu. Detay sayfasında yalnız geçmiş etkinliklerde `short_description`, "Bilmen gerekenler" açıklaması ve Katılımcı satırı gizli (adres yoksa tek sütun + ortalanmış bilgi kartı). Otomatik ayrım (`ends_at` ↔ epoch) ve `status=published` filtresi (iptal edilenler listeye girmez) korundu.
+- **Hakkımızda:** giriş metnin yanına gerçek topluluk fotoğrafı (`/images/about/about-commun.jpg`, 2160×1131, `aspect-[19/10]`, `alt` + `figcaption`); masaüstünde yan yana, mobilde metin üstte görsel altta.
+- **Antrenman:** "Nasıl hesaplıyoruz?" aside'ı + BMR/TDEE açıklamaları + boş 420px sütun düzeni kaldırıldı (tek `max-w-4xl` kart); tıbbi uyarı metni kartın altına taşındı. 3D harita açıklaması kaldırıldı, 3D anatomi/program üretici korundu.
+- **Galeri:** "…kategorisinde N fotoğraf gösteriliyor." metni + artık kullanılmayan `selectedBranchName` kaldırıldı; filtre/URL/lightbox değişmedi.
+- **SSS:** giriş açıklaması, "Dönüş süreci" kartı ve alttaki "Etkinlikleri İncele" CTA'sı kaldırıldı (kullanılmayan `Link` importu dahil); başlık + 12 soru + soru formu korundu.
+- **Ana sayfa:** ikinci `/events` bağlantısı ("Etkinlik takvimi") kaldırıldı; SSS açıklama cümlesi ve yatırımcı gizlilik cümlesi kaldırıldı (veri silinmedi).
+- **Destek Ol:** etiketler "Maddi destek" ve "Sosyal medya" oldu; yeni seçenek "Gönüllü öğrenci temsilcisi" (`student_representative`) eklendi — yalnız etiket değil, sunucu `allowedSupportTypes` + admin etiket haritaları da güncellendi. Eski değerler, Turnstile/rate-limit/KVKK korundu; şema değişikliği gerekmedi (`support_types` = `string[]`). "Başvurudan sonra ne olacak?" kartı (çift numaralı 4 adım) kaldırıldı.
+- Doğrulama: `tsc` exit 0; `lint` 0 hata (5 önceden varan `<img>`); `build` başarılı; `git diff --check` temiz. HTTP ile canlı teyit: `/`, `/training`, `/gallery`, `/faq`, `/about`, `/destek-ol`, `/events` ve 3 geçmiş etkinlik detayında kaldırılan metinlerin gitmediği, eklenen görsel/etiketlerin geldiği doğrulandı. **Tarayıcı bağlı olmadığından** buton kontrastı/kare afiş/mobil hizalama/lightbox ekran görüntüsüyle teyit edilemedi. DB CHECK/ENUM kısıtı salt-okunur sorgulanamadı (`exec_sql` yok) — gerekiyorsa kullanıcı dashboard'dan `information_schema.columns` + `pg_constraint` sorgusu çalıştırmalı (SQL CHANGELOG'da).
+
+## 2026-10-16: Commit öncesi son temizlik — geçici görsel artıkları + .gitignore
+
+- Commit'lenmiş iki Windows editör artığı silindi: `public/images/gallery/diger/IMG_9448.jpeg.~tmp` (19.06 MB) ve `public/images/gallery/trekkinghiking/IMG_6266.jpg~RFa1d1972.TMP` (0 KB; kullanıcı "diger/" yazmıştı, gerçek klasör `trekkinghiking/`). Başka dosyaya dokunulmadı; `git rm`/toplu silme yok. İkisi de `git status`'ta ` D` (D 5→7), commit edilmedi.
+- `.gitignore`'a `*.~tmp` + `*~RF*.TMP` eklendi (mevcut kurallar korunarak); `git check-ignore` ile doğrulandı (temp eşleşiyor, normal `.jpg/.jpeg/.JPG` ignore edilmiyor).
+- Doğrulama: `public/` kalan temp artık 0; `tsc` exit 0; `lint` 0 hata (5 önceden varan `<img>`); `build` başarılı. Tarayıcı bağlı olmadığından admin paneli **görsel** olarak teyit edilemedi; HTTP + kod incelemesiyle değerlendirildi (login 200 + gerçek logo, HS yok; navigasyon/drawer/aktif-vurgu mantığı kodda sağlam).
+
+## 2026-10-16: Marka logosu, görsel optimizasyonu ve `next/image` geçişi
+
+- **Gerçek logo:** Admin panelindeki "HS" metin monogramı → projenin gerçek Holly Sport logosu (`public/icons/icon-512.png`, beyaz HS + yörünge çizgileri / koyu zemin). `components/admin/admin-shell.tsx` (sidebar `BrandBlock`) + `app/admin/login/page.tsx`; `next/image`, kare kaynak + `object-cover` (oran korunur), anlamlı `alt`. Yeni dosya/kopya eklenmedi.
+- **Görsel optimizasyonu (ölçümlü):** `public/` içindeki **3 MB üstü 75 JPEG/PNG** kaynak gerçek kullanım çözünürlüğüne indirildi (galeri 1600px, hero 2000px genişlik tavanı; format + dosya adları korundu, asla büyütmme, kalite 82). **683.7 MB → 30.6 MB** (≈653 MB kazanç); hero 9.2 → 0.67 MB. `sharp` (mevcut geçişi bağımlılık) kullanıldı, yeni paket eklenmedi.
+- **`next/image` geçişi:** Etkinlik kapak/görselleri CSS `backgroundImage` → `next/image` `fill` + gerçek `sizes` (`app/events/page.tsx`, `app/events/[slug]/page.tsx` kapak `priority` + galeri, `components/sections/UpcomingEventsClient.tsx`). Supabase için `next.config.ts`'e `remotePatterns` (`ycxxopwtddzkmkjrwdii.supabase.co/storage/v1/object/public/**`).
+- **Galeri deterministik:** `app/gallery/page.tsx` sunucu `Math.random()` shuffle kaldırıldı (build'de sabitleniyordu, client `GalleryGrid`'de zaten karıştırıyordu → gereksiz iş + atlama riski). Karıştırma tek yerde, istemcide.
+- **Admin layout log temizliği:** `app/admin/layout.tsx` `catch` bloğu Next.js'in statik prerender çıkış sinyalini ("dynamic server usage") **yeniden fırlatıyor** (yutulmuyor) → framework'ün dynamic işaretleme mekanizması bozulmuyor; yalnız gerçek hatalar loglanıyor, build çıktısı temiz.
+- **Doğrulama:** `npx tsc --noEmit` exit 0; `npm run lint` 0 hata (5 önceden varan `<img>`); `npm run build` başarılı (41 route, admin dynamic ƒ). HTTP smoke `/`, `/gallery`, `/events`, `/admin/login`, `/faq` → 200; SSR HTML'de hero + `/faq` var, eski `>HS<` yok; dev log'da hydration uyarısı yok. Görseller `sharp` metadata ile geçerli/beklenen boyutta. Tarayıcı oturumu bağlı olmadığından ekran görüntülü teyit yapılamadı.
+
+## 2026-10-15: Admin paneli — kalıcı sol menü (ortak layout + sidebar)
+
+- **İstenen:** Yönetim panelinin tüm iç sayfalarında görünen, bölüm değişince yerinde kalan kalıcı sol menü; sağda seçilen bölümün içeriği.
+- **Uygulama:** `app/admin/layout.tsx` (sunucu, profil okuması) + `components/admin/admin-shell.tsx` (istemci: masaüstü fixed sidebar + mobil drawer + aktif rota). `lib/admin/navigation.ts` tek menü kaynağı (13 gerçek rota / 5 grup; `matchPrefix` ile alt rotalar). Login (`/admin/login`) sidebar dışında (`usePathname` kontrolü).
+- **Güvenlik:** Layout yetkilendirme yapmaz; `requireAdmin` her sayfada aynen çalışıyor (login döngüsü riski nedeniyle layout'a taşınamaz). `proxy.ts`/RLS/dönüşmede.
+- **Bildirim:** Sidebar'dan `/admin#bildirim-merkezi` çapası → dashboard'daki mevcut Bildirim Merkezi bölümü (`id` eklendi). Yeni bildirim sistemi yok; okunmamış sayısı mevcut olmadığından ek sorgu eklenmedi.
+- **Sadeleştirme:** "← Geri Dön"/"Yönetim paneli"/"Admin Paneli" tekrarları kaldırıldı (10 sayfa); başlık/açıklama/İşlem butonları korundu. Dashboard'da mükerrer "Siteyi aç"/"Çıkış yap" kaldırıldı (sidebar'da mevcut).
+- **Doğrulama:** `lint` 0 hata, `build` başarılı (41 route, admin dynamic ƒ), HTTP `/admin/login` 200 (sidebar yok) + `/admin` 307 (auth korunuyor). `tsc` yalnız üretilmiş `.next/dev/types` yarışması hatası (build type-check'i geçti). Giriş yapılmış görsel doğrulama yapılamadı (tarayıcı oturumu bağlı değil).
+
+## 2026-10-15: Türkçe karakter kodlama bozukluğu — onarıldı (app/faq/page.tsx)
+
+- **Belirti:** `/faq`'da mojibake (`SÄ±kÃ§a sorulan sorular` → `Sıkça sorulan sorular`), 35 satır / 213 mojibake dizisi.
+- **Kök neden:** Bu oturumdaki PowerShell `Get-Content` + `Set-Content -Encoding UTF8` girinti işlemi BOM'suz UTF-8 dosyayı ANSI okuyup UTF-8 yazdı (çift kodlama). `git show HEAD:app/faq/page.tsx` dosyanın commit'lenmiş **doğru** olduğunu kanıtladı → bozukluk repoda değil çalışma ağacında.
+- **Kapsam:** Proje geneli bayt seviyesi mojibake taraması (`Ã`/`Ä`/`Å` + devam baytı, `â€™`) → **tek bozuk dosya** bu. `app/auth/actions.ts` ve `lib/events/registration-status.ts` ilk eşleşmeleri konsol display kaynaklı **yanlış pozitif**, UTF-8 doğrulamasıyla temiz. Supabase/dış kaynak: **müdahale gerekmedi**.
+- **Onarım:** Yalnız o dosyada ters dönüşüm (mojibake → cp1254 baytları → UTF-8 decode); kod yapısı + Navbar/Footer importları + section düzeni korundu; yeni encoding katmanı eklenmedi.
+- **Doğrulama:** Bayt seviyesi tarama 0, grep 0, `/faq` HTTP UTF-8 HTML doğru (`Sıkça` ×7, `SÄ±kÃ§a` ×0), `tsc` temiz, `lint` 0 hata, `build` başarılı.
+- **Önleme:** BOM'suz UTF-8 dosyalarda PowerShell `Get-Content`/`Set-Content` kullanma; UTF-8'i açıkça ver.
+
+## 2026-10-15: Hydration mismatch — kök neden tespit edildi (SSS link hot-reload uyuşmazlığı)
+
+- **Hata:** `A tree hydrated but some attributes of the server rendered HTML didn't match the client properties...` — yalnız `/` (ana sayfa) üzerinde.
+- **Kaynak (dev log stack trace diff'i):** `HomePage → main → Navbar → header → nav → LinkComponent → SSS`. Diff: client `href="/#faq"` bekliyor, sunucu `href="/faq"` gönderiyordu. Yani uyuşmazlık **Navbar'daki SSS bağlantısının `href`** değerindeydi.
+- **Neden:** Aynı gün SSS hedefi `/#faq` → `/faq` değiştirilmişti; sunucu yeni değeri üretti, tarayıcı bundle'ı hot-reload turunda tam güncellenmemişti (eski `/#faq` kaldı). Kodda iki değer birlikte yok (`href="/#faq"` grep = 0).
+- **Çözüm/doğrulama:** Ek kod değişikliği gerekmedi — dev sunucusu temiz `.next/dev` cache ile yeniden başlatıldı; SSR HTML'de `/faq` 3, `/#faq` 0; dev log'da yeni hydration uyarısı yok. `tsc` temiz, `lint` 0 hata, `build` başarılı (41 route). `suppressHydrationWarning` **eklenmedi** (gereksiz/başka yeri gizlemek olurdu).
+- **Sistematik tarama (kaynak bulunamadı):** `typeof window` yok; `Math.random()` shuffle'ları (`GalleryGrid`, gallery server shuffle) `useEffect`/server tarafında; tarih formatları sabit `timeZone: "Europe/Istanbul"`; `EventMarquee` `window.innerWidth` yalnız olay dinleyicisinde; `Footer` server component (`new Date().getFullYear()` hydrate edilmiyor); auth-dialog `type="date"` render edilmiyor (kapalı).
+- **Not:** Tarayıcı konsolu testi yapılamadı (masaüstü tarayıcı oturumu bağlı değildi); kanıt dev log + SSR HTML + grep. Kalan ihtimaller: bayat dev bundle, tarayıcı eklentisi (kanıt yok). Ayrık `scroll-behavior: smooth` uyarısı hydration ile ilgisiz.
+
+## 2026-10-15: SSS navigasyonu `/faq`'ya bağlandı + SEO/erişilebilirlik düzeltmeleri
+
+- Navbar (masaüstü + mobil) ve footer'daki SSS hedefi `/#faq` → **`/faq`** (`next/link`); `/contact` SSS kartı da tutarlı şekilde `/faq`. Ana sayfa kısa SSS bölümü (`Faq.tsx`, `id="faq"`) ve diğer navbar linkleri değişmedi.
+- `/faq` sayfasına **Navbar + Footer** eklendi (önceden hiç yoktu); iç içe `section` yapısı kardeş `section`lara ayrıldı, eksik fragment/parent onarıldı. `/faq` doğrudan yenilemede de 200.
+- Eksik metadata'lar eklendi: `/events`, `/events/[slug]` (`generateMetadata`), `/join`, `/team`. `app/sitemap.ts`'e `/faq`, `/training`, `/bir-hayalim-var` eklendi.
+- `TestimonialsSection`: foto başına ayrı `createSignedUrl` (N+1) → tek **`createSignedUrls`** batch çağrısı; yorum sayısı ve ortalama hesaplaması aynı (davranış değişmedi).
+- Doğrulama: `tsc --noEmit` ✓, `eslint` 0 hata (5 önceden varan `<img>` uyarısı), `npm run build` ✓ (41 route, `/faq` static ○). HTTP: `/faq` 200 + 2 `/faq` linki; `/` ve `/contact` 200, `/#faq` izi kalmadı.
+- **Performans bulguları ölçüldü ama dokunulmadı** (toplu/ölçümsüz görsel sıkıştırma yapılmadı): `public/` ≈886 MB, 140 dosya >1.5 MB; `hero-background-v2.jpg` 9.17 MB / 7135×4436 (Hero LCP — `next/image` `priority fill` doğru, sorun yalnız kaynak boyutu, decode+resize 0.3–1.7 sn); etkinlik kartları Supabase görsellerini CSS `backgroundImage` ile (optimize edilmemiş) gösteriyor; `/events` `force-dynamic` + limitsiz. Ayrıntı ve yapılacaklar `TODO.md` "Performans" bölümünde.
+- Not: Ekran görüntülü/tıklama denetimi yapılamadı (tarayıcı oturumu bağlı değildi); doğrulama HTTP/HTML üzerinden.
+
+## 2026-10-15: Ana sayfa hero — buton düzeni düzeltildi (son durum)
+
+- `components/sections/Hero.tsx`: hero'da **"Etkinliğe Katıl" butonu yok** (aralarında bir görevde eklenip kaldırıldı; hero tarihçesinde hiç var olmamıştı). Son durum iki buton: "Topluluğa Katıl" (WhatsApp, `bg-[#25D366]`, `target="_blank"`) + "Etkinlikleri Keşfet" (`/events`).
+- "Etkinlikleri Keşfet" görünürlüğü düzeltildi: `border-white/45 bg-black/40 text-white backdrop-blur-md` + hover `border-white/80 bg-black/60` + `focus-visible:ring-2 ring-white/70` — hero görselinin üzerinde net görünüyor.
+- Doğrulama: `tsc --noEmit` ✓, `eslint` 0 hata, localhost render'ında iki buton ve yeni sınıflar doğrulandı. Ekran görüntülü denetim yapılamadı.
+
+## 2026-10-15: Form ağırlıklı sayfalar — beyaz tema dönüşümü
+
+- `/training` (hesaplayıcı, antrenman üretici, program talebi dialogu, select kontrolleri, anatomi haritası), `/join`, `/destek-ol`, `/bir-hayalim-var`, yorum formu, `/profil` (dashboard + avatar), auth dialog, `/update-password`, `/kvkk`, `/privacy`, `/terms` ve `loading/error/not-found` beyaz temaya geçirildi; turnele/rate-limit/Supabase akışları değişmedi.
+- Form alanları beyaz zemin + `border-line` + `text-ink`, hata mesajları kırmızı-700/50/200 tonlarında, birincil butonlar `bg-holly text-ink hover:bg-[#1fc461]`, yeşil metin beyazda `text-holly-ink`. Modeller `bg-white border-line` + `bg-black/40` overlay; gölgeler `shadow-sm`.
+- Turnstile bileşenlerine görsel `theme="light"`; `AnatomyMap3D` WebGL zemini ve fotoğraf üstü scrim'ler bilinçli bırakıldı.
+- `profile-dashboard.tsx` kodlaması cp1254 → UTF-8 onarıldı (önceki oturumdan kalan bozulma; veri kaybı yok).
+- Doğrulama: `eslint` 0 hata, `tsc --noEmit` temiz, `next build` temiz.
+
+## 2026-10-15: Görünürlük denetimi — beyaz zeminde kaybolan ikon/butonlar
+
+- Mobil hamburger menü çizgileri token'a taşındı: `bg-[#171917]` → **`bg-ink`** (+`shrink-0`). `localhost:3000` render'ı ve üretilen CSS ile doğrulandı; koddа ikon zaten koyuydu, raporlanan görünümezlik eski build/tarayıcı cache'i kaynaklı görünüyor (kullanıcıya sayfayı yeniden build etme + hard refresh önerilmeli).
+- `EventMarquee` sol/sağ ok butonlarında `disabled:opacity-25` → `disabled:opacity-40` (beyaz zeminde.disabled durum görünür kalıyor).
+- Genel tarama yapıldı: navbar + mobil menü + kapatma ikonu, footer, CTA/outline butonlar, lucide ikonlar (`currentColor`), galeri lightbox kontrolleri, select okları, etkinlik kartı aksiyonları, admin bildirim satırları + "Daha fazla göster", form kontrolleri. Beyaz zemin üzerinde beyaz metin/ikon hatası bulunamadı; koyu scrim üzeri beyaz metinler ve koyu dolgu butonlardaki beyaz ikonlar bilinçli korundu.
+- Doğrulama: `tsc --noEmit` ✓, `eslint` 0 hata (5 önceden varan `<img>` uyarısı). Ekran görüntülü denetim yapılamadı (tarayıcı bağlı değil) — HTML/CSS üzerinden doğrulandı.
+
+## 2026-10-15: Genel site sayfaları — beyaz tema dönüşümü
+
+- Halka açık sayfalar beyaz temaya geçirildi: `/about` (MissionVision, CommunityValues), `/team` (FounderTeam), `/events` + `/events/[slug]` (+ quick-join-button), `/gallery` (GalleryGrid), `/faq`, `/sports`, `/contact` (QuestionForm).
+- Yüzeyler `bg-white`/`bg-shell` + `border-line`, metinler `text-ink`/`text-ink-soft`, yeşil metinler beyaz zeminde `text-holly-ink`; bölüm zeminleri beyaz ile `bg-shell` dönüşümlü.
+- Etkinlik kartı/kapak fotoğrafı scrimsi, lightbox karartması ve fotoğraf üstü rozetler bilinçli bırakıldı (metin okunurluğu). `QuestionForm` hata/başarı mesajları ikon + metinle okunur; Turnstile'a dokunulmadı.
+- `/sports` silinmedi, veri/içerik korundu; sadece tema sınıfları değişti. `app/team/page.tsx`'te koyu sınıf yoktu, değişiklik gerekmedi.
+- Doğrulama: `tsc --noEmit` ✓, `eslint` 0 hata, `next build` ✓ (CHANGELOG'a bkz.).
+
+## 2026-10-15: Admin paneli — beyaz tema dönüşümü
+
+- Admin sayfalarının tamamı (login, events ± yeni/düzenle, registrations, users, questions, dreams, reviews, custom-training-requests) ve admin bileşenleri (event-form, reviews-manager, *-actions, SupportAdminLinks, delete-event-button, seed/exercise-manager) beyaz temaya geçirildi.
+- Rozetler açık zemin/koyu metin; silme butonları `border-red-200 bg-white text-red-700`; formlar beyaz zemin + `border-line`; lightbox fotoğraf scrim'leri korundu.
+- Zaten beyaz sayfalar (sponsors/supporters/support-requests/exercises) sadece eyebrow renkleriyle hizalandı.
+- eslint 0 hata; tsc/build hatası WIP `lib/admin/activity-feed.ts`'ten (diğer ajanın çalışması).
 ## 2026-10-01: Admin — Bildirim Merkezi (Son Aktiviteler) + Üye Yönetimi
 
 - `app/admin/page.tsx` → **Bildirim Merkezi** kartı: `custom_program_requests` (pending + son), `support_requests`, `individual_supporters`, `profiles` kayıtları paralel okunup `created_at`/`join_date` azalan sırayla tek zaman akışında birleştirilir (max 10 satır).
