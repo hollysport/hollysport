@@ -39,11 +39,11 @@ const statusLabels: Record<RegistrationStatus, string> = {
 };
 
 const statusClasses: Record<RegistrationStatus, string> = {
-    pending: "bg-blue-500/15 text-blue-300",
-    approved: "bg-[#27D66B]/15 text-[#27D66B]",
-    rejected: "bg-red-500/15 text-red-300",
-    waitlist: "bg-yellow-500/15 text-yellow-300",
-    cancelled: "bg-white/10 text-white/45",
+    pending: "bg-blue-50 text-blue-700",
+    approved: "bg-green-50 text-holly-ink",
+    rejected: "bg-red-50 text-red-700",
+    waitlist: "bg-yellow-50 text-yellow-700",
+    cancelled: "bg-shell text-ink-soft",
 };
 
 const genderLabels: Record<string, string> = {
@@ -79,19 +79,19 @@ function RegistrationList({
                             {title}
                         </h2>
 
-                        <p className="mt-2 text-sm text-white/40">
+                        <p className="mt-2 text-sm text-ink-soft">
                             {description}
                         </p>
                     </div>
 
-                    <span className="rounded-full border border-white/10 px-4 py-2 text-sm text-white/40">
+                    <span className="rounded-full border border-line px-4 py-2 text-sm text-ink-soft">
                         {registrations.length} başvuru
                     </span>
                 </div>
             </div>
 
             {registrations.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-white/15 px-6 py-12 text-center text-white/35">
+                <div className="rounded-2xl border border-dashed border-line px-6 py-12 text-center text-ink-soft">
                     Bu bölümde başvuru bulunmuyor.
                 </div>
             ) : (
@@ -99,7 +99,7 @@ function RegistrationList({
                     {registrations.map((registration) => (
                         <article
                             key={registration.id}
-                            className="rounded-2xl border border-white/10 bg-[#111111] p-6 md:p-7"
+                            className="rounded-2xl border border-line bg-shell p-6 md:p-7"
                         >
                             <div className="grid gap-8 lg:grid-cols-[1fr_1fr_auto]">
                                 <div>
@@ -117,7 +117,7 @@ function RegistrationList({
                                             }
                                         </span>
 
-                                        <span className="text-xs text-white/30">
+                                        <span className="text-xs text-ink-soft">
                                             {formatDate(
                                                 registration.created_at,
                                             )}
@@ -133,7 +133,7 @@ function RegistrationList({
                                     <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                                         <a
                                             href={`mailto:${registration.email}`}
-                                            className="font-semibold text-[#27D66B] transition-colors hover:underline"
+                                            className="font-semibold text-holly-ink transition-colors hover:underline"
                                             title="E-posta gönder"
                                         >
                                             {registration.email ||
@@ -143,7 +143,7 @@ function RegistrationList({
                                         {registration.phone ? (
                                             <a
                                                 href={`tel:${registration.phone}`}
-                                                className="font-semibold text-white/75 transition-colors hover:text-[#27D66B]"
+                                                className="font-semibold text-ink/70 transition-colors hover:text-holly-ink"
                                                 title="Telefon etkileşimi başlat"
                                             >
                                                 {
@@ -151,19 +151,19 @@ function RegistrationList({
                                                 }
                                             </a>
                                         ) : (
-                                            <span className="text-white/30">
+                                            <span className="text-ink-soft">
                                                 Telefon
                                                 belirtilmemiş
                                             </span>
                                         )}
                                     </div>
 
-                                    <div className="mt-4 space-y-2 text-sm text-white/45">
+                                    <div className="mt-4 space-y-2 text-sm text-ink-soft">
                                         <p>
-                                            <span className="text-white/25">
+                                            <span className="text-ink-soft">
                                                 Cinsiyet:
                                             </span>{" "}
-                                            <span className="font-semibold text-white/70">
+                                            <span className="font-semibold text-ink/70">
                                                 {registration.gender
                                                     ? genderLabels[
                                                       registration
@@ -176,12 +176,12 @@ function RegistrationList({
                                     </div>
 
                                     {registration.notes && (
-                                        <div className="mt-5 rounded-xl bg-white/[0.04] p-4">
-                                            <span className="text-xs uppercase tracking-wider text-white/25">
+                                        <div className="mt-5 rounded-xl bg-shell p-4">
+                                            <span className="text-xs uppercase tracking-wider text-ink-soft">
                                                 Katılımcı notu
                                             </span>
 
-                                            <p className="mt-2 whitespace-pre-line text-sm leading-6 text-white/50">
+                                            <p className="mt-2 whitespace-pre-line text-sm leading-6 text-ink-soft">
                                                 {registration.notes}
                                             </p>
                                         </div>
@@ -189,7 +189,7 @@ function RegistrationList({
                                 </div>
 
                                 <div>
-                                    <span className="text-xs uppercase tracking-wider text-white/25">
+                                    <span className="text-xs uppercase tracking-wider text-ink-soft">
                                         Etkinlik
                                     </span>
 
@@ -199,21 +199,21 @@ function RegistrationList({
                                                 {registration.event.title}
                                             </h4>
 
-                                            <p className="mt-3 text-sm text-[#27D66B]">
+                                            <p className="mt-3 text-sm text-holly-ink">
                                                 {formatDate(
                                                     registration.event
                                                         .starts_at,
                                                 )}
                                             </p>
 
-                                            <p className="mt-2 text-sm text-white/40">
+                                            <p className="mt-2 text-sm text-ink-soft">
                                                 {
                                                     registration.event
                                                         .location
                                                 }
                                             </p>
 
-                                            <p className="mt-4 text-sm text-white/35">
+                                            <p className="mt-4 text-sm text-ink-soft">
                                                 Katılımcı:{" "}
                                                 {
                                                     registration.event
@@ -229,20 +229,20 @@ function RegistrationList({
                                                 href={`/events/${registration.event.slug}`}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="mt-5 inline-flex text-xs font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
+                                                className="mt-5 inline-flex text-xs font-semibold uppercase tracking-wider text-ink-soft transition-colors hover:text-holly-ink"
                                             >
                                                 Etkinliği görüntüle ↗
                                             </Link>
                                         </>
                                     ) : (
-                                        <p className="mt-3 text-sm text-red-300">
+                                        <p className="mt-3 text-sm text-red-700">
                                             Etkinlik bilgisi bulunamadı.
                                         </p>
                                     )}
                                 </div>
 
                                 <div className="lg:min-w-72">
-                                    <span className="mb-4 block text-xs uppercase tracking-wider text-white/25">
+                                    <span className="mb-4 block text-xs uppercase tracking-wider text-ink-soft">
                                         Başvuru işlemleri
                                     </span>
 
@@ -306,34 +306,27 @@ export default async function AdminRegistrationsPage() {
 
 
     return (
-        <main className="min-h-screen bg-[#050505] px-6 py-10 text-white md:px-10 lg:px-16">
+        <main className="min-h-screen bg-white px-6 py-10 text-ink md:px-10 lg:px-16">
             <div className="mx-auto max-w-7xl">
-                <header className="flex flex-col justify-between gap-7 border-b border-white/10 pb-9 md:flex-row md:items-end">
+                <header className="flex flex-col justify-between gap-7 border-b border-line pb-9 md:flex-row md:items-end">
                     <div>
-                        <Link
-                            href="/admin"
-                            className="text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
-                        >
-                            ← Yönetim paneli
-                        </Link>
-
-                        <h1 className="mt-7 text-4xl font-bold tracking-tight md:text-6xl">
+                        <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
                             Etkinlik başvuruları
                         </h1>
 
-                        <p className="mt-4 max-w-2xl leading-7 text-white/40">
+                        <p className="mt-4 max-w-2xl leading-7 text-ink-soft">
                             Katılımcı başvurularını incele, onayla, bekleme
                             listesine al veya kalıcı olarak sil.
                         </p>
                     </div>
 
-                    <div className="rounded-full border border-white/10 px-5 py-3 text-sm text-white/45">
+                    <div className="rounded-full border border-line px-5 py-3 text-sm text-ink-soft">
                         Toplam {registrations.length} başvuru
                     </div>
                 </header>
 
                 {error && (
-                    <div className="mt-8 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-300">
+                    <div className="mt-8 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
                         Başvurular yüklenirken hata oluştu:{" "}
                         {error.message}
                     </div>

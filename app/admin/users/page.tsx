@@ -139,21 +139,14 @@ export default async function AdminUsersPage({
     ];
 
     return (
-        <main className="min-h-screen bg-[#050505] px-6 py-10 text-white md:px-10 lg:px-16">
+        <main className="min-h-screen bg-white px-6 py-10 text-ink md:px-10 lg:px-16">
             <div className="mx-auto max-w-6xl">
-                <header className="border-b border-white/10 pb-9">
-                    <Link
-                        href="/admin"
-                        className="text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
-                    >
-                        ← Yönetim paneli
-                    </Link>
-
-                    <h1 className="mt-7 text-4xl font-bold tracking-tight md:text-5xl">
+                <header className="border-b border-line pb-9">
+                    <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
                         Üyeler
                     </h1>
 
-                    <p className="mt-4 max-w-2xl leading-7 text-white/40">
+                    <p className="mt-4 max-w-2xl leading-7 text-ink-soft">
                         Sisteme kayıt olan kullanıcıları listeleyen
                         üyelik merkezi. İsim veya e-posta ile ara,
                         üyelik tarihini ve ilgi alanlarını gör.
@@ -166,15 +159,15 @@ export default async function AdminUsersPage({
                             key={stat.label}
                             className={`rounded-3xl border p-6 ${
                                 stat.accent
-                                    ? "border-[#27D66B]/25 bg-[#27D66B]/[0.07]"
-                                    : "border-white/10 bg-[#111111]"
+                                    ? "border-green-200 bg-green-50"
+                                    : "border-line bg-shell"
                             }`}
                         >
                             <span
                                 className={`text-xs font-semibold uppercase tracking-[0.18em] ${
                                     stat.accent
-                                        ? "text-[#27D66B]"
-                                        : "text-white/35"
+                                        ? "text-holly-ink"
+                                        : "text-ink-soft"
                                 }`}
                             >
                                 {stat.label}
@@ -183,8 +176,8 @@ export default async function AdminUsersPage({
                             <strong
                                 className={`mt-5 block text-4xl font-bold ${
                                     stat.accent
-                                        ? "text-[#27D66B]"
-                                        : "text-white"
+                                        ? "text-holly-ink"
+                                        : "text-ink"
                                 }`}
                             >
                                 {stat.value}
@@ -201,20 +194,20 @@ export default async function AdminUsersPage({
                     <label className="relative flex-1 basis-72">
                         <span className="sr-only">Üye ara</span>
 
-                        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/35" />
+                        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
 
                         <input
                             type="search"
                             name="q"
                             defaultValue={query}
                             placeholder="İsim veya e-posta ile ara"
-                            className="min-h-12 w-full rounded-full border border-white/15 bg-[#111111] pl-11 pr-4 text-sm text-white placeholder:text-white/35 transition focus:border-[#27D66B]/60 focus:outline-none"
+                            className="min-h-12 w-full rounded-full border border-line bg-white pl-11 pr-4 text-sm text-ink placeholder:text-ink-soft transition focus:border-[#27D66B]/60 focus:outline-none"
                         />
                     </label>
 
                     <button
                         type="submit"
-                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-semibold uppercase tracking-wider text-black transition hover:bg-[#45e27f]"
+                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-semibold uppercase tracking-wider text-black transition hover:bg-[#1fc461]"
                     >
                         <Search className="h-4 w-4" />
                         Ara
@@ -223,14 +216,14 @@ export default async function AdminUsersPage({
                     {query && (
                         <Link
                             href="/admin/users"
-                            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold uppercase tracking-wider text-white/60 transition hover:border-white/40 hover:text-white"
+                            className="inline-flex min-h-12 items-center justify-center rounded-full border border-line px-6 text-sm font-semibold uppercase tracking-wider text-ink/70 transition hover:border-ink-soft hover:text-ink"
                         >
                             Temizle
                         </Link>
                     )}
                 </form>
 
-                <p className="mt-4 text-sm text-white/40">
+                <p className="mt-4 text-sm text-ink-soft">
                     {query
                         ? `${filteredRows.length} üye "${query}" için listeleniyor.`
                         : `${filteredRows.length} üye listeleniyor.`}
@@ -239,17 +232,17 @@ export default async function AdminUsersPage({
                 {loadError && (
                     <div
                         role="alert"
-                        className="mt-6 rounded-2xl border border-red-500/30 bg-red-500/10 p-5 text-sm leading-6 text-red-300"
+                        className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm leading-6 text-red-700"
                     >
                         Üyeler yüklenemedi: {loadError}
                     </div>
                 )}
 
                 {!loadError && filteredRows.length === 0 && (
-                    <div className="mt-6 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
-                        <UsersRound className="mx-auto h-10 w-10 text-white/20" />
+                    <div className="mt-6 rounded-3xl border border-dashed border-line px-6 py-16 text-center">
+                        <UsersRound className="mx-auto h-10 w-10 text-ink-soft" />
 
-                        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-white/45">
+                        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-ink-soft">
                             {query
                                 ? "Aramana uyan üye bulunamadı."
                                 : "Henüz kayıtlı üye yok."}
@@ -271,10 +264,10 @@ export default async function AdminUsersPage({
                             return (
                                 <li
                                     key={row.id}
-                                    className="rounded-3xl border border-white/10 bg-[#111111] p-6"
+                                    className="rounded-3xl border border-line bg-shell p-6"
                                 >
                                     <div className="flex items-start gap-4">
-                                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#27D66B]/10 text-lg font-bold text-[#27D66B]">
+                                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-50 text-lg font-bold text-holly-ink">
                                             {getInitial(name)}
                                         </span>
 
@@ -290,8 +283,8 @@ export default async function AdminUsersPage({
                                                 <span
                                                     className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
                                                         isAdmin
-                                                            ? "border-[#27D66B]/30 bg-[#27D66B]/15 text-[#27D66B]"
-                                                            : "border-white/10 bg-white/5 text-white/55"
+                                                            ? "border-green-200 bg-green-50 text-holly-ink"
+                                                            : "border-line bg-shell text-ink-soft"
                                                     }`}
                                                 >
                                                     {isAdmin
@@ -303,25 +296,25 @@ export default async function AdminUsersPage({
                                             {row.email ? (
                                                 <a
                                                     href={`mailto:${row.email}`}
-                                                    className="mt-1 block truncate text-sm font-medium text-[#27D66B] transition-colors hover:underline"
+                                                    className="mt-1 block truncate text-sm font-medium text-holly-ink transition-colors hover:underline"
                                                 >
                                                     {row.email}
                                                 </a>
                                             ) : (
-                                                <p className="mt-1 text-sm text-white/30">
+                                                <p className="mt-1 text-sm text-ink-soft">
                                                     E-posta belirtilmemiş
                                                 </p>
                                             )}
                                         </div>
                                     </div>
 
-                                    <dl className="mt-5 space-y-3 border-t border-white/10 pt-4 text-sm">
+                                    <dl className="mt-5 space-y-3 border-t border-line pt-4 text-sm">
                                         <div className="flex items-start justify-between gap-3">
-                                            <dt className="shrink-0 text-white/40">
+                                            <dt className="shrink-0 text-ink-soft">
                                                 Üyelik tarihi
                                             </dt>
 
-                                            <dd className="text-right text-white/75">
+                                            <dd className="text-right text-ink/70">
                                                 {row.join_date
                                                     ? formatDate(
                                                           row.join_date,
@@ -332,13 +325,13 @@ export default async function AdminUsersPage({
 
                                         {row.phone && (
                                             <div className="flex items-start justify-between gap-3">
-                                                <dt className="shrink-0 text-white/40">
+                                                <dt className="shrink-0 text-ink-soft">
                                                     Telefon
                                                 </dt>
 
                                                 <a
                                                     href={`tel:${row.phone}`}
-                                                    className="text-right font-medium text-white/75 transition-colors hover:text-[#27D66B]"
+                                                    className="text-right font-medium text-ink/70 transition-colors hover:text-holly-ink"
                                                 >
                                                     {row.phone}
                                                 </a>
@@ -351,7 +344,7 @@ export default async function AdminUsersPage({
                                             {sports.map((sport) => (
                                                 <span
                                                     key={sport}
-                                                    className="rounded-full border border-white/10 px-3 py-1 text-xs font-semibold text-white/55"
+                                                    className="rounded-full border border-line px-3 py-1 text-xs font-semibold text-ink-soft"
                                                 >
                                                     {sport}
                                                 </span>

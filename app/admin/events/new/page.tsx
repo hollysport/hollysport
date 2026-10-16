@@ -14,17 +14,17 @@ export default async function NewEventPage() {
         getLocalGalleryImages();
 
     return (
-        <main className="min-h-screen bg-[#050505] px-6 py-10 text-white md:px-10 lg:px-16">
+        <main className="min-h-screen bg-white px-6 py-10 text-ink md:px-10 lg:px-16">
             <div className="mx-auto max-w-5xl">
-                <header className="border-b border-white/10 pb-9">
+                <header className="border-b border-line pb-9">
                     <Link
                         href="/admin/events"
-                        className="text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
+                        className="text-sm font-semibold uppercase tracking-wider text-ink-soft transition-colors hover:text-holly-ink"
                     >
                         ← Etkinliklere dön
                     </Link>
 
-                    <span className="mt-10 block text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                    <span className="mt-10 block text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                         Etkinlik Yönetimi
                     </span>
 
@@ -32,7 +32,7 @@ export default async function NewEventPage() {
                         Yeni etkinlik ekle
                     </h1>
 
-                    <p className="mt-4 max-w-2xl leading-7 text-white/40">
+                    <p className="mt-4 max-w-2xl leading-7 text-ink-soft">
                         Etkinlik bilgilerini, yayın
                         durumunu ve görsellerini tek
                         ekrandan yönet.

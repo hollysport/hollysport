@@ -49,11 +49,11 @@ export default function SupportAdminLinks({
   return (
     <section className="mt-12">
       <div>
-        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
           Destek Yönetimi
         </span>
 
-        <h2 className="mt-3 text-3xl font-bold tracking-tight text-white">
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink">
           Destekçiler ve başvurular
         </h2>
       </div>
@@ -66,29 +66,29 @@ export default function SupportAdminLinks({
             <Link
               key={item.href}
               href={item.href}
-              className="group flex min-h-72 flex-col justify-between rounded-3xl border border-white/10 bg-[#111111] p-7 transition hover:-translate-y-1 hover:border-[#27D66B]/50"
+              className="group flex min-h-72 flex-col justify-between rounded-3xl border border-line bg-shell p-7 transition hover:-translate-y-1 hover:border-green-300"
             >
               <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#27D66B]/10 text-[#27D66B] transition group-hover:bg-[#27D66B] group-hover:text-black">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-50 text-holly-ink transition group-hover:bg-[#27D66B] group-hover:text-black">
                   <Icon className="h-6 w-6" />
                 </div>
 
-                <h3 className="mt-6 text-2xl font-bold text-white">
+                <h3 className="mt-6 text-2xl font-bold text-ink">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-6 text-white/40">
+                <p className="mt-3 text-sm leading-6 text-ink-soft">
                   {item.description}
                 </p>
               </div>
 
               <div className="mt-8 flex items-end justify-between gap-4">
                 <div>
-                  <strong className="block text-4xl font-bold text-[#27D66B]">
+                  <strong className="block text-4xl font-bold text-holly-ink">
                     {item.count}
                   </strong>
 
-                  <span className="mt-1 block text-xs uppercase tracking-wider text-white/30">
+                  <span className="mt-1 block text-xs uppercase tracking-wider text-ink-soft">
                     {item.countLabel}
                   </span>
                 </div>

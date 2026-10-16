@@ -61,14 +61,14 @@ function getStatusLabel(status: ReviewStatus) {
 
 function getStatusClass(status: ReviewStatus) {
     if (status === "approved") {
-        return "bg-[#27D66B]/10 text-[#27D66B]";
+        return "bg-green-50 text-holly-ink";
     }
 
     if (status === "rejected") {
-        return "bg-red-500/10 text-red-300";
+        return "bg-red-50 text-red-700";
     }
 
-    return "bg-orange-500/10 text-orange-300";
+    return "bg-orange-50 text-orange-700";
 }
 
 export default function ReviewsManager({
@@ -137,7 +137,7 @@ export default function ReviewsManager({
 
     return (
         <div className="mt-8">
-            <div className="rounded-[2rem] border border-white/10 bg-[#111111] p-5 sm:p-6">
+            <div className="rounded-[2rem] border border-line bg-shell p-5 sm:p-6">
                 <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex flex-wrap gap-2">
                         {filters.map((filter) => {
@@ -153,7 +153,7 @@ export default function ReviewsManager({
                                     }
                                     className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-xs font-bold transition ${isActive
                                             ? "border-[#27D66B] bg-[#27D66B] text-black"
-                                            : "border-white/10 text-white/55 hover:border-white/30 hover:text-white"
+                                            : "border-line text-ink-soft hover:border-ink-soft hover:text-ink"
                                         }`}
                                 >
                                     {filter.label}
@@ -161,7 +161,7 @@ export default function ReviewsManager({
                                     <span
                                         className={`rounded-full px-2 py-0.5 ${isActive
                                                 ? "bg-black/10"
-                                                : "bg-white/5"
+                                                : "bg-shell"
                                             }`}
                                     >
                                         {filter.count}
@@ -172,7 +172,7 @@ export default function ReviewsManager({
                     </div>
 
                     <label className="relative block w-full lg:max-w-sm">
-                        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
+                        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
 
                         <input
                             type="search"
@@ -181,23 +181,23 @@ export default function ReviewsManager({
                                 setSearchTerm(event.target.value)
                             }
                             placeholder="İsim veya yorum ara..."
-                            className="form-field-dark min-h-12 w-full rounded-full border border-white/10 bg-[#1a1a1a] pl-11 pr-4 outline-none transition focus:border-[#27D66B]"
+                            className="form-field min-h-12 w-full rounded-full border border-line bg-white pl-11 pr-4 outline-none transition focus:border-[#27D66B]"
                         />
                     </label>
                 </div>
 
-                <p className="mt-4 text-xs text-white/35">
+                <p className="mt-4 text-xs text-ink-soft">
                     {filteredReviews.length} görüş gösteriliyor
                 </p>
             </div>
 
             {filteredReviews.length === 0 ? (
-                <div className="mt-6 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
+                <div className="mt-6 rounded-3xl border border-dashed border-line px-6 py-16 text-center">
                     <h2 className="text-2xl font-bold">
                         Eşleşen görüş bulunamadı.
                     </h2>
 
-                    <p className="mt-3 text-sm text-white/40">
+                    <p className="mt-3 text-sm text-ink-soft">
                         Arama kelimesini veya seçili filtreyi değiştir.
                     </p>
                 </div>
@@ -206,7 +206,7 @@ export default function ReviewsManager({
                     {filteredReviews.map((review) => (
                         <article
                             key={review.id}
-                            className="rounded-[2rem] border border-white/10 bg-[#111111] p-6"
+                            className="rounded-[2rem] border border-line bg-shell p-6"
                         >
                             <div className="flex items-start justify-between gap-5">
                                 <div className="flex min-w-0 items-center gap-4">
@@ -217,7 +217,7 @@ export default function ReviewsManager({
                                             className="h-14 w-14 shrink-0 rounded-full object-cover"
                                         />
                                     ) : (
-                                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#27D66B]/10 text-sm font-extrabold text-[#27D66B]">
+                                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-green-50 text-sm font-extrabold text-holly-ink">
                                             {getInitials(
                                                 review.full_name,
                                             )}
@@ -229,7 +229,7 @@ export default function ReviewsManager({
                                             {review.full_name}
                                         </h2>
 
-                                        <p className="mt-1 text-xs text-white/40">
+                                        <p className="mt-1 text-xs text-ink-soft">
                                             {review.membership_duration} üye
                                         </p>
                                     </div>
@@ -253,23 +253,23 @@ export default function ReviewsManager({
                                         <Star
                                             key={star}
                                             className={`h-5 w-5 ${star <= review.rating
-                                                    ? "fill-[#FFD54A] text-[#FFD54A]"
-                                                    : "text-white/15"
+                                                    ? "fill-yellow-500 text-yellow-500"
+                                                    : "text-ink-soft"
                                                 }`}
                                         />
                                     ))}
                                 </div>
 
-                                <span className="text-xs text-white/35">
+                                <span className="text-xs text-ink-soft">
                                     {formatDate(review.created_at)}
                                 </span>
                             </div>
 
-                            <blockquote className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm leading-7 text-white/65">
+                            <blockquote className="mt-5 rounded-2xl border border-line bg-shell p-5 text-sm leading-7 text-ink/70">
                                 “{review.comment}”
                             </blockquote>
 
-                            <div className="mt-6 border-t border-white/10 pt-5">
+                            <div className="mt-6 border-t border-line pt-5">
                                 <ReviewActions
                                     review={{
                                         id: review.id,

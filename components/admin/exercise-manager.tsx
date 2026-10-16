@@ -292,7 +292,7 @@ export default function ExerciseManager({
                             {GOALS.map((goal) => (
                                 <label
                                     key={goal.key}
-                                    className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-zinc-300 px-3.5 py-2.5 text-sm font-medium text-zinc-950 transition has-checked:border-[#27D66B] has-checked:bg-[#27D66B]/5"
+                                    className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-zinc-300 px-3.5 py-2.5 text-sm font-medium text-zinc-950 transition has-checked:border-[#27D66B] has-checked:bg-green-50"
                                 >
                                     <input
                                         type="checkbox"
@@ -313,7 +313,7 @@ export default function ExerciseManager({
                     <button
                         type="submit"
                         disabled={loadingAction !== null}
-                        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#27D66B] text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
                     >
                         {loadingAction === "create" ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -330,7 +330,7 @@ export default function ExerciseManager({
                     )}
 
                     {successMessage && (
-                        <p className="rounded-xl border border-[#27D66B]/30 bg-[#27D66B]/10 px-4 py-3 text-sm text-[#159447]">
+                        <p className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-[#159447]">
                             {successMessage}
                         </p>
                     )}
@@ -367,7 +367,7 @@ export default function ExerciseManager({
                                     )}
 
                                     <div className="mt-2 flex flex-wrap gap-2">
-                                        <span className="rounded-full bg-[#27D66B]/10 px-3 py-1 text-xs font-bold text-[#159447]">
+                                        <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-[#159447]">
                                             {muscleLabel(
                                                 exercise.target_muscle,
                                             )}
@@ -388,7 +388,7 @@ export default function ExerciseManager({
                                             (goal) => (
                                                 <span
                                                     key={goal}
-                                                    className="rounded-full border border-[#27D66B]/30 px-3 py-1 text-xs font-semibold text-[#159447]"
+                                                    className="rounded-full border border-green-200 px-3 py-1 text-xs font-semibold text-[#159447]"
                                                 >
                                                     {goalLabel(goal)}
                                                 </span>

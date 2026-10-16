@@ -57,7 +57,7 @@ export default function DeleteEventButton({
                 type="button"
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-red-500/10 px-5 text-sm font-semibold text-red-300 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-red-200 bg-white px-5 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {isDeleting ? (
                     <>
@@ -73,7 +73,7 @@ export default function DeleteEventButton({
             </button>
 
             {errorMessage && (
-                <p className="mt-2 max-w-xs text-xs leading-5 text-red-300">
+                <p className="mt-2 max-w-xs text-xs leading-5 text-red-700">
                     {errorMessage}
                 </p>
             )}

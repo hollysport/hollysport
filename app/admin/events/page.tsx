@@ -73,11 +73,11 @@ export default async function EventsAdminPage() {
     const events = (data ?? []) as EventRecord[];
 
     return (
-        <main className="min-h-screen bg-[#050505] px-6 py-10 text-white md:px-10 lg:px-16">
+        <main className="min-h-screen bg-white px-6 py-10 text-ink md:px-10 lg:px-16">
             <div className="mx-auto max-w-7xl">
-                <header className="flex flex-col justify-between gap-6 border-b border-white/10 pb-8 sm:flex-row sm:items-end">
+                <header className="flex flex-col justify-between gap-6 border-b border-line pb-8 sm:flex-row sm:items-end">
                     <div>
-                        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
+                        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
                             Etkinlik Yönetimi
                         </p>
 
@@ -85,7 +85,7 @@ export default async function EventsAdminPage() {
                             Etkinlikleri görüntüle ve yönet
                         </h1>
 
-                        <p className="mt-3 max-w-2xl text-sm leading-6 text-white/40">
+                        <p className="mt-3 max-w-2xl text-sm leading-6 text-ink-soft">
                             Mevcut etkinlikleri düzenleyebilir, yayından
                             kaldırabilir veya tamamen silebilirsin.
                         </p>
@@ -93,15 +93,8 @@ export default async function EventsAdminPage() {
 
                     <div className="flex flex-wrap gap-3">
                         <Link
-                            href="/admin"
-                            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 px-6 text-sm font-semibold transition hover:border-white/40"
-                        >
-                            Admin Paneli
-                        </Link>
-
-                        <Link
                             href="/admin/events/new"
-                            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f]"
+                            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-ink transition hover:bg-[#1fc461]"
                         >
                             <Plus className="h-5 w-5" />
                             Yeni Etkinlik Ekle
@@ -110,20 +103,20 @@ export default async function EventsAdminPage() {
                 </header>
 
                 {error && (
-                    <div className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-300">
+                    <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
                         Etkinlikler yüklenemedi: {error.message}
                     </div>
                 )}
 
                 {!error && events.length === 0 && (
-                    <div className="mt-10 flex min-h-80 flex-col items-center justify-center rounded-3xl border border-white/10 bg-[#111111] px-6 text-center">
-                        <CalendarDays className="h-11 w-11 text-[#27D66B]" />
+                    <div className="mt-10 flex min-h-80 flex-col items-center justify-center rounded-3xl border border-line bg-shell px-6 text-center">
+                        <CalendarDays className="h-11 w-11 text-holly-ink" />
 
                         <h2 className="mt-5 text-xl font-bold">
                             Henüz etkinlik bulunmuyor
                         </h2>
 
-                        <p className="mt-2 max-w-md text-sm leading-6 text-white/40">
+                        <p className="mt-2 max-w-md text-sm leading-6 text-ink-soft">
                             İlk etkinliği oluşturarak etkinlik yönetimine
                             başlayabilirsin.
                         </p>
@@ -141,9 +134,9 @@ export default async function EventsAdminPage() {
                 {!error && events.length > 0 && (
                     <>
                         <div className="mt-8 flex items-center justify-between">
-                            <p className="text-sm text-white/40">
+                            <p className="text-sm text-ink-soft">
                                 Toplam{" "}
-                                <span className="font-bold text-white">
+                                <span className="font-bold text-ink">
                                     {events.length}
                                 </span>{" "}
                                 etkinlik
@@ -157,15 +150,15 @@ export default async function EventsAdminPage() {
                                 return (
                                     <article
                                         key={event.id}
-                                        className="rounded-3xl border border-white/10 bg-[#111111] p-6"
+                                        className="rounded-3xl border border-line bg-shell p-6"
                                     >
                                         <div className="flex items-start justify-between gap-5">
                                             <div className="min-w-0">
                                                 <span
                                                     className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold ${
                                                         published
-                                                            ? "bg-[#27D66B]/10 text-[#27D66B]"
-                                                            : "bg-orange-500/10 text-orange-300"
+                                                            ? "bg-green-50 text-holly-ink"
+                                                            : "bg-orange-50 text-orange-700"
                                                     }`}
                                                 >
                                                     {published
@@ -178,7 +171,7 @@ export default async function EventsAdminPage() {
                                                 </h2>
 
                                                 {event.slug && (
-                                                    <p className="mt-2 truncate text-sm text-white/30">
+                                                    <p className="mt-2 truncate text-sm text-ink-soft">
                                                         /events/{event.slug}
                                                     </p>
                                                 )}
@@ -186,44 +179,44 @@ export default async function EventsAdminPage() {
                                         </div>
 
                                         <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                                            <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
-                                                <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-[#27D66B]" />
+                                            <div className="flex items-start gap-3 rounded-2xl border border-line bg-shell p-4">
+                                                <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-holly-ink" />
 
                                                 <div>
-                                                    <p className="text-xs font-semibold uppercase tracking-wider text-white/30">
+                                                    <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                                         Tarih
                                                     </p>
 
-                                                    <p className="mt-1 text-sm leading-6 text-white/70">
+                                                    <p className="mt-1 text-sm leading-6 text-ink/70">
                                                         {getEventDate(event)}
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4">
-                                                <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#27D66B]" />
+                                            <div className="flex items-start gap-3 rounded-2xl border border-line bg-shell p-4">
+                                                <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-holly-ink" />
 
                                                 <div className="min-w-0">
-                                                    <p className="text-xs font-semibold uppercase tracking-wider text-white/30">
+                                                    <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                                         Konum
                                                     </p>
 
-                                                    <p className="mt-1 break-words text-sm leading-6 text-white/70">
+                                                    <p className="mt-1 break-words text-sm leading-6 text-ink/70">
                                                         {event.location ||
                                                             "Konum belirtilmedi"}
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/20 p-4 sm:col-span-2">
-                                                <Users className="mt-0.5 h-5 w-5 shrink-0 text-[#27D66B]" />
+                                            <div className="flex items-start gap-3 rounded-2xl border border-line bg-shell p-4 sm:col-span-2">
+                                                <Users className="mt-0.5 h-5 w-5 shrink-0 text-holly-ink" />
 
                                                 <div>
-                                                    <p className="text-xs font-semibold uppercase tracking-wider text-white/30">
+                                                    <p className="text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                                         Katılım
                                                     </p>
 
-                                                    <p className="mt-1 text-sm text-white/70">
+                                                    <p className="mt-1 text-sm text-ink/70">
                                                         {event.participant_count ??
                                                             0}{" "}
                                                         katılımcı
@@ -235,10 +228,10 @@ export default async function EventsAdminPage() {
                                             </div>
                                         </div>
 
-                                        <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5">
+                                        <div className="mt-6 flex flex-wrap gap-3 border-t border-line pt-5">
                                             <Link
                                                 href={`/admin/events/${event.id}/edit`}
-                                                className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-sm font-bold text-black transition hover:bg-[#45e27f] sm:flex-none"
+                                                className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-sm font-bold text-black transition hover:bg-[#1fc461] sm:flex-none"
                                             >
                                                 <Pencil className="h-4 w-4" />
                                                 Düzenle
@@ -248,7 +241,7 @@ export default async function EventsAdminPage() {
                                                 <Link
                                                     href={`/events/${event.slug}`}
                                                     target="_blank"
-                                                    className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-white/15 px-5 text-sm font-semibold text-white/70 transition hover:border-white/40 hover:text-white sm:flex-none"
+                                                    className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-line px-5 text-sm font-semibold text-ink/70 transition hover:border-ink-soft hover:text-ink sm:flex-none"
                                                 >
                                                     Sayfayı Gör
                                                 </Link>

@@ -26,18 +26,7 @@ export default async function ExercisesAdminPage() {
         <main className="min-h-screen bg-zinc-50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-10">
-                    <a
-                        href="/admin"
-                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 transition hover:text-zinc-900"
-                    >
-                        ← Geri Dön
-                    </a>
-
-                    <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Admin Paneli
-                    </p>
-
-                    <h1 className="mt-2 text-3xl font-bold text-zinc-950">
+                    <h1 className="text-3xl font-bold text-zinc-950">
                         Egzersiz Yönetimi
                     </h1>
 

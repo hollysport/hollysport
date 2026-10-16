@@ -30,11 +30,7 @@ export default async function SponsorsAdminPage() {
         <main className="min-h-screen bg-zinc-50 px-4 py-10 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-10">
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-                        Admin Paneli
-                    </p>
-
-                    <h1 className="mt-2 text-3xl font-bold text-zinc-950">
+                    <h1 className="text-3xl font-bold text-zinc-950">
                         Kurumsal Destekçiler
                     </h1>
 

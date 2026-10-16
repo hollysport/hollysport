@@ -211,9 +211,9 @@ export default function ReviewActions({
     return (
         <div>
             {isEditing && (
-                <div className="mb-6 grid gap-5 rounded-3xl border border-white/10 bg-black/30 p-5">
+                <div className="mb-6 grid gap-5 rounded-3xl border border-line bg-shell p-5">
                     <label>
-                        <span className="mb-2 block text-sm font-semibold text-white">
+                        <span className="mb-2 block text-sm font-semibold text-ink">
                             Ad soyad
                         </span>
 
@@ -224,13 +224,13 @@ export default function ReviewActions({
                                 setFullName(event.target.value)
                             }
                             maxLength={80}
-                            className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                            className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                         />
                     </label>
 
                     <div className="grid gap-5 sm:grid-cols-2">
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-white">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Yıldız
                             </span>
 
@@ -241,7 +241,7 @@ export default function ReviewActions({
                                         Number(event.target.value),
                                     )
                                 }
-                                className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                                className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                             >
                                 <option value={1}>1 yıldız</option>
                                 <option value={2}>2 yıldız</option>
@@ -252,7 +252,7 @@ export default function ReviewActions({
                         </label>
 
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-white">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Üyelik süresi
                             </span>
 
@@ -263,7 +263,7 @@ export default function ReviewActions({
                                         event.target.value,
                                     )
                                 }
-                                className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                                className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                             >
                                 {membershipOptions.map((option) => (
                                     <option
@@ -279,11 +279,11 @@ export default function ReviewActions({
 
                     <label>
                         <div className="mb-2 flex items-center justify-between gap-4">
-                            <span className="text-sm font-semibold text-white">
+                            <span className="text-sm font-semibold text-ink">
                                 Görüş
                             </span>
 
-                            <span className="text-xs text-white/35">
+                            <span className="text-xs text-ink-soft">
                                 {comment.length}/1000
                             </span>
                         </div>
@@ -296,7 +296,7 @@ export default function ReviewActions({
                             rows={5}
                             minLength={10}
                             maxLength={1000}
-                            className="form-field-dark w-full resize-none rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 py-4 outline-none transition focus:border-[#27D66B]"
+                            className="form-field w-full resize-none rounded-2xl border border-line bg-white px-4 py-4 outline-none transition focus:border-[#27D66B]"
                         />
                     </label>
 
@@ -305,7 +305,7 @@ export default function ReviewActions({
                             type="button"
                             onClick={saveReview}
                             disabled={loadingAction !== null}
-                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-xs font-bold text-black transition hover:bg-[#45e27f] disabled:opacity-50"
+                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-xs font-bold text-black transition hover:bg-[#1fc461] disabled:opacity-50"
                         >
                             {loadingAction === "save" ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -320,7 +320,7 @@ export default function ReviewActions({
                             type="button"
                             onClick={cancelEditing}
                             disabled={loadingAction !== null}
-                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/15 px-5 text-xs font-bold text-white transition hover:bg-white/5 disabled:opacity-50"
+                            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-line px-5 text-xs font-bold text-ink transition hover:bg-shell disabled:opacity-50"
                         >
                             <X className="h-4 w-4" />
                             Vazgeç
@@ -335,7 +335,7 @@ export default function ReviewActions({
                         type="button"
                         onClick={() => setIsEditing(true)}
                         disabled={loadingAction !== null}
-                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-blue-400/30 px-4 text-xs font-bold text-blue-300 transition hover:bg-blue-500/10 disabled:opacity-50"
+                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-blue-200 px-4 text-xs font-bold text-blue-700 transition hover:bg-blue-50 disabled:opacity-50"
                     >
                         <Pencil className="h-4 w-4" />
                         Düzenle
@@ -347,7 +347,7 @@ export default function ReviewActions({
                         type="button"
                         onClick={() => updateStatus("approved")}
                         disabled={loadingAction !== null}
-                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-4 text-xs font-bold text-black transition hover:bg-[#45e27f] disabled:opacity-50"
+                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-4 text-xs font-bold text-black transition hover:bg-[#1fc461] disabled:opacity-50"
                     >
                         {loadingAction === "approve" ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -364,7 +364,7 @@ export default function ReviewActions({
                         type="button"
                         onClick={() => updateStatus("pending")}
                         disabled={loadingAction !== null}
-                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-orange-400/30 px-4 text-xs font-bold text-orange-300 transition hover:bg-orange-500/10 disabled:opacity-50"
+                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-orange-200 px-4 text-xs font-bold text-orange-700 transition hover:bg-orange-50 disabled:opacity-50"
                     >
                         {loadingAction === "hide" ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -381,7 +381,7 @@ export default function ReviewActions({
                         type="button"
                         onClick={() => updateStatus("rejected")}
                         disabled={loadingAction !== null}
-                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/15 px-4 text-xs font-bold text-white transition hover:border-orange-400 hover:text-orange-300 disabled:opacity-50"
+                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-line px-4 text-xs font-bold text-ink transition hover:border-orange-300 hover:text-orange-700 disabled:opacity-50"
                     >
                         {loadingAction === "reject" ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -397,7 +397,7 @@ export default function ReviewActions({
                     type="button"
                     onClick={deleteReview}
                     disabled={loadingAction !== null}
-                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-red-500/30 px-4 text-xs font-bold text-red-300 transition hover:bg-red-500/10 disabled:opacity-50"
+                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-red-200 px-4 text-xs font-bold text-red-700 transition hover:bg-red-50 disabled:opacity-50"
                 >
                     {loadingAction === "delete" ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -410,7 +410,7 @@ export default function ReviewActions({
             </div>
 
             {errorMessage && (
-                <p className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs text-red-300">
+                <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-700">
                     {errorMessage}
                 </p>
             )}

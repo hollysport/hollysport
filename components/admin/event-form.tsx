@@ -259,10 +259,10 @@ export default function EventForm({
     }
 
     const inputClass =
-        "mt-2 h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]";
+        "mt-2 h-14 w-full rounded-xl border border-line bg-white px-4 text-ink outline-none transition-colors placeholder:text-ink-soft focus:border-[#27D66B]";
 
     const textareaClass =
-        "mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]";
+        "mt-2 w-full rounded-xl border border-line bg-white px-4 py-4 text-ink outline-none transition-colors placeholder:text-ink-soft focus:border-[#27D66B]";
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -789,19 +789,19 @@ export default function EventForm({
             className="mt-12 space-y-10"
         >
             {errorMessage && (
-                <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm leading-6 text-red-300">
+                <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm leading-6 text-red-700">
                     {errorMessage}
                 </div>
             )}
 
-            <section className="rounded-3xl border border-white/10 bg-[#111111] p-6 md:p-9">
-                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <section className="rounded-3xl border border-line bg-shell p-6 md:p-9">
+                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-holly-ink">
                     01 · Temel bilgiler
                 </span>
 
                 <div className="mt-8 grid gap-6 md:grid-cols-2">
                     <label className="block md:col-span-2">
-                        <span className="text-sm text-white/60">Etkinlik adı *</span>
+                        <span className="text-sm text-ink/70">Etkinlik adı *</span>
 
                         <input
                             name="title"
@@ -814,7 +814,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">Branş *</span>
+                        <span className="text-sm text-ink/70">Branş *</span>
 
                         <select
                             name="category"
@@ -835,7 +835,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">URL adı</span>
+                        <span className="text-sm text-ink/70">URL adı</span>
 
                         <input
                             name="slug"
@@ -847,7 +847,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block md:col-span-2">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Kısa açıklama *
                         </span>
 
@@ -863,7 +863,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block md:col-span-2">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Etkinlik detayları *
                         </span>
 
@@ -879,14 +879,14 @@ export default function EventForm({
                 </div>
             </section>
 
-            <section className="rounded-3xl border border-white/10 bg-[#111111] p-6 md:p-9">
-                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <section className="rounded-3xl border border-line bg-shell p-6 md:p-9">
+                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-holly-ink">
                     02 · Tarih ve konum
                 </span>
 
                 <div className="mt-8 grid gap-6 md:grid-cols-2">
                     <label className="block">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Başlangıç tarihi *
                         </span>
 
@@ -902,7 +902,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Bitiş tarihi *
                         </span>
 
@@ -918,7 +918,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Son başvuru tarihi
                         </span>
 
@@ -933,7 +933,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">Konum *</span>
+                        <span className="text-sm text-ink/70">Konum *</span>
 
                         <input
                             name="location"
@@ -946,7 +946,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block md:col-span-2">
-                        <span className="text-sm text-white/60">Açık adres</span>
+                        <span className="text-sm text-ink/70">Açık adres</span>
 
                         <input
                             name="address"
@@ -959,14 +959,14 @@ export default function EventForm({
                 </div>
             </section>
 
-            <section className="rounded-3xl border border-white/10 bg-[#111111] p-6 md:p-9">
-                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <section className="rounded-3xl border border-line bg-shell p-6 md:p-9">
+                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-holly-ink">
                     03 · Katılım bilgileri
                 </span>
 
                 <div className="mt-8 grid gap-6 md:grid-cols-2">
                     <label className="block">
-                        <span className="text-sm text-white/60">Kontenjan</span>
+                        <span className="text-sm text-ink/70">Kontenjan</span>
 
                         <input
                             name="capacity"
@@ -980,7 +980,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Katılımcı sayısı
                         </span>
 
@@ -995,7 +995,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Katılım seviyesi
                         </span>
 
@@ -1016,7 +1016,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block">
-                        <span className="text-sm text-white/60">Ücret</span>
+                        <span className="text-sm text-ink/70">Ücret</span>
 
                         <input
                             name="fee_amount"
@@ -1029,7 +1029,7 @@ export default function EventForm({
                     </label>
 
                     <label className="block md:col-span-2">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-ink/70">
                             Ücret açıklaması
                         </span>
 
@@ -1044,7 +1044,7 @@ export default function EventForm({
                 </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 p-4">
+                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line p-4">
                         <input
                             name="is_free"
                             type="checkbox"
@@ -1055,7 +1055,7 @@ export default function EventForm({
                         <span className="text-sm">Ücretsiz etkinlik</span>
                     </label>
 
-                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 p-4">
+                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line p-4">
                         <input
                             name="registration_open"
                             type="checkbox"
@@ -1066,7 +1066,7 @@ export default function EventForm({
                         <span className="text-sm">Kayıtları aç</span>
                     </label>
 
-                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 p-4">
+                    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line p-4">
                         <input
                             name="featured"
                             type="checkbox"
@@ -1079,18 +1079,18 @@ export default function EventForm({
                 </div>
             </section>
 
-            <section className="rounded-3xl border border-white/10 bg-[#111111] p-6 md:p-9">
-                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <section className="rounded-3xl border border-line bg-shell p-6 md:p-9">
+                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-holly-ink">
                     04 · Görseller
                 </span>
 
                 <div className="mt-8 grid gap-6 md:grid-cols-2">
-                    <label className="block rounded-2xl border border-dashed border-white/15 p-6">
+                    <label className="block rounded-2xl border border-dashed border-line p-6">
                         <span className="block text-sm font-semibold">
                             Kapak görseli
                         </span>
 
-                        <span className="mt-2 block text-xs leading-5 text-white/35">
+                        <span className="mt-2 block text-xs leading-5 text-ink-soft">
                             {initialEvent?.cover_image_path
                                 ? "Yeni görsel seçmezsen mevcut kapak korunur."
                                 : "Yayınlanan etkinliklerde zorunludur."}{" "}
@@ -1098,7 +1098,7 @@ export default function EventForm({
                         </span>
 
                         {initialEvent?.cover_image_path && (
-                            <span className="mt-3 block truncate text-xs text-[#27D66B]">
+                            <span className="mt-3 block truncate text-xs text-holly-ink">
                                 Mevcut kapak: {initialEvent.cover_image_path}
                             </span>
                         )}
@@ -1107,16 +1107,16 @@ export default function EventForm({
                             name="cover_image"
                             type="file"
                             accept="image/jpeg,image/png,image/webp,image/avif"
-                            className="mt-5 block w-full text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-[#27D66B] file:px-5 file:py-3 file:font-semibold file:text-black"
+                            className="mt-5 block w-full text-sm text-ink file:mr-4 file:rounded-full file:border-0 file:bg-[#27D66B] file:px-5 file:py-3 file:font-semibold file:text-black"
                         />
                     </label>
 
-                    <div className="block rounded-2xl border border-dashed border-white/15 p-6">
+                    <div className="block rounded-2xl border border-dashed border-line p-6">
                         <span className="block text-sm font-semibold">
                             Galeri görselleri
                         </span>
 
-                        <span className="mt-2 block text-xs leading-5 text-white/35">
+                        <span className="mt-2 block text-xs leading-5 text-ink-soft">
                             Etkinlikte şu anda {initialGalleryCount} görsel bulunuyor.
                             Toplam en fazla {MAX_GALLERY_IMAGES} görsel olabilir.
                             Mevcut Holly Sport galerisinden seçebilir veya bilgisayardan
@@ -1131,13 +1131,13 @@ export default function EventForm({
                                     galleryLibraryImages.length === 0 ||
                                     remainingGallerySlots === 0
                                 }
-                                className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-sm font-semibold text-black transition hover:bg-[#45e27f] disabled:cursor-not-allowed disabled:opacity-40"
+                                className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-5 text-sm font-semibold text-black transition hover:bg-[#1fc461] disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <Images className="h-4 w-4" />
                                 Galeriden seç
                             </button>
 
-                            <label className="flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10">
+                            <label className="flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-line bg-shell px-5 text-sm font-semibold text-ink transition hover:border-ink-soft hover:bg-shell">
                                 Bilgisayardan yükle
 
                                 <input
@@ -1152,15 +1152,15 @@ export default function EventForm({
                         </div>
 
                         <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                            <span className="rounded-full bg-white/5 px-3 py-2 text-white/45">
+                            <span className="rounded-full bg-shell px-3 py-2 text-ink-soft">
                                 Galeriden seçilen: {selectedGalleryImages.length}
                             </span>
 
-                            <span className="rounded-full bg-white/5 px-3 py-2 text-white/45">
+                            <span className="rounded-full bg-shell px-3 py-2 text-ink-soft">
                                 Bilgisayardan seçilen: {galleryFileCount}
                             </span>
 
-                            <span className="rounded-full bg-[#27D66B]/10 px-3 py-2 text-[#27D66B]">
+                            <span className="rounded-full bg-green-50 px-3 py-2 text-holly-ink">
                                 Kalan hak: {remainingGallerySlots}
                             </span>
                         </div>
@@ -1170,7 +1170,7 @@ export default function EventForm({
                                 {selectedGalleryImages.map((image) => (
                                     <div
                                         key={image.src}
-                                        className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white/5"
+                                        className="relative aspect-[4/3] overflow-hidden rounded-xl bg-shell"
                                     >
                                         <Image
                                             src={image.src}
@@ -1196,7 +1196,7 @@ export default function EventForm({
                         )}
 
                         {galleryLibraryImages.length === 0 && (
-                            <p className="mt-4 text-xs leading-5 text-amber-300/80">
+                            <p className="mt-4 text-xs leading-5 text-amber-700">
                                 Site galerisinde seçilebilir görsel bulunamadı.
                             </p>
                         )}
@@ -1204,13 +1204,13 @@ export default function EventForm({
                 </div>
             </section>
 
-            <section className="rounded-3xl border border-white/10 bg-[#111111] p-6 md:p-9">
-                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-[#27D66B]">
+            <section className="rounded-3xl border border-line bg-shell p-6 md:p-9">
+                <span className="text-sm font-semibold uppercase tracking-[0.25em] text-holly-ink">
                     05 · Yayın durumu
                 </span>
 
                 <label className="mt-7 block">
-                    <span className="text-sm text-white/60">
+                    <span className="text-sm text-ink/70">
                         Etkinlik durumu
                     </span>
 
@@ -1229,12 +1229,12 @@ export default function EventForm({
                 </label>
             </section>
 
-            <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-8 sm:flex-row sm:justify-end">
+            <div className="flex flex-col-reverse gap-3 border-t border-line pt-8 sm:flex-row sm:justify-end">
                 <button
                     type="button"
                     onClick={() => router.push("/admin/events")}
                     disabled={isSubmitting}
-                    className="flex h-14 items-center justify-center rounded-full border border-white/15 px-8 text-sm font-semibold uppercase tracking-wider disabled:opacity-40"
+                    className="flex h-14 items-center justify-center rounded-full border border-line px-8 text-sm font-semibold uppercase tracking-wider disabled:opacity-40"
                 >
                     Vazgeç
                 </button>
@@ -1264,20 +1264,20 @@ export default function EventForm({
                     onClick={() => setIsGalleryPickerOpen(false)}
                 >
                     <div
-                        className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#0B0B0B]"
+                        className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-[2rem] border border-line bg-white"
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <div className="flex flex-col gap-5 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                        <div className="flex flex-col gap-5 border-b border-line p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#27D66B]">
+                                <p className="text-xs font-bold uppercase tracking-[0.22em] text-holly-ink">
                                     Holly Sport Galeri
                                 </p>
 
-                                <h2 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
+                                <h2 className="mt-2 text-2xl font-bold text-ink sm:text-3xl">
                                     Etkinlik fotoğraflarını seç
                                 </h2>
 
-                                <p className="mt-2 text-sm text-white/40">
+                                <p className="mt-2 text-sm text-ink-soft">
                                     {selectedGalleryImages.length} fotoğraf seçildi ·
                                     {" "}
                                     {remainingGallerySlots} seçim hakkın kaldı.
@@ -1290,7 +1290,7 @@ export default function EventForm({
                                     onChange={(event) =>
                                         setGalleryBranch(event.target.value)
                                     }
-                                    className="form-field-dark h-12 min-w-48 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-white outline-none focus:border-[#27D66B]"
+                                    className="form-field h-12 min-w-48 rounded-xl border border-line bg-white px-4 text-sm font-semibold text-ink outline-none focus:border-[#27D66B]"
                                 >
                                     <option value="all">Tüm branşlar</option>
 
@@ -1305,7 +1305,7 @@ export default function EventForm({
                                     type="button"
                                     aria-label="Galeriyi kapat"
                                     onClick={() => setIsGalleryPickerOpen(false)}
-                                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-black transition hover:scale-105"
+                                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink transition hover:bg-shell hover:scale-105"
                                 >
                                     <X className="h-5 w-5" />
                                 </button>
@@ -1329,7 +1329,7 @@ export default function EventForm({
                                                 className={`group relative aspect-[4/3] overflow-hidden rounded-2xl border text-left transition ${
                                                     isSelected
                                                         ? "border-[#27D66B] ring-2 ring-[#27D66B]/30"
-                                                        : "border-white/10 hover:border-white/30"
+                                                        : "border-line hover:border-ink-soft"
                                                 }`}
                                             >
                                                 <Image
@@ -1350,7 +1350,7 @@ export default function EventForm({
                                                     className={`absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border transition ${
                                                         isSelected
                                                             ? "border-[#27D66B] bg-[#27D66B] text-black"
-                                                            : "border-white/30 bg-black/50 text-transparent"
+                                                            : "border-line bg-black/50 text-transparent"
                                                     }`}
                                                 >
                                                     <Check className="h-4 w-4" />
@@ -1360,14 +1360,14 @@ export default function EventForm({
                                     })}
                                 </div>
                             ) : (
-                                <div className="flex min-h-72 items-center justify-center rounded-2xl border border-dashed border-white/10 text-sm text-white/35">
+                                <div className="flex min-h-72 items-center justify-center rounded-2xl border border-dashed border-line text-sm text-ink-soft">
                                     Bu branşta galeride fotoğraf bulunamadı.
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex flex-col gap-3 border-t border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
-                            <p className="text-sm text-white/40">
+                        <div className="flex flex-col gap-3 border-t border-line p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                            <p className="text-sm text-ink-soft">
                                 Seçtiğin fotoğraflar etkinlik kaydedilirken
                                 etkinliğin galerisine kopyalanacak.
                             </p>
@@ -1375,7 +1375,7 @@ export default function EventForm({
                             <button
                                 type="button"
                                 onClick={() => setIsGalleryPickerOpen(false)}
-                                className="flex h-12 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-black transition hover:bg-[#45e27f]"
+                                className="flex h-12 items-center justify-center rounded-full bg-[#27D66B] px-7 text-sm font-bold text-black transition hover:bg-[#1fc461]"
                             >
                                 Seçimi tamamla ({selectedGalleryImages.length})
                             </button>

@@ -101,7 +101,7 @@ export default function AddSupporterForm() {
             <button
                 type="button"
                 onClick={() => setIsOpen((current) => !current)}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-black transition hover:bg-[#45e27f]"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-black transition hover:bg-[#1fc461]"
             >
                 {isOpen ? (
                     <>
@@ -119,21 +119,21 @@ export default function AddSupporterForm() {
             {isOpen && (
                 <form
                     onSubmit={handleSubmit}
-                    className="mt-6 rounded-[2rem] border border-white/10 bg-[#111111] p-6 sm:p-8"
+                    className="mt-6 rounded-[2rem] border border-line bg-shell p-6 sm:p-8"
                 >
                     <div>
-                        <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#27D66B]">
+                        <p className="text-sm font-bold uppercase tracking-[0.22em] text-holly-ink">
                             Yeni kayıt
                         </p>
 
-                        <h2 className="mt-3 text-2xl font-bold text-white">
+                        <h2 className="mt-3 text-2xl font-bold text-ink">
                             Bireysel yatırımcı ekle
                         </h2>
                     </div>
 
                     <div className="mt-7 grid gap-6 md:grid-cols-2">
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-white">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Görünecek isim
                             </span>
 
@@ -146,12 +146,12 @@ export default function AddSupporterForm() {
                                 placeholder="Umut K*****"
                                 maxLength={100}
                                 required
-                                className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                                className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                             />
                         </label>
 
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-white">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Kategori
                             </span>
 
@@ -160,7 +160,7 @@ export default function AddSupporterForm() {
                                 onChange={(event) =>
                                     setCategory(event.target.value)
                                 }
-                                className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                                className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                             >
                                 <option value="individual">
                                     Bireysel destekçi
@@ -177,7 +177,7 @@ export default function AddSupporterForm() {
                         </label>
 
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-white">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Gösterim sırası
                             </span>
 
@@ -189,12 +189,12 @@ export default function AddSupporterForm() {
                                 onChange={(event) =>
                                     setSortOrder(event.target.value)
                                 }
-                                className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                                className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                             />
                         </label>
 
                         <label>
-                            <span className="mb-2 block text-sm font-semibold text-white">
+                            <span className="mb-2 block text-sm font-semibold text-ink">
                                 Yayın durumu
                             </span>
 
@@ -205,7 +205,7 @@ export default function AddSupporterForm() {
                                         event.target.value === "active",
                                     )
                                 }
-                                className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 bg-[#1a1a1a] px-4 outline-none transition focus:border-[#27D66B]"
+                                className="form-field min-h-12 w-full rounded-2xl border border-line bg-white px-4 outline-none transition focus:border-[#27D66B]"
                             >
                                 <option value="active">
                                     Ana sayfada göster
@@ -219,7 +219,7 @@ export default function AddSupporterForm() {
                     </div>
 
                     <div className="mt-6">
-                        <p className="text-sm font-semibold text-white">
+                        <p className="text-sm font-semibold text-ink">
                             Destek türleri
                         </p>
 
@@ -227,7 +227,7 @@ export default function AddSupporterForm() {
                             {supportTypeOptions.map((option) => (
                                 <label
                                     key={option.value}
-                                    className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+                                    className="flex cursor-pointer items-center gap-3 rounded-2xl border border-line bg-shell p-4"
                                 >
                                     <input
                                         type="checkbox"
@@ -240,7 +240,7 @@ export default function AddSupporterForm() {
                                         className="h-4 w-4 accent-[#27D66B]"
                                     />
 
-                                    <span className="text-sm text-white/65">
+                                    <span className="text-sm text-ink/70">
                                         {option.label}
                                     </span>
                                 </label>
@@ -249,13 +249,13 @@ export default function AddSupporterForm() {
                     </div>
 
                     {errorMessage && (
-                        <div className="mt-6 rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                        <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                             {errorMessage}
                         </div>
                     )}
 
                     {successMessage && (
-                        <div className="mt-6 rounded-2xl border border-[#27D66B]/25 bg-[#27D66B]/10 px-4 py-3 text-sm text-[#67eb9b]">
+                        <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-holly-ink">
                             {successMessage}
                         </div>
                     )}
@@ -263,7 +263,7 @@ export default function AddSupporterForm() {
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-bold text-black transition hover:bg-[#45e27f] disabled:cursor-not-allowed disabled:opacity-50"
+                        className="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-7 text-sm font-bold text-black transition hover:bg-[#1fc461] disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         {isSubmitting && (
                             <Loader2 className="h-5 w-5 animate-spin" />

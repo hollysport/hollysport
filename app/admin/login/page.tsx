@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { login } from "./actions";
 
@@ -20,30 +21,41 @@ export default async function AdminLoginPage({
     const errorMessage = error ? errorMessages[error] : null;
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-[#050505] px-6 py-16 text-white">
+        <main className="flex min-h-screen items-center justify-center bg-shell px-6 py-16 text-ink">
             <div className="w-full max-w-md">
                 <Link
                     href="/"
-                    className="mb-10 inline-block text-sm font-semibold uppercase tracking-wider text-white/45 transition-colors hover:text-[#27D66B]"
+                    className="mb-10 inline-block text-sm font-semibold uppercase tracking-wider text-ink-soft transition-colors hover:text-holly-ink"
                 >
                     ← Siteye dön
                 </Link>
 
-                <div className="rounded-3xl border border-white/10 bg-[#111111] p-7 md:p-10">
-                    <span className="text-sm font-semibold uppercase tracking-[0.3em] text-[#27D66B]">
-                        Holly Sport
-                    </span>
+                <div className="rounded-3xl border border-line bg-white p-7 md:p-10">
+                    <div className="flex items-center gap-3">
+                        <Image
+                            src="/icons/icon-512.png"
+                            alt="Holly Sport logosu"
+                            width={44}
+                            height={44}
+                            priority
+                            className="h-11 w-11 shrink-0 rounded-xl object-cover"
+                        />
+
+                        <span className="text-sm font-semibold uppercase tracking-[0.3em] text-holly-ink">
+                            Holly Sport
+                        </span>
+                    </div>
 
                     <h1 className="mt-5 text-4xl font-bold tracking-tight">
                         Admin girişi
                     </h1>
 
-                    <p className="mt-3 text-sm leading-6 text-white/45">
+                    <p className="mt-3 text-sm leading-6 text-ink-soft">
                         Etkinlikleri ve başvuruları yönetmek için giriş yap.
                     </p>
 
                     {errorMessage && (
-                        <div className="mt-7 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                        <div className="mt-7 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                             {errorMessage}
                         </div>
                     )}
@@ -52,7 +64,7 @@ export default async function AdminLoginPage({
                         <div>
                             <label
                                 htmlFor="email"
-                                className="mb-2 block text-sm text-white/60"
+                                className="mb-2 block text-sm text-ink-soft"
                             >
                                 E-posta
                             </label>
@@ -64,14 +76,14 @@ export default async function AdminLoginPage({
                                 autoComplete="email"
                                 required
                                 placeholder="admin@hollysport.com"
-                                className="h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]"
+                                className="h-14 w-full rounded-xl border border-line bg-white px-4 text-ink outline-none transition-colors placeholder:text-ink-soft focus:border-[#27D66B]"
                             />
                         </div>
 
                         <div>
                             <label
                                 htmlFor="password"
-                                className="mb-2 block text-sm text-white/60"
+                                className="mb-2 block text-sm text-ink-soft"
                             >
                                 Şifre
                             </label>
@@ -83,7 +95,7 @@ export default async function AdminLoginPage({
                                 autoComplete="current-password"
                                 required
                                 placeholder="••••••••"
-                                className="h-14 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-white outline-none transition-colors placeholder:text-white/45 focus:border-[#27D66B]"
+                                className="h-14 w-full rounded-xl border border-line bg-white px-4 text-ink outline-none transition-colors placeholder:text-ink-soft focus:border-[#27D66B]"
                             />
                         </div>
 
@@ -95,7 +107,7 @@ export default async function AdminLoginPage({
                         </button>
                     </form>
 
-                    <p className="mt-6 text-center text-xs leading-5 text-white/25">
+                    <p className="mt-6 text-center text-xs leading-5 text-ink-soft">
                         Bu alan yalnızca yetkili Holly Sport yöneticileri içindir.
                     </p>
                 </div>

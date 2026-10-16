@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import ReviewsManager, {
     type AdminReview,
 } from "@/components/admin/reviews-manager";
@@ -87,39 +85,28 @@ export default async function AdminReviewsPage() {
             : "—";
 
     return (
-        <main className="min-h-screen bg-[#050505] px-5 py-8 text-white sm:px-8 lg:px-10">
+        <main className="min-h-screen bg-white px-5 py-8 text-ink sm:px-8 lg:px-10">
             <div className="mx-auto max-w-7xl">
-                <header className="flex flex-col justify-between gap-6 border-b border-white/10 pb-8 sm:flex-row sm:items-end">
+                <header className="flex flex-col justify-between gap-6 border-b border-line pb-8 sm:flex-row sm:items-end">
                     <div>
-                        <Link
-                            href="/admin"
-                            className="text-sm font-semibold uppercase tracking-wider text-white/40 transition hover:text-[#27D66B]"
-                        >
-                            ← Yönetim paneli
-                        </Link>
-
-                        <p className="mt-7 text-sm font-bold uppercase tracking-[0.24em] text-[#27D66B]">
-                            Admin Paneli
-                        </p>
-
-                        <h1 className="mt-3 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
+                        <h1 className="text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
                             Topluluk Görüşleri
                         </h1>
 
-                        <p className="mt-3 max-w-2xl text-sm leading-7 text-white/45">
+                        <p className="mt-3 max-w-2xl text-sm leading-7 text-ink-soft">
                             Gönderilen görüşleri ara, düzenle,
                             onayla, reddet veya kalıcı olarak sil.
                         </p>
                     </div>
 
-                    <div className="rounded-full border border-white/10 px-5 py-3 text-sm text-white/45">
+                    <div className="rounded-full border border-line px-5 py-3 text-sm text-ink-soft">
                         Toplam {reviews.length} görüş
                     </div>
                 </header>
 
                 <section className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-                    <article className="rounded-2xl border border-white/10 bg-[#111111] p-5">
-                        <p className="text-sm text-white/40">
+                    <article className="rounded-2xl border border-line bg-shell p-5">
+                        <p className="text-sm text-ink-soft">
                             Tüm görüşler
                         </p>
 
@@ -128,60 +115,60 @@ export default async function AdminReviewsPage() {
                         </strong>
                     </article>
 
-                    <article className="rounded-2xl border border-orange-500/20 bg-orange-500/5 p-5">
-                        <p className="text-sm text-orange-300/70">
+                    <article className="rounded-2xl border border-orange-200 bg-orange-50 p-5">
+                        <p className="text-sm text-orange-700">
                             Onay bekleyen
                         </p>
 
-                        <strong className="mt-2 block text-3xl text-orange-300">
+                        <strong className="mt-2 block text-3xl text-orange-700">
                             {pendingCount}
                         </strong>
                     </article>
 
-                    <article className="rounded-2xl border border-[#27D66B]/20 bg-[#27D66B]/5 p-5">
-                        <p className="text-sm text-[#27D66B]/70">
+                    <article className="rounded-2xl border border-green-200 bg-green-50 p-5">
+                        <p className="text-sm text-holly-ink/70">
                             Onaylanan
                         </p>
 
-                        <strong className="mt-2 block text-3xl text-[#27D66B]">
+                        <strong className="mt-2 block text-3xl text-holly-ink">
                             {approvedCount}
                         </strong>
                     </article>
 
-                    <article className="rounded-2xl border border-red-500/20 bg-red-500/5 p-5">
-                        <p className="text-sm text-red-300/70">
+                    <article className="rounded-2xl border border-red-200 bg-red-50 p-5">
+                        <p className="text-sm text-red-700">
                             Reddedilen
                         </p>
 
-                        <strong className="mt-2 block text-3xl text-red-300">
+                        <strong className="mt-2 block text-3xl text-red-700">
                             {rejectedCount}
                         </strong>
                     </article>
 
-                    <article className="rounded-2xl border border-[#FFD54A]/20 bg-[#FFD54A]/5 p-5">
-                        <p className="text-sm text-[#FFD54A]/70">
+                    <article className="rounded-2xl border border-yellow-200 bg-yellow-50 p-5">
+                        <p className="text-sm text-yellow-700">
                             Ortalama puan
                         </p>
 
-                        <strong className="mt-2 block text-3xl text-[#FFD54A]">
+                        <strong className="mt-2 block text-3xl text-yellow-700">
                             {averageRating}
                         </strong>
                     </article>
                 </section>
 
                 {error && (
-                    <div className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-300">
+                    <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
                         Görüşler yüklenemedi: {error.message}
                     </div>
                 )}
 
                 {!error && reviews.length === 0 ? (
-                    <div className="mt-8 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
+                    <div className="mt-8 rounded-3xl border border-dashed border-line px-6 py-16 text-center">
                         <h2 className="text-2xl font-bold">
                             Henüz görüş gönderilmedi.
                         </h2>
 
-                        <p className="mt-3 text-sm text-white/40">
+                        <p className="mt-3 text-sm text-ink-soft">
                             Yeni görüşler burada onay bekleyen olarak
                             görünecek.
                         </p>

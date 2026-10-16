@@ -34,7 +34,7 @@ const statusActions: Array<{
         status: "waitlist",
         label: "Bekleme listesi",
         className:
-            "border border-yellow-500/30 text-yellow-300 hover:bg-yellow-500/10",
+            "border border-yellow-200 text-yellow-700 hover:bg-yellow-50",
     },
 ];
 
@@ -234,7 +234,7 @@ export default function RegistrationActions({
                     type="button"
                     onClick={rejectAndDelete}
                     disabled={isPending}
-                    className="flex h-10 items-center justify-center rounded-full border border-red-500/30 px-4 text-xs font-semibold uppercase tracking-wider text-red-300 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-35"
+                    className="flex h-10 items-center justify-center rounded-full border border-red-200 px-4 text-xs font-semibold uppercase tracking-wider text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-35"
                 >
                     {loadingAction === "reject-delete"
                         ? "Siliniyor..."
@@ -245,7 +245,7 @@ export default function RegistrationActions({
                     type="button"
                     onClick={deleteRegistration}
                     disabled={isPending}
-                    className="flex h-10 items-center justify-center gap-2 rounded-full border border-white/15 px-4 text-xs font-semibold uppercase tracking-wider text-white/55 transition hover:border-red-500/40 hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-35"
+                    className="flex h-10 items-center justify-center gap-2 rounded-full border border-line px-4 text-xs font-semibold uppercase tracking-wider text-ink-soft transition hover:border-red-300 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-35"
                 >
                     <Trash2 className="h-4 w-4" />
 
@@ -256,7 +256,7 @@ export default function RegistrationActions({
             </div>
 
             {errorMessage && (
-                <p className="mt-3 max-w-md rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs leading-5 text-red-300">
+                <p className="mt-3 max-w-md rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs leading-5 text-red-700">
                     {errorMessage}
                 </p>
             )}

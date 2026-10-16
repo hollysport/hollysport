@@ -55,22 +55,22 @@ function formatDate(date: string) {
 
 function getStatusClass(status: DreamStatus) {
     if (status === "new") {
-        return "border-violet-400/20 bg-violet-400/10 text-violet-300";
+        return "border-violet-200 bg-violet-50 text-violet-700";
     }
 
     if (status === "reviewing") {
-        return "border-blue-400/20 bg-blue-400/10 text-blue-300";
+        return "border-blue-200 bg-blue-50 text-blue-700";
     }
 
     if (status === "contacted") {
-        return "border-orange-400/20 bg-orange-400/10 text-orange-300";
+        return "border-orange-200 bg-orange-50 text-orange-700";
     }
 
     if (status === "completed") {
-        return "border-[#27D66B]/20 bg-[#27D66B]/10 text-[#27D66B]";
+        return "border-green-200 bg-green-50 text-holly-ink";
     }
 
-    return "border-red-400/20 bg-red-400/10 text-red-300";
+    return "border-red-200 bg-red-50 text-red-700";
 }
 
 export default async function AdminDreamsPage() {
@@ -101,12 +101,12 @@ export default async function AdminDreamsPage() {
     ).length;
 
     return (
-        <main className="min-h-screen bg-[#050505] px-5 py-8 text-white sm:px-8 sm:py-10 lg:px-12">
+        <main className="min-h-screen bg-white px-5 py-8 text-ink sm:px-8 sm:py-10 lg:px-12">
             <div className="mx-auto max-w-7xl">
-                <header className="border-b border-white/10 pb-8">
+                <header className="border-b border-line pb-8">
                     <Link
                         href="/admin"
-                        className="group inline-flex items-center gap-2 text-sm font-semibold text-white/45 transition hover:text-[#27D66B]"
+                        className="group inline-flex items-center gap-2 text-sm font-semibold text-ink-soft transition hover:text-holly-ink"
                     >
                         <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                         Yönetim paneline dön
@@ -114,7 +114,7 @@ export default async function AdminDreamsPage() {
 
                     <div className="mt-8 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
                         <div>
-                            <p className="text-sm font-bold uppercase tracking-[0.25em] text-violet-300">
+                            <p className="text-sm font-bold uppercase tracking-[0.25em] text-violet-700">
                                 Bir Hayalim Var
                             </p>
 
@@ -122,7 +122,7 @@ export default async function AdminDreamsPage() {
                                 Hayal Başvuruları
                             </h1>
 
-                            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/40">
+                            <p className="mt-4 max-w-2xl text-sm leading-7 text-ink-soft">
                                 İnsanların deneyimlemek veya ulaşmak
                                 istediği bireysel hedefleri görüntüle,
                                 değerlendir ve durumlarını güncelle.
@@ -130,8 +130,8 @@ export default async function AdminDreamsPage() {
                         </div>
 
                         <div className="flex gap-3">
-                            <div className="rounded-2xl border border-white/10 bg-[#111111] px-5 py-4">
-                                <span className="block text-xs uppercase tracking-wider text-white/35">
+                            <div className="rounded-2xl border border-line bg-shell px-5 py-4">
+                                <span className="block text-xs uppercase tracking-wider text-ink-soft">
                                     Toplam
                                 </span>
 
@@ -140,12 +140,12 @@ export default async function AdminDreamsPage() {
                                 </strong>
                             </div>
 
-                            <div className="rounded-2xl border border-violet-400/20 bg-violet-400/10 px-5 py-4">
-                                <span className="block text-xs uppercase tracking-wider text-violet-300/70">
+                            <div className="rounded-2xl border border-violet-200 bg-violet-50 px-5 py-4">
+                                <span className="block text-xs uppercase tracking-wider text-violet-700">
                                     Yeni
                                 </span>
 
-                                <strong className="mt-1 block text-2xl text-violet-300">
+                                <strong className="mt-1 block text-2xl text-violet-700">
                                     {newSubmissionCount}
                                 </strong>
                             </div>
@@ -154,19 +154,19 @@ export default async function AdminDreamsPage() {
                 </header>
 
                 {error && (
-                    <div className="mt-8 rounded-2xl border border-red-500/20 bg-red-500/10 px-5 py-4 text-sm text-red-300">
+                    <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
                         Hayal başvuruları alınamadı. Supabase tablo ve
                         yetki ayarlarını kontrol et.
                     </div>
                 )}
 
                 {!error && submissions.length === 0 && (
-                    <div className="mt-8 rounded-3xl border border-dashed border-white/15 bg-white/[0.025] px-6 py-20 text-center">
+                    <div className="mt-8 rounded-3xl border border-dashed border-line bg-shell px-6 py-20 text-center">
                         <h2 className="text-2xl font-bold">
                             Henüz hayal başvurusu yok.
                         </h2>
 
-                        <p className="mt-3 text-white/40">
+                        <p className="mt-3 text-ink-soft">
                             Formdan gönderilen başvurular burada
                             görünecek.
                         </p>
@@ -177,9 +177,9 @@ export default async function AdminDreamsPage() {
                     {submissions.map((submission) => (
                         <article
                             key={submission.id}
-                            className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#111111]"
+                            className="overflow-hidden rounded-[2rem] border border-line bg-shell"
                         >
-                            <div className="border-b border-white/10 p-6 sm:p-8">
+                            <div className="border-b border-line p-6 sm:p-8">
                                 <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
                                     <div>
                                         <div className="flex flex-wrap items-center gap-3">
@@ -195,7 +195,7 @@ export default async function AdminDreamsPage() {
                                                 }
                                             </span>
 
-                                            <span className="inline-flex items-center gap-2 text-xs text-white/35">
+                                            <span className="inline-flex items-center gap-2 text-xs text-ink-soft">
                                                 <CalendarDays className="h-4 w-4" />
                                                 {formatDate(
                                                     submission.created_at,
@@ -207,7 +207,7 @@ export default async function AdminDreamsPage() {
                                             {submission.dream_title}
                                         </h2>
 
-                                        <p className="mt-3 text-sm font-semibold text-white/60">
+                                        <p className="mt-3 text-sm font-semibold text-ink/70">
                                             {submission.full_name}
                                         </p>
                                     </div>
@@ -215,7 +215,7 @@ export default async function AdminDreamsPage() {
                                     <div className="flex flex-col gap-2 text-sm">
                                         <a
                                             href={`tel:${submission.phone}`}
-                                            className="inline-flex items-center gap-2 text-white/50 transition hover:text-[#27D66B]"
+                                            className="inline-flex items-center gap-2 text-ink-soft transition hover:text-holly-ink"
                                         >
                                             <Phone className="h-4 w-4" />
                                             {submission.phone}
@@ -223,7 +223,7 @@ export default async function AdminDreamsPage() {
 
                                         <a
                                             href={`mailto:${submission.email}`}
-                                            className="inline-flex items-center gap-2 text-white/50 transition hover:text-[#27D66B]"
+                                            className="inline-flex items-center gap-2 text-ink-soft transition hover:text-holly-ink"
                                         >
                                             <Mail className="h-4 w-4" />
                                             {submission.email}
@@ -231,8 +231,8 @@ export default async function AdminDreamsPage() {
                                     </div>
                                 </div>
 
-                                <div className="mt-7 rounded-2xl border border-white/10 bg-black/20 p-5">
-                                    <p className="whitespace-pre-line text-sm leading-7 text-white/60">
+                                <div className="mt-7 rounded-2xl border border-line bg-shell p-5">
+                                    <p className="whitespace-pre-line text-sm leading-7 text-ink/70">
                                         {
                                             submission.dream_description
                                         }
@@ -252,7 +252,7 @@ export default async function AdminDreamsPage() {
                                     />
 
                                     <label>
-                                        <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/40">
+                                        <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                             Durum
                                         </span>
 
@@ -261,7 +261,7 @@ export default async function AdminDreamsPage() {
                                             defaultValue={
                                                 submission.status
                                             }
-                                            className="form-field-dark min-h-12 w-full rounded-2xl border border-white/10 px-4 outline-none transition focus:border-[#27D66B]"
+                                            className="form-field min-h-12 w-full rounded-2xl border border-line px-4 outline-none transition focus:border-[#27D66B]"
                                         >
                                             <option value="new">
                                                 Yeni başvuru
@@ -286,7 +286,7 @@ export default async function AdminDreamsPage() {
                                     </label>
 
                                     <label>
-                                        <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/40">
+                                        <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-ink-soft">
                                             Yönetim notu
                                         </span>
 
@@ -298,13 +298,13 @@ export default async function AdminDreamsPage() {
                                                 ""
                                             }
                                             placeholder="Başvuru hakkında özel not..."
-                                            className="form-field-dark min-h-12 w-full resize-y rounded-2xl border border-white/10 px-4 py-3 outline-none transition focus:border-[#27D66B]"
+                                            className="form-field min-h-12 w-full resize-y rounded-2xl border border-line px-4 py-3 outline-none transition focus:border-[#27D66B]"
                                         />
                                     </label>
 
                                     <button
                                         type="submit"
-                                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-black transition hover:bg-[#45e27f]"
+                                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-black transition hover:bg-[#1fc461]"
                                     >
                                         <Save className="h-4 w-4" />
                                         Kaydet
@@ -323,7 +323,7 @@ export default async function AdminDreamsPage() {
 
                                     <button
                                         type="submit"
-                                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-red-500/25 px-5 text-sm font-semibold text-red-300 transition hover:bg-red-500/10"
+                                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-red-200 px-5 text-sm font-semibold text-red-700 transition hover:bg-red-50"
                                     >
                                         <Trash2 className="h-4 w-4" />
                                         Sil

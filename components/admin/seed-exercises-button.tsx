@@ -31,8 +31,8 @@ export default function SeedExercisesButton() {
     }
 
     return (
-        <div className="mt-6 rounded-2xl border border-dashed border-[#27D66B]/30 bg-[#27D66B]/5 px-6 py-10 text-center">
-            <Database className="mx-auto h-8 w-8 text-[#27D66B]" />
+        <div className="mt-6 rounded-2xl border border-dashed border-green-200 bg-green-50 px-6 py-10 text-center">
+            <Database className="mx-auto h-8 w-8 text-holly-ink" />
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-zinc-600">
                 Henüz egzersiz yok. Hazır 3D egzersiz veri setini
                 (9 kas grubu, Ev/Salon, hedef bazlı) tek tıkla yükle.
@@ -42,7 +42,7 @@ export default function SeedExercisesButton() {
                 type="button"
                 onClick={handleSeed}
                 disabled={busy}
-                className="mt-5 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-[#050505] transition hover:bg-[#45e27f] disabled:opacity-50"
+                className="mt-5 inline-flex h-12 items-center gap-2 rounded-full bg-[#27D66B] px-6 text-sm font-bold text-ink transition hover:bg-[#1fc461] disabled:opacity-50"
             >
                 {busy ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

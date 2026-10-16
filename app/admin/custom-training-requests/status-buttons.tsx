@@ -50,15 +50,15 @@ export default function ProgramRequestStatusActions({
 
     return (
         <div className="mt-5">
-            <div className="inline-flex rounded-full border border-white/10 bg-[#050505] p-1">
+            <div className="inline-flex rounded-full border border-line bg-white p-1">
                 <button
                     type="button"
                     onClick={() => changeStatus("pending")}
                     disabled={isPending}
                     className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-4 text-xs font-semibold transition ${
                         currentStatus === "pending"
-                            ? "bg-yellow-500/15 text-yellow-300"
-                            : "text-white/45 hover:text-white"
+                            ? "bg-yellow-50 text-yellow-700"
+                            : "text-ink-soft hover:text-ink"
                     }`}
                 >
                     {isPending &&
@@ -76,8 +76,8 @@ export default function ProgramRequestStatusActions({
                     disabled={isPending}
                     className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-4 text-xs font-semibold transition ${
                         currentStatus === "reviewed"
-                            ? "bg-[#27D66B]/15 text-[#27D66B]"
-                            : "text-white/45 hover:text-white"
+                            ? "bg-green-50 text-holly-ink"
+                            : "text-ink-soft hover:text-ink"
                     }`}
                 >
                     {isPending &&
@@ -93,7 +93,7 @@ export default function ProgramRequestStatusActions({
             {errorMessage && (
                 <p
                     role="alert"
-                    className="mt-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs leading-5 text-red-300"
+                    className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs leading-5 text-red-700"
                 >
                     {errorMessage}
                 </p>

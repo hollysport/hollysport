@@ -78,9 +78,9 @@ export default function QuestionActions({
     }
 
     return (
-        <div className="mt-6 border-t border-white/10 pt-5">
+        <div className="mt-6 border-t border-line pt-5">
             {errorMessage && (
-                <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                     {errorMessage}
                 </div>
             )}
@@ -90,7 +90,7 @@ export default function QuestionActions({
                     type="button"
                     disabled={loadingAction !== null}
                     onClick={() => updateStatus("pending")}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white/70 transition hover:border-white/40 hover:text-white disabled:opacity-40"
+                    className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink/70 transition hover:border-ink-soft hover:text-ink disabled:opacity-40"
                 >
                     {loadingAction === "pending" ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -105,7 +105,7 @@ export default function QuestionActions({
                     type="button"
                     disabled={loadingAction !== null}
                     onClick={() => updateStatus("answered")}
-                    className="inline-flex items-center gap-2 rounded-full bg-[#27D66B] px-4 py-2 text-sm font-bold text-black transition hover:bg-[#45e27f] disabled:opacity-40"
+                    className="inline-flex items-center gap-2 rounded-full bg-[#27D66B] px-4 py-2 text-sm font-bold text-black transition hover:bg-[#1fc461] disabled:opacity-40"
                 >
                     {loadingAction === "answered" ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -120,7 +120,7 @@ export default function QuestionActions({
                     type="button"
                     disabled={loadingAction !== null}
                     onClick={() => updateStatus("closed")}
-                    className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-300 transition hover:bg-blue-500/20 disabled:opacity-40"
+                    className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 disabled:opacity-40"
                 >
                     {loadingAction === "closed" ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -135,7 +135,7 @@ export default function QuestionActions({
                     type="button"
                     disabled={loadingAction !== null}
                     onClick={deleteQuestion}
-                    className="inline-flex items-center gap-2 rounded-full bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-300 transition hover:bg-red-500/20 disabled:opacity-40"
+                    className="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:opacity-40"
                 >
                     {loadingAction === "delete" ? (
                         <Loader2 className="h-4 w-4 animate-spin" />

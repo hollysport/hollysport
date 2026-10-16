@@ -7,7 +7,6 @@ import {
     EyeOff,
     Loader2,
     Plus,
-    Save,
     Trash2,
     Upload,
 } from "lucide-react";

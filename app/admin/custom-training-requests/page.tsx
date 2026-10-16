@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Inbox, Mail, Phone } from "lucide-react";
 
 import { requireAdmin } from "@/lib/auth/require-admin";
@@ -27,8 +26,8 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_CLASSES: Record<string, string> = {
-    pending: "bg-yellow-500/15 text-yellow-300 border-yellow-500/25",
-    reviewed: "bg-[#27D66B]/15 text-[#27D66B] border-[#27D66B]/30",
+    pending: "bg-yellow-50 text-yellow-700 border-yellow-200",
+    reviewed: "bg-green-50 text-holly-ink border-green-200",
 };
 
 const FULL_SELECT =
@@ -125,21 +124,14 @@ export default async function CustomTrainingRequestsPage() {
     }
 
     return (
-        <main className="min-h-screen bg-[#050505] px-6 py-10 text-white md:px-10 lg:px-16">
+        <main className="min-h-screen bg-white px-6 py-10 text-ink md:px-10 lg:px-16">
             <div className="mx-auto max-w-5xl">
-                <header className="border-b border-white/10 pb-9">
-                    <Link
-                        href="/admin"
-                        className="text-sm font-semibold uppercase tracking-wider text-white/40 transition-colors hover:text-[#27D66B]"
-                    >
-                        ← Yönetim paneli
-                    </Link>
-
-                    <h1 className="mt-7 text-4xl font-bold tracking-tight md:text-5xl">
+                <header className="border-b border-line pb-9">
+                    <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
                         Özel Antrenman Talepleri
                     </h1>
 
-                    <p className="mt-4 max-w-2xl leading-7 text-white/40">
+                    <p className="mt-4 max-w-2xl leading-7 text-ink-soft">
                         &quot;Kişisel Antrenman Programı İstiyorum&quot;
                         formundan gelen talepleri görüntüle; bilgileri
                         inceleyip durumunu güncelle veya gerekiyorsa
@@ -148,16 +140,16 @@ export default async function CustomTrainingRequestsPage() {
                 </header>
 
                 {!statusAvailable && (
-                    <div className="mt-8 rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-5 text-sm leading-6 text-yellow-200">
+                    <div className="mt-8 rounded-2xl border border-yellow-200 bg-yellow-50 p-5 text-sm leading-6 text-yellow-700">
                         <strong className="block font-semibold">
                             Durum kolonu henüz eklenmemiş.
                         </strong>
-                        <span className="mt-1 block text-yellow-200/70">
+                        <span className="mt-1 block text-yellow-700">
                             Bekliyor/İncelendi durumunu kaydetmek için
                             Supabase dashboard&apos;unda şu SQL&apos;i
                             çalıştır (ben çalıştırmam):
                         </span>
-                        <code className="mt-3 block overflow-x-auto rounded-xl bg-black/40 p-3 text-xs text-yellow-100">
+                        <code className="mt-3 block overflow-x-auto rounded-xl bg-white p-3 text-xs text-ink">
                             alter table
                             public.custom_program_requests add column
                             if not exists status text not null
@@ -169,16 +161,16 @@ export default async function CustomTrainingRequestsPage() {
                 {loadError && (
                     <div
                         role="alert"
-                        className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/10 p-5 text-sm leading-6 text-red-300"
+                        className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-5 text-sm leading-6 text-red-700"
                     >
                         Talepler yüklenemedi: {loadError}
                     </div>
                 )}
 
                 {!loadError && rows.length === 0 && (
-                    <div className="mt-10 rounded-3xl border border-dashed border-white/15 px-6 py-16 text-center">
-                        <Inbox className="mx-auto h-10 w-10 text-white/20" />
-                        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-white/45">
+                    <div className="mt-10 rounded-3xl border border-dashed border-line px-6 py-16 text-center">
+                        <Inbox className="mx-auto h-10 w-10 text-ink-soft" />
+                        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-ink-soft">
                             Henüz gönderilmiş bir özel antrenman talebi
                             yok.
                         </p>
@@ -195,7 +187,7 @@ export default async function CustomTrainingRequestsPage() {
                             return (
                                 <li
                                     key={request.id}
-                                    className="rounded-3xl border border-white/10 bg-[#111111] p-6 sm:p-7"
+                                    className="rounded-3xl border border-line bg-shell p-6 sm:p-7"
                                 >
                                     <div className="flex flex-wrap items-start justify-between gap-4">
                                         <div className="min-w-0">
@@ -213,7 +205,7 @@ export default async function CustomTrainingRequestsPage() {
                                                     ] ?? "Bekliyor"}
                                                 </span>
 
-                                                <span className="text-xs text-white/30">
+                                                <span className="text-xs text-ink-soft">
                                                     {formatDate(
                                                         request.created_at,
                                                     )}
@@ -234,7 +226,7 @@ export default async function CustomTrainingRequestsPage() {
                                                     {isEmail(email) ? (
                                                         <a
                                                             href={`mailto:${email}`}
-                                                            className="inline-flex items-center gap-2 font-semibold text-[#27D66B] transition-colors hover:underline"
+                                                            className="inline-flex items-center gap-2 font-semibold text-holly-ink transition-colors hover:underline"
                                                         >
                                                             <Mail className="h-4 w-4" />
                                                             {email}
@@ -242,7 +234,7 @@ export default async function CustomTrainingRequestsPage() {
                                                     ) : (
                                                         <a
                                                             href={`tel:${email}`}
-                                                            className="inline-flex items-center gap-2 font-semibold text-[#27D66B] transition-colors hover:underline"
+                                                            className="inline-flex items-center gap-2 font-semibold text-holly-ink transition-colors hover:underline"
                                                         >
                                                             <Phone className="h-4 w-4" />
                                                             {email}
@@ -250,14 +242,14 @@ export default async function CustomTrainingRequestsPage() {
                                                     )}
                                                 </div>
                                             ) : (
-                                                <p className="mt-2 text-sm text-white/30">
+                                                <p className="mt-2 text-sm text-ink-soft">
                                                     İletişim
                                                     belirtilmemiş
                                                 </p>
                                             )}
 
                                             <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
-                                                <span className="rounded-full border border-white/10 px-3 py-1 text-white/55">
+                                                <span className="rounded-full border border-line px-3 py-1 text-ink-soft">
                                                     {GOALS.find(
                                                         (item) =>
                                                             item.key ===
@@ -267,7 +259,7 @@ export default async function CustomTrainingRequestsPage() {
                                                 </span>
 
                                                 {request.age !== null && (
-                                                    <span className="rounded-full border border-white/10 px-3 py-1 text-white/55">
+                                                    <span className="rounded-full border border-line px-3 py-1 text-ink-soft">
                                                         {request.age}{" "}
                                                         yaş
                                                     </span>
@@ -275,7 +267,7 @@ export default async function CustomTrainingRequestsPage() {
 
                                                 {request.height !==
                                                     null && (
-                                                    <span className="rounded-full border border-white/10 px-3 py-1 text-white/55">
+                                                    <span className="rounded-full border border-line px-3 py-1 text-ink-soft">
                                                         {
                                                             request.height
                                                         }{" "}
@@ -285,7 +277,7 @@ export default async function CustomTrainingRequestsPage() {
 
                                                 {request.weight !==
                                                     null && (
-                                                    <span className="rounded-full border border-white/10 px-3 py-1 text-white/55">
+                                                    <span className="rounded-full border border-line px-3 py-1 text-ink-soft">
                                                         {
                                                             request.weight
                                                         }{" "}
@@ -306,7 +298,7 @@ export default async function CustomTrainingRequestsPage() {
                                     </div>
 
                                     {request.notes && (
-                                        <p className="mt-4 whitespace-pre-wrap break-words rounded-2xl border border-white/10 bg-[#050505] px-4 py-4 text-sm leading-6 text-white/60">
+                                        <p className="mt-4 whitespace-pre-wrap break-words rounded-2xl border border-line bg-white px-4 py-4 text-sm leading-6 text-ink/70">
                                             {request.notes}
                                         </p>
                                     )}
