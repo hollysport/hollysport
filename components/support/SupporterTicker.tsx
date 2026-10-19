@@ -2,10 +2,17 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import type { ReactNode } from "react";
 
 type SupporterTickerProps = {
     names: string[];
     emptyMessage?: string;
+    /*
+     * Liste başlığının hemen altına render edilen ek alan
+     * (ör. Aktif Yatırımcılar / Tüm Zamanlar butonları).
+     * Verilmezse bileşen eskisi gibi görünür.
+     */
+    toolbar?: ReactNode;
 };
 
 const visibleLimit = 8;
@@ -13,6 +20,7 @@ const visibleLimit = 8;
 export default function SupporterTicker({
     names,
     emptyMessage = "Destekçilerimiz yakında burada görünecek.",
+    toolbar,
 }: SupporterTickerProps) {
     const [showAll, setShowAll] = useState(false);
 
@@ -37,6 +45,12 @@ export default function SupporterTicker({
                     Destekçilerimiz
                 </h3>
             </div>
+
+            {toolbar && (
+                <div className="flex flex-wrap items-center gap-2 border-b border-line px-5 py-4 sm:gap-3 sm:px-6">
+                    {toolbar}
+                </div>
+            )}
 
             {uniqueNames.length > 0 ? (
                 <div className="divide-y divide-line">

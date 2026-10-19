@@ -3,7 +3,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { ArrowRight, HandHeart } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
-import SupporterTicker from "@/components/support/SupporterTicker";
+import SupporterTickerPanel from "@/components/support/SupporterTickerPanel";
 
 const sponsorCategoryLabels: Record<string, string> = {
     main_sponsor: "Ana Destekçi",
@@ -26,6 +26,7 @@ type IndividualSupporter = {
     id: string;
     display_name: string;
     supporter_category: string;
+    is_active: boolean;
 };
 
 export default async function Supporters() {
@@ -43,9 +44,8 @@ export default async function Supporters() {
         supabase
             .from("individual_supporters")
             .select(
-                "id, display_name, supporter_category, sort_order, created_at",
+                "id, display_name, supporter_category, is_active, sort_order, created_at",
             )
-            .eq("is_active", true)
             .in("supporter_category", [
                 "angel_investor",
                 "individual",
@@ -78,7 +78,17 @@ export default async function Supporters() {
     const supporters =
         (supportersResult.data ?? []) as IndividualSupporter[];
 
+    /*
+     * Tek sorgu iki liste üretir (sıra korunur):
+     *  - tüm kayıtlar ("Tüm Zamanlar")
+     *  - yalnızca aktif olanlar ("Aktif Yatırımcılar")
+     */
     const investorNames = supporters
+        .map((supporter) => supporter.display_name?.trim())
+        .filter((name): name is string => Boolean(name));
+
+    const activeInvestorNames = supporters
+        .filter((supporter) => supporter.is_active)
         .map((supporter) => supporter.display_name?.trim())
         .filter((name): name is string => Boolean(name));
 
@@ -194,8 +204,9 @@ export default async function Supporters() {
                         </p>
                     </div>
 
-                    <SupporterTicker
-                        names={investorNames}
+                    <SupporterTickerPanel
+                        activeNames={activeInvestorNames}
+                        allNames={investorNames}
                         emptyMessage="Bireysel yatırımcılarımız yakında burada görünecek."
                     />
                 </div>

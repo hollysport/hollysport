@@ -2,6 +2,18 @@
 
 Önemli değişiklikler tarih sırasıyla (en yeni üstte). Tarihler `git log` çıktısından alınmıştır.
 
+## 2026-10-19 — Ana sayfa Destekçiler: "Aktif Yatırımcılar / Tüm Zamanlar" butonları
+
+- **İstek:** Destekçiler bölümünde başlığın altında yan yana iki basit buton (dropdown yok): **Aktif Yatırımcılar** (admin'de aktif işaretlenenler) ve **Tüm Zamanlar** (geçmişte veya hâlen destek vermiş aktif + pasif tüm kayıtlar); sayfa yenilenmeden liste değişimi.
+- **Şema değişikliği YOK:** `is_active` kolonu zaten vardı — `individual_supporters` (`lib/supabase/database.types.ts:314`) ve `sponsors` (`:348`). Veri sıfırlanmadı, mevcut kayıtlar korundu.
+- **RLS doğrulaması (salt-okunur):** anon (yayın) anahtarıyla pasif satırlar da okunabiliyor → "Tüm Zamanlar" gerçek veriyle çalışır. DB durumu: 33 bireysel destekçi (10 aktif / 23 pasif; kategoriler: individual 29, angel_investor 1, volunteer 3).
+- **Admin paneli zaten hazırdı — değişiklik yapılmadı:** ekleme formunda "Yayın durumu" seçimi (`add-supporter-form.tsx:196–218`), mevcut kartlarda kategori + durum düzenleme ve silme (`supporter-actions.tsx:41–73`), listede Tümü/Aktif/Pasif filtresi + sayılar (`app/admin/supporters/page.tsx:88–96`). Pasife alınan kayıt silinmiyor; yalnızca `is_active=false` oluyor ve "Tüm Zamanlar"da geçmişiyle kalıyor.
+- **Yeni bileşen:** `components/support/SupporterTickerPanel.tsx` (client) — "Destekçilerimiz" kartı başlığının hemen altında iki pill buton (`role="group"`, `aria-pressed`); seçili buton `bg-[#27D66B] text-ink`, diğeri `border-line bg-white text-ink-soft`; `flex-row flex-wrap` ile aynı satırda, sığmazsa sarar (mobil uyumlu). Mod değişince listenin "Daha fazla göster" katlanma durumu sıfırlanır.
+- **`SupporterTicker.tsx`:** isteğe bağlı `toolbar` prop'u eklendi — başlık ile liste arasına render edilir; prop verilmezse eski görünüm aynen korunur (geriye dönük uyumlu).
+- **`Supporters.tsx`:** `individual_supporters` sorgusundaki `.eq("is_active", true)` kaldırılıp `is_active` kolonu seçildi; tek sorgu sırayı (sort_order → created_at) koruyarak hem aktif hem tüm listeyi üretiyor. Kapsam kararı: kategori filtresi (`angel_investor` + `individual`) ve Kurumsal (sponsors) bölümü eskisi gibi yalnızca aktif — butonlar yalnızca bireysel **isim listesini** anahtarlar; statik veri yok, her iki liste de DB'den.
+- **Kontroller:** `npx tsc --noEmit` exit 0; `npm run lint` 0 hata (5 önceden varan `<img>`); `npm run build` exit 0; `git diff --check` temiz. SSR HTML doğrulandı: butonlar kart içinde h3'ün altında, seçili buton yeşil sınıfıyla, isim listesi butonların altında, "Daha fazla göster" aktif (8+ isim).
+- **Doğrulama sınırı:** masaüstü tarayıcı bu oturumda da bağlı değildi → buton tıklama etkileşimi ve mobil yerleşim ekran görüntüsüyle doğrulanamadı; TODO'ya manuel kontrol maddesi eklendi.
+
 ## 2026-10-17 — Ana sayfa SEO: eski "3D anatomi" mesajı kaldırıldı, marka tanıtımı düzeltildi
 
 - **İstek:** Google'da `hollysport.net` için eski "3D Anatomi Destekli Yeni Nesil Antrenman" mesajı yerine Holly Sport'un **bağımsız spor topluluğu** olarak tanıtılması.
