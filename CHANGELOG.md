@@ -13,6 +13,7 @@
 - **`Supporters.tsx`:** `individual_supporters` sorgusundaki `.eq("is_active", true)` kaldırılıp `is_active` kolonu seçildi; tek sorgu sırayı (sort_order → created_at) koruyarak hem aktif hem tüm listeyi üretiyor. Kapsam kararı: kategori filtresi (`angel_investor` + `individual`) ve Kurumsal (sponsors) bölümü eskisi gibi yalnızca aktif — butonlar yalnızca bireysel **isim listesini** anahtarlar; statik veri yok, her iki liste de DB'den.
 - **Kontroller:** `npx tsc --noEmit` exit 0; `npm run lint` 0 hata (5 önceden varan `<img>`); `npm run build` exit 0; `git diff --check` temiz. SSR HTML doğrulandı: butonlar kart içinde h3'ün altında, seçili buton yeşil sınıfıyla, isim listesi butonların altında, "Daha fazla göster" aktif (8+ isim).
 - **Doğrulama sınırı:** masaüstü tarayıcı bu oturumda da bağlı değildi → buton tıklama etkileşimi ve mobil yerleşim ekran görüntüsüyle doğrulanamadı; TODO'ya manuel kontrol maddesi eklendi.
+- **Production yayını (`612dc58`):** push → Vercel Git entegrasyonuyla canlıya alındı (~46 sn). **Canlı HTML doğrulandı** (`hollysport.net`): iki buton kart içinde başlığın altında, seçili buton yeşil / diğer beyaz kenarlı, `role="group"` + `aria-pressed` erişilebilirliği, isim listesi butonların altında, Kurumsal bölüm + CTA korunmuş.
 
 ## 2026-10-17 — Ana sayfa SEO: eski "3D anatomi" mesajı kaldırıldı, marka tanıtımı düzeltildi
 
